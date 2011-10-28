@@ -12,59 +12,66 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MovieAdapter extends ArrayAdapter<Movie> {
+public class MovieAdapter extends ArrayAdapter<CategorizedListItem> {
 
-	int resource;
-	String response;
-	Context context;
-	boolean showYearInTitle;
+	private boolean showYearInTitle;
+	private LayoutInflater vi;
 
 	// Initialize adapter
-	public MovieAdapter(Context context, int resource, List<Movie> items, boolean showYear) {
-		super(context, resource, items);
+	public MovieAdapter(Context context, int resource, List<CategorizedListItem> items, boolean showYear) {
+		super(context, 0, items);
 		this.showYearInTitle = showYear;
-		this.resource = resource;
+		vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LinearLayout movieView;
+		View v = convertView;
 		
 		// Get the current movie object
-		Movie movie = getItem(position);
-
-		// Inflate the view
-		if (convertView == null) {
-			movieView = new LinearLayout(getContext());
-			String inflater = Context.LAYOUT_INFLATER_SERVICE;
-			LayoutInflater vi;
-			vi = (LayoutInflater) getContext().getSystemService(inflater);
-			vi.inflate(resource, movieView, true);
-		} else {
-			movieView = (LinearLayout) convertView;
-		}
-
-		// Get the text boxes from the list_item.xml file
-		ImageView movieTomato = (ImageView) movieView.findViewById(R.id.tomato_image);
-		TextView movieRating = (TextView) movieView.findViewById(R.id.txtRating);
-		ImageView movieAudTomato = (ImageView) movieView.findViewById(R.id.audience_tomato_image);
-		TextView movieAudRating = (TextView) movieView.findViewById(R.id.txtAudienceRating);
-		TextView movieTitle = (TextView) movieView.findViewById(R.id.txtTitle);
-
-		// Assign the appropriate data from our movie object above
-		movieTomato.setImageResource(movie.getTomatoImageResource());
-		movieRating.setText(movie.ratings.getFormattedCriticsScore());
-		movieAudTomato.setImageResource(movie.getAudienceTomatoImageResource());
-		movieAudRating.setText(movie.ratings.getFormattedAudienceScore());
+		final CategorizedListItem item = getItem(position);
 		
-		if(this.showYearInTitle)
-			movieTitle.setText(movie.getTitleWithYear());
-		else
-			movieTitle.setText(movie.getTitle());
+		if(item != null)
+		{
+			if(item.isSection()){
+				
+				CategoryListItem si = (CategoryListItem)item;
+				v = vi.inflate(R.layout.list_item_category, null);
 
-		return movieView;
+				v.setOnClickListener(null);
+				v.setOnLongClickListener(null);
+				v.setLongClickable(false);
+				
+				final TextView sectionView = (TextView) v.findViewById(R.id.list_item_section_text);
+				sectionView.setText(si.getTitle());
+			}
+			else
+			{
+				Movie movie = (Movie)item;
+				v = vi.inflate(R.layout.list_item, null);
+		
+				// Get the text boxes from the list_item.xml file
+				final ImageView movieTomato = (ImageView) v.findViewById(R.id.tomato_image);
+				final TextView movieRating = (TextView) v.findViewById(R.id.txtRating);
+				final ImageView movieAudTomato = (ImageView) v.findViewById(R.id.audience_tomato_image);
+				final TextView movieAudRating = (TextView) v.findViewById(R.id.txtAudienceRating);
+				final TextView movieTitle = (TextView) v.findViewById(R.id.txtTitle);
+		
+				// Assign the appropriate data from our movie object above
+				movieTomato.setImageResource(movie.getTomatoImageResource());
+				movieRating.setText(movie.ratings.getFormattedCriticsScore());
+				movieAudTomato.setImageResource(movie.getAudienceTomatoImageResource());
+				movieAudRating.setText(movie.ratings.getFormattedAudienceScore());
+				
+				if(this.showYearInTitle)
+					movieTitle.setText(movie.getTitleWithYear());
+				else
+					movieTitle.setText(movie.getTitle());
+			}
+		}
+			
+		return v;
 	}
 }

@@ -13,7 +13,7 @@ public class ReleaseDates implements Serializable {
 	public static final String TAG = "ReleaseDates";
 	private static final long serialVersionUID = 329551203278076026L;
 	public String theater;
-
+	
 	public String getTheaterReleaseDate() {
 
 		if(theater == null || theater.length() == 0)
@@ -41,5 +41,6 @@ public class ReleaseDates implements Serializable {
 		  return null;
 
 	}
+	
 	
 }

@@ -1,7 +1,7 @@
 package com.moubry.tomatoratings.ui;
 
-import com.moubry.tomatoratings.MovieTitleSuggestionsProvider;
 import com.moubry.tomatoratings.R;
+import com.moubry.tomatoratings.MovieTitleSuggestionsProvider;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

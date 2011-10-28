@@ -3,7 +3,11 @@ package com.moubry.tomatoratings.ui;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +43,12 @@ import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.widget.ImageView;
 
@@ -49,10 +59,38 @@ public class MovieRatingActivity extends BaseActivity {
 	private String imdbID;
 	private String rottenTomatoesURL;
 	private String rottenTomatoesID;
+	private String title;
 
+	
+	private static Date getTheaterReleaseDateFromFormatted(String formattedDate) {
+
+		if(formattedDate == null || formattedDate.length() == 0)
+			return null;
+
+		 DateFormat formatter; 
+		
+		try {  
+
+		 Date date;
+		  formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
+		  date = (Date)formatter.parse(formattedDate);  
+
+		  return date;
+		  
+		  } catch (ParseException e)
+		  {
+			 Log.e(TAG, "Exception :" + e.getMessage());  
+		  }  
+		 
+		  
+		  return null;
+
+	}
+	
 	public void loadData() {
 		Bundle recdData = getIntent().getExtras();
 		
+		this.title = recdData.getString("com.moubry.title");
 		String critic_score_description = recdData.getString("com.moubry.critics_score_description");
 		String critic_score = recdData.getString("com.moubry.rating");
 		String audience_score = recdData.getString("com.moubry.audience_rating");
@@ -152,7 +190,7 @@ public class MovieRatingActivity extends BaseActivity {
 				}
 			});
 		} else {
-			txtRT.setVisibility(View.INVISIBLE);
+			txtRT.setVisibility(View.GONE);
 		}
 		
 		TextView txt = (TextView) findViewById(R.id.imdb);
@@ -169,7 +207,36 @@ public class MovieRatingActivity extends BaseActivity {
 				}
 			});
 		} else {
-			txt.setVisibility(View.INVISIBLE);
+			txt.setVisibility(View.GONE);
+		}
+		
+		TextView txtShowtimes = (TextView) findViewById(R.id.showtimes);
+
+		
+		
+		Date release = getTheaterReleaseDateFromFormatted(release_date);
+
+		long diffInDays = 1000;
+		
+		if(release != null)
+		 diffInDays = (new Date().getTime() - release.getTime()) / 1000 / 60 / 60 / 24;
+
+		
+		if (release != null && diffInDays >= -7 && diffInDays <= 45) {
+			
+			txtShowtimes.setVisibility(View.VISIBLE);
+			txtShowtimes.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					String searchTitle = title.replaceAll("\\(.*\\)", "").replaceAll(" in 4D", "").replaceAll(" in 3D", "");
+					Intent intent = new Intent();
+					intent.setAction(Intent.ACTION_VIEW);
+					intent.addCategory(Intent.CATEGORY_BROWSABLE);
+					intent.setData(Uri.parse("http://www.google.com/m/movies?q=" + searchTitle));
+					startActivity(intent);
+				}
+			});
+		} else {
+			txtShowtimes.setVisibility(View.GONE);
 		}
 	}
 
@@ -187,14 +254,13 @@ public class MovieRatingActivity extends BaseActivity {
 	private void loadReviews() {
 
 		String gae = "http://tomatoratings.moubry.com/movies/" + this.rottenTomatoesID + "/reviews.json";
-		String rt = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + this.rottenTomatoesID + "/reviews.json";
 		
 		GetTopCriticReviewsTask task = new GetTopCriticReviewsTask();
 		task.setLayoutViewID(R.id.layout);
 		task.setProgressID(R.id.progressBarLayout);
 		task.setArrowID(R.drawable.arrow);
 		task.setNoReviewsID(R.id.no_reviews);
-		task.execute(gae, rt);
+		task.execute(gae);
 	}
 
 	@Override
@@ -423,8 +489,7 @@ public class MovieRatingActivity extends BaseActivity {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("review_type", "top_critic");
 
-			WebServiceHelper h = new WebServiceHelper(MovieRatingActivity.this,
-					url[0], url.length > 1 ? url[1] : url[0], params);
+			WebServiceHelper h = new WebServiceHelper(MovieRatingActivity.this, url[0], params);
 
 			this.errorMessage = h.errorMessage;
 

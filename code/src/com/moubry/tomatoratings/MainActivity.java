@@ -5,7 +5,7 @@ import com.moubry.tomatoratings.ui.HomeActivity;
 import com.moubry.tomatoratings.ui.MovieListBoxOfficeActivity;
 import com.moubry.tomatoratings.ui.MovieListDVDReleasesActivity;
 import com.moubry.tomatoratings.ui.MovieListInTheatersActivity;
-import com.moubry.tomatoratings.ui.MovieListOpeningActivity;
+import com.moubry.tomatoratings.ui.MovieListUpcomingActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 				startActivity(new Intent(this, MovieListInTheatersActivity.class));
 				break;
 			case 3:
-				startActivity(new Intent(this, MovieListOpeningActivity.class));
+				startActivity(new Intent(this, MovieListUpcomingActivity.class));
 				break;	
 			case 4:
 				startActivity(new Intent(this, MovieListBoxOfficeActivity.class));

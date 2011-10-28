@@ -1,9 +1,8 @@
 <resources>
     <string name="hello">Hello World, Search!</string>
-    <string name="app_name">Tomato Ratings</string>
+    <string name="app_name">Worth Watching</string>
     
-    <string name="apikey">cfuvchhe98amz6vd9qc2s8m7</string>
-    <string name="connection_error">Tomato Ratings requires an internet connection.</string>
+    <string name="connection_error">Worth Watching requires an internet connection.</string>
     <string name="unknown_service_error">Unable to reach the Rotten Tomatoes service. Please try again later.</string>
     
     <string name="pref_key_about">about</string>
@@ -27,6 +26,12 @@
     <string name="title_clear_search_history">Clear search history</string>
     <string name="title_support">Support</string>
     <string name="title_feedback">Send Feedback</string>
+    
+    
+    <string name="title_sort">Sort</string>
+    <string name="title_sort_by_title">Sort by Title</string>
+    <string name="title_sort_by_critic_score">Sort by Rating</string>
+    <string name="title_sort_by_release_date">Sort by Release</string>
     
     <string name="title_settings">Settings</string>
     
@@ -59,6 +64,7 @@
     <string name="description_search">Search for movies by title.</string>
     <string name="description_settings">Change application settings and view information about the application.</string>    
     <string name="description_start_screen">Choose the screen the app starts up on.</string>
+    <string name="description_showtimes_link">Go to the Google movie show times web page </string>
     <string name="description_rottentomatoes_link">Go to the Rotten Tomatoes web page </string>
     <string name="description_imdb_link">Go to the IMDB web page </string>
     <string name="description_feedback">Send feedback to the development team.</string>

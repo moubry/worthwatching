@@ -9,9 +9,10 @@ import java.util.regex.Pattern;
 import android.util.Log;
 
 import com.moubry.tomatoratings.R;
+import com.moubry.tomatoratings.CategorizedListItem;
 
 
-public class Movie implements Serializable {
+public class Movie implements Serializable, CategorizedListItem {
 	
 	public static final String TAG = "Movie";
 
@@ -187,5 +188,10 @@ public class Movie implements Serializable {
 		if ((this.mpaa_rating == null) || (this.mpaa_rating.length() == 0))
 			return "No MPAA rating";
 		return "MPAA rated " + this.mpaa_rating;
+	}
+	
+	@Override
+	public boolean isSection() {
+		return false;
 	}
 }

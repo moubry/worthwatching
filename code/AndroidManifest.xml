@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.moubry.tomatoratings"
-      android:installLocation="auto" android:versionName="2.0.1" android:versionCode="6">
+      android:installLocation="auto" android:versionName="2.2" android:versionCode="7">
        <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="12" />
 <uses-permission android:name="android.permission.INTERNET" />
 <supports-screens android:smallScreens="true" android:largeScreens="true" android:xlargeScreens="true" android:resizeable="true" android:anyDensity="true" android:normalScreens="true"></supports-screens>
@@ -38,7 +38,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>     
-        <activity android:label="@string/title_opening" android:name=".ui.MovieListOpeningActivity">
+        <activity android:label="@string/title_opening" android:name=".ui.MovieListUpcomingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>

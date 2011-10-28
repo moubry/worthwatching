@@ -8,11 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.moubry.tomatoratings.MovieAdapter;
-import com.moubry.tomatoratings.MovieListDataSQLHelper;
+import com.moubry.tomatoratings.CategoryListItem;
+import com.moubry.tomatoratings.MovieListAsyncTask;
+import com.moubry.tomatoratings.MovieListCallback;
 import com.moubry.tomatoratings.R;
 import com.moubry.tomatoratings.R.id;
 import com.moubry.tomatoratings.R.layout;
+import com.moubry.tomatoratings.CategorizedListItem;
+import com.moubry.tomatoratings.MovieAdapter;
+import com.moubry.tomatoratings.MovieListDataSQLHelper;
 import com.moubry.tomatoratings.util.WebService;
 import com.moubry.tomatoratings.util.WebServiceHelper;
 
@@ -53,126 +57,126 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public abstract class MovieListBaseActivity extends BaseActivity {
-	
+
 	public static final String TAG = "MovieListBaseActivity";
-	
+
 	MovieListDataSQLHelper movieListData;
-	
+	private String m_cachedResult;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_movie_list);
 
-        getActivityHelper().setupActionBar(getTitle());
+		getActivityHelper().setupActionBar(getTitle());
 		getListView().setEmptyView(this.findViewById(R.id.empty));
-		getListView().setOnItemClickListener(new ListView.OnItemClickListener(){
+		getListView().setOnItemClickListener(new ListView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				
+
 				// Get the item that was clicked
 				Movie movie = (Movie) parent.getItemAtPosition(position);
-				
+
 				Intent anotherActivityIntent = new Intent(v.getContext(), MovieRatingActivity.class);
-				MovieRatingActivity.AddMovieDataToIntent(MovieListBaseActivity.this, anotherActivityIntent, movie);
+				MovieRatingActivity.AddMovieDataToIntent(MovieListBaseActivity.this,
+						anotherActivityIntent, movie);
 				startActivity(anotherActivityIntent);
 			}
-		});	
-		
+		});
+
 		movieListData = new MovieListDataSQLHelper(this);
-		
-		Log.d(TAG, "before list");	
+
+		Log.d(TAG, "before list");
 	}
-	
-	  @Override
-	  public void onDestroy() {
-	    movieListData.close();
-	    
-	    super.onDestroy();
-	  }
-	  
-	  private void addMovieListToDb(String title, String json) {
-		    SQLiteDatabase db = movieListData.getWritableDatabase();
-		    ContentValues values = new ContentValues();
-		    values.put(MovieListDataSQLHelper.TIME, new GregorianCalendar().getTimeInMillis());
-		    values.put(MovieListDataSQLHelper.TITLE, title);
-		    values.put(MovieListDataSQLHelper.JSON, json);
-		    	    
-		    SQLiteStatement dbCountQuery;
-		    dbCountQuery = db.compileStatement(String.format("select count(*) from %s where %s = '%s'", 
-		    		MovieListDataSQLHelper.TABLE,
-		    		MovieListDataSQLHelper.TITLE,
-		    		this.getListName()));		    
-		    
-		    if(dbCountQuery.simpleQueryForLong() == 0)
-		    {
-		    	db.insert(MovieListDataSQLHelper.TABLE, null, values);
-		    }
-		    else
-		    {
-			    db.update(MovieListDataSQLHelper.TABLE, values, 
-			    	String.format("%s = '%s'", MovieListDataSQLHelper.TITLE, this.getListName()), null);
-		    }	
-	  }
-	  
-	  private boolean getMovieListFromCache() {
-		  
-		  if(this.m_cachedResult != null)
-		  {
-			  Log.i(TAG, this.getListName() + ": Getting result from cache");
-			  return true;
-		  }
-		  
-		  GregorianCalendar greg = new GregorianCalendar();
-		  
-		  greg.set(GregorianCalendar.HOUR_OF_DAY, 0);
-		  greg.set(GregorianCalendar.MINUTE, 0);
-		  greg.set(GregorianCalendar.SECOND, 0);
-		  greg.set(GregorianCalendar.MILLISECOND, 0);		  
-		  
-		    SQLiteDatabase db = movieListData.getReadableDatabase();
-		    Cursor cursor = db.query(MovieListDataSQLHelper.TABLE, 
-		    	new String[] { MovieListDataSQLHelper.JSON }, 
-		    	String.format("%s = '%s'", MovieListDataSQLHelper.TITLE, this.getListName()) +
-		        " AND " + MovieListDataSQLHelper.TIME + " > " + greg.getTimeInMillis(), null, null,
-		        null, null);
-		    
-		    startManagingCursor(cursor);
-		    
-		    if(cursor.moveToFirst())
-		    {
-		    	this.m_cachedResult = cursor.getString(0);
-		    	
-		    	Log.d(TAG, this.getListName() + ": Getting result from database.");
-		    	
-		    	if(this.m_cachedResult != null)
-		    		return true;
-		    }
-		    
-		    return false;
-		  }
-	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.list_menu_items, menu);
+		return true;
+	}
+
+	@Override
+	public void onDestroy() {
+		movieListData.close();
+
+		super.onDestroy();
+	}
+
+	protected void addMovieListToDb(String listName, String json) {
+		SQLiteDatabase db = movieListData.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(MovieListDataSQLHelper.TIME, new GregorianCalendar().getTimeInMillis());
+		values.put(MovieListDataSQLHelper.TITLE, listName);
+		values.put(MovieListDataSQLHelper.JSON, json);
+
+		SQLiteStatement dbCountQuery;
+		dbCountQuery = db.compileStatement(String.format("select count(*) from %s where %s = '%s'",
+				MovieListDataSQLHelper.TABLE, MovieListDataSQLHelper.TITLE, listName));
+
+		if (dbCountQuery.simpleQueryForLong() == 0) {
+			db.insert(MovieListDataSQLHelper.TABLE, null, values);
+		} else {
+			db.update(MovieListDataSQLHelper.TABLE, values,
+					String.format("%s = '%s'", MovieListDataSQLHelper.TITLE, listName), null);
+		}
+	}
+
+	protected String getMovieListFromCache(String cachedResult, String listName) {
+		
+		if (cachedResult != null) {
+			Log.i(TAG, listName + ": Getting result from cache");
+			return cachedResult;
+		}
+
+		GregorianCalendar greg = new GregorianCalendar();
+
+		greg.set(GregorianCalendar.HOUR_OF_DAY, 0);
+		greg.set(GregorianCalendar.MINUTE, 0);
+		greg.set(GregorianCalendar.SECOND, 0);
+		greg.set(GregorianCalendar.MILLISECOND, 0);
+
+		SQLiteDatabase db = movieListData.getReadableDatabase();
+		Cursor cursor = db.query(MovieListDataSQLHelper.TABLE,
+				new String[] { MovieListDataSQLHelper.JSON },
+				String.format("%s = '%s'", MovieListDataSQLHelper.TITLE, listName)
+						+ " AND " + MovieListDataSQLHelper.TIME + " > " + greg.getTimeInMillis(),
+				null, null, null, null);
+
+		startManagingCursor(cursor);
+
+		if (cursor.moveToFirst()) {
+			cachedResult = cursor.getString(0);
+
+			Log.d(TAG, listName + ": Getting result from database.");
+
+			return cachedResult;
+		}
+
+		return null;
+	}
+
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
-	  
-	  savedInstanceState.putString("result", this.m_cachedResult);
 
-	  Log.d(TAG,"Saving my state");
+		savedInstanceState.putString("result", this.m_cachedResult);
 
-	  super.onSaveInstanceState(savedInstanceState);
+		Log.d(TAG, "Saving my state");
+
+		super.onSaveInstanceState(savedInstanceState);
 	}
-	
+
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
-	  super.onRestoreInstanceState(savedInstanceState);
-	  
-	  Log.d(TAG, "Restoring my state");
-	  
-	  this.m_cachedResult = savedInstanceState.getString("result");
+		super.onRestoreInstanceState(savedInstanceState);
+
+		Log.d(TAG, "Restoring my state");
+
+		this.m_cachedResult = savedInstanceState.getString("result");
 	}
 
-	public ListView getListView()
-	{
-		return (ListView)this.findViewById(R.id.list);
+	public ListView getListView() {
+		return (ListView) this.findViewById(R.id.list);
 	}
 	
 	@Override
@@ -180,127 +184,87 @@ public abstract class MovieListBaseActivity extends BaseActivity {
 		super.onResume();
 
 		Log.d(TAG, "on resume");
-	
+
 		this.getListView().getEmptyView().setVisibility(View.INVISIBLE);
 		
-		if (this.getMovieListFromCache())
-		{
+		this.findViewById(R.id.progressBarLayout).setVisibility(View.VISIBLE);
+		
+		if ((this.m_cachedResult = this.getMovieListFromCache(this.m_cachedResult, this.getListName())) != null) {
 			bindDataToList(m_cachedResult, false, null);
-		}
-		else
-		{
-			GetTopMoviesTask task = new GetTopMoviesTask();
-			task.setListName(this.getListName());
-			task.setProgressID(R.id.progressBarLayout);
-			
+		} else {
+			MovieListAsyncTask task = new MovieListAsyncTask(this, this.getListName(), new MovieListCallback() {
+				
+				@Override
+				public void HandleJsonResult(String json, String errorMessage) {
+					MovieListBaseActivity.this.bindDataToList(json, true, errorMessage);
+				}
+			});
+
 			task.execute();
 		}
 	}
-	
-	private String m_cachedResult;
-	
-	public void bindDataToList(String jsonResult, boolean isNew, String errorMessage)
-	{
+
+	public void bindDataToList(String jsonResult, boolean isNew, String errorMessage) {
 		boolean isValid = true;
-		List<Movie> lstMovies = new ArrayList<Movie>();
-				
-		this.findViewById(R.id.progressBarLayout).setVisibility(View.GONE);
+		List<CategorizedListItem> lstMovies = new ArrayList<CategorizedListItem>();
 		
+		this.findViewById(R.id.progressBarLayout).setVisibility(View.GONE);
+
 		if ((errorMessage == null) && (jsonResult == null))
 			errorMessage = getString(R.string.unknown_service_error);
-		
-		if (errorMessage != null)
-		{
+
+		if (errorMessage != null) {
 			isValid = false;
-			
-			new AlertDialog.Builder( this )
-            .setTitle( "Error" )
-            .setMessage( errorMessage )
-            .setPositiveButton( "OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Log.d(TAG, "Alert Dialog = OK");
-                }
-            })
-            .show();
+
+			new AlertDialog.Builder(this).setTitle("Error").setMessage(errorMessage)
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							Log.d(TAG, "Alert Dialog = OK");
+						}
+					}).show();
 
 			getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, lstMovies, false));
-			
+
 			return;
 		}
-		
+
 		try {
 			// Parse Response into our object
-			MovieSearchResult movieSearch = new Gson().fromJson(jsonResult, MovieSearchResult.class);
-			
+			MovieSearchResult movieSearch = new Gson()
+					.fromJson(jsonResult, MovieSearchResult.class);
+
 			for (int i = 0; i < movieSearch.movies.length; i++) {
 				lstMovies.add(movieSearch.movies[i]);
 			}
 		} catch (Exception e) {
-			
+
 			isValid = false;
-			
-			new AlertDialog.Builder( this )
-            .setTitle( "Error" )
-            .setMessage( getString(R.string.unknown_service_error) )
-            .setPositiveButton( "OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Log.d(TAG, "AlertDialog = OK");
-                }
-            })
-            .show();		
+
+			new AlertDialog.Builder(this).setTitle("Error")
+					.setMessage(getString(R.string.unknown_service_error))
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							Log.d(TAG, "AlertDialog = OK");
+						}
+					}).show();
 		}
-		
-		if (isValid)
-		{
+
+		if (isValid) {
 			this.m_cachedResult = jsonResult;
-			
+
 			if (isNew)
 				addMovieListToDb(this.getListName(), jsonResult);
 		}
 		
-		getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, lstMovies, false));
+		
+
+		this.categorizeItemsAndSetList(lstMovies);
+
 	}
-	
+
+	protected void categorizeItemsAndSetList(List<CategorizedListItem> uncategorized) {
+		getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, uncategorized, false));
+	}
+
 	protected abstract String getListName();
-
-	private class GetTopMoviesTask extends AsyncTask<Void, Void, String> {
-
-		private String listName;
-		private int progressID;
-		private String errorMessage;
-		
-		public void setListName(String l)
-		{
-			this.listName = l;
-		}
-		
-		public void setProgressID(int i)
-		{
-			this.progressID = i;
-		}
-
-		// can use UI thread here
-		protected void onPreExecute() {			
-			MovieListBaseActivity.this.findViewById(this.progressID).setVisibility(View.VISIBLE);
-		}
-
-		// can use UI thread here
-		protected void onPostExecute(String result) {
-			MovieListBaseActivity.this.bindDataToList(result, true, this.errorMessage);
-		}
-		
-		@Override
-		protected String doInBackground(Void... unused) {
-				
-			WebServiceHelper h = new WebServiceHelper(
-					MovieListBaseActivity.this, 
-					"http://tomatoratings.moubry.com/lists" + this.listName + ".json", 
-					"http://api.rottentomatoes.com/api/public/v1.0/lists" + this.listName + ".json",
-					new HashMap<String, String>());
-			
-			errorMessage = h.errorMessage;
-			
-			return h.result;
-		}
-	}
 }

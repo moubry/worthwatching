@@ -9,10 +9,11 @@ import com.google.gson.Gson;
 import com.moubry.rottentomatoesapi.Movie;
 import com.moubry.rottentomatoesapi.MovieSearchResult;
 
-import com.moubry.tomatoratings.MovieAdapter;
-import com.moubry.tomatoratings.MovieTitleSuggestionsProvider;
 import com.moubry.tomatoratings.R;
 import com.moubry.tomatoratings.R.layout;
+import com.moubry.tomatoratings.CategorizedListItem;
+import com.moubry.tomatoratings.MovieAdapter;
+import com.moubry.tomatoratings.MovieTitleSuggestionsProvider;
 import com.moubry.tomatoratings.util.WebService;
 import com.moubry.tomatoratings.util.WebServiceHelper;
 
@@ -90,7 +91,7 @@ public class SearchActivity extends BaseActivity {
 		return (ListView)this.findViewById(R.id.list);
 	}
 
-	private class SearchMoviesTask extends AsyncTask<String, Void, List<Movie>> {
+	private class SearchMoviesTask extends AsyncTask<String, Void, List<CategorizedListItem>> {
 
 		private int progressID;
 		private String errorMessage;
@@ -109,7 +110,7 @@ public class SearchActivity extends BaseActivity {
 		}
 
 		// can use UI thread here
-		protected void onPostExecute(final List<Movie> result) {
+		protected void onPostExecute(final List<CategorizedListItem> result) {
 			
 			SearchActivity.this.findViewById(this.progressID).setVisibility(View.GONE);
 
@@ -143,9 +144,9 @@ public class SearchActivity extends BaseActivity {
 		}
 
 		@Override
-		protected List<Movie> doInBackground(String... query) {
+		protected List<CategorizedListItem> doInBackground(String... query) {
 			
-			List<Movie> lstMovies = new ArrayList<Movie>();
+			List<CategorizedListItem> lstMovies = new ArrayList<CategorizedListItem>();
 			
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("q", query[0]);
@@ -153,8 +154,7 @@ public class SearchActivity extends BaseActivity {
 
 			WebServiceHelper h = new WebServiceHelper(
 					SearchActivity.this, 
-					"http://tomatoratings.moubry.com/movies.json", 
-					"http://api.rottentomatoes.com/api/public/v1.0/movies.json",
+					"http://tomatoratings.moubry.com/movies.json",
 					params);
 			
 			this.errorMessage = h.errorMessage;

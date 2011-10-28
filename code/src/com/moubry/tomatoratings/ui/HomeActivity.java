@@ -52,7 +52,7 @@ public class HomeActivity extends BaseActivity {
 //                if (UIUtils.isHoneycombTablet(this)) {
                   //  startActivity(new Intent(this, ScheduleMultiPaneActivity.class));
 //                } else {
-                    startActivity(new Intent(view.getContext(), MovieListOpeningActivity.class));
+                    startActivity(new Intent(view.getContext(), MovieListUpcomingActivity.class));
 //                }
             }
         });        
