@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, Search!</string>
+    <string name="app_name">Tomato Ratings</string>
+    
+    <string name="no_results">No Results Found.</string>
+    
+    <string name="search"></string>
+    
+      <string name="tops_label">Tops at the Box Office</string>
+    
+    <string name="search_hint">Search movies</string>
+    
+    <string name="critics_consensus">Critic Consensus</string>
+    
+    <string name="synopsis_label">Synopsis</string>
+    
+    
+    <string name="release_date_label">Release Date:</string>
+    <string name="summary_label">Summary</string>  
+    <string name="critics_label">Critics</string>
+    <string name="audience_label">Audience</string>
+</resources>

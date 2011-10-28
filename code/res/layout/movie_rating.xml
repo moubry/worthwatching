@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:scrollbars="vertical" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+	<LinearLayout 
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+
+		<LinearLayout android:orientation="horizontal"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_marginTop="1dip">
+
+			<LinearLayout android:orientation="vertical"
+				android:layout_weight="1" android:layout_height="wrap_content"
+				android:layout_width="wrap_content">
+
+				<TextView android:id="@+id/title" android:layout_width="fill_parent"
+					android:layout_marginBottom="10dip" android:layout_height="wrap_content"
+					android:textStyle="bold" android:textSize="20sp" />
+				<LinearLayout android:orientation="horizontal"
+					android:layout_width="fill_parent" android:layout_height="wrap_content">
+					<ImageView android:id="@+id/tomato_image" android:src="@drawable/blank"
+						android:layout_marginLeft="1dip" android:layout_marginRight="3dip"
+						android:layout_width="wrap_content" android:layout_height="fill_parent"
+						android:gravity="center_vertical" />
+
+
+					<TextView android:id="@+id/android:tomatometer_score"
+						android:layout_width="35dip" android:layout_height="fill_parent"
+						android:gravity="center_vertical|left" />
+
+					<TextView android:layout_width="wrap_content"
+						android:layout_marginLeft="10dip" android:layout_height="fill_parent"
+						android:text="@string/critics_label" android:gravity="center_vertical" />
+
+				</LinearLayout>
+				<LinearLayout android:orientation="horizontal"
+					android:layout_width="fill_parent" android:layout_height="wrap_content">
+					<ImageView android:id="@+id/audience_tomato_image"
+						android:src="@drawable/blank" android:layout_marginRight="3dip"
+						android:layout_marginLeft="1dip" android:layout_width="wrap_content"
+						android:layout_height="fill_parent" android:gravity="center_vertical" />
+
+					<TextView android:id="@+id/android:audience_tomatometer_score"
+						android:layout_width="35dip" android:layout_height="fill_parent"
+						android:gravity="center_vertical|left" />
+
+					<TextView android:layout_width="wrap_content"
+						android:layout_marginLeft="10dip" android:layout_height="fill_parent"
+						android:text="@string/audience_label" android:gravity="center_vertical" />
+
+				</LinearLayout>
+
+			</LinearLayout>
+
+
+			<ImageView android:id="@+id/imdb" android:src="@drawable/imdb"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:gravity="top|right" android:layout_weight="0" />
+		</LinearLayout>
+
+<TextView android:layout_width="fill_parent"
+			android:layout_marginTop="10dip" android:layout_height="wrap_content"
+			android:textStyle="bold" android:text="@string/critics_consensus" />
+		<TextView android:id="@+id/android:consensus"
+			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+		<TextView android:id="@+id/summary_label" android:textStyle="bold"
+			android:text="@string/summary_label" android:layout_marginTop="10dip"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+		<TextView android:id="@+id/cast" android:layout_width="fill_parent" 
+			android:layout_height="wrap_content" />
+
+		<TextView android:id="@+id/rating_runtime"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	
+	<LinearLayout android:orientation="horizontal" android:layout_height="wrap_content" android:layout_width="wrap_content">
+	
+	
+				<TextView android:id="@+id/release_date_label" android:text="@string/release_date_label"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="10dip" />		
+				<TextView android:id="@+id/release_date"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	</LinearLayout>
+
+		
+
+
+
+		<ImageView android:id="@+id/movie_poster" android:src="@drawable/blank"
+		    android:layout_width="wrap_content" android:layout_marginTop="10dip"
+			android:layout_height="wrap_content" android:gravity="center_vertical"
+			android:layout_gravity="center_vertical|center_horizontal" />
+
+
+		<TextView android:id="@+id/synopsis_label" android:textStyle="bold"
+			android:text="@string/synopsis_label" android:layout_marginTop="10dip"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+		<TextView android:id="@+id/synopsis" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+
+	</LinearLayout>
+</ScrollView>
