@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="0dip" android:layout_weight="1"
+    android:minHeight="40dip"
+    android:layout_height="fill_parent">
+    <ImageView 
+   android:id="@+id/tomato_image"
+   android:src="@drawable/blank"
+   android:layout_marginLeft="3dip"
+   android:layout_marginRight="2dip"
+   android:layout_width="wrap_content"
+   android:layout_height="fill_parent"
+       android:gravity="center_vertical"
+   />
+        <TextView
+        android:layout_marginRight="10dip"
+        android:layout_width="35dip"
+        android:layout_height="fill_parent"
+         android:gravity="center_vertical|center_horizontal"
+        android:id="@+id/txtRating" />
+        <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+         android:gravity="center_vertical"
+        android:id="@+id/txtTitle" />
+    </LinearLayout>
+</LinearLayout>

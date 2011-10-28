@@ -20,14 +20,18 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class Welcome extends ListActivity {
+public class Main extends ListActivity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +108,7 @@ public class Welcome extends ListActivity {
 		  
 		  return lastRefresh.compareTo(today) == 1;
 	}
+
 	
 	@Override
 	protected void onResume() {
@@ -115,7 +120,9 @@ public class Welcome extends ListActivity {
 		{
 			getListView().getEmptyView().setVisibility(View.INVISIBLE);
 	
-			new GetTopMoviesTask().execute();
+			GetTopMoviesTask task = new GetTopMoviesTask();
+			task.setProgressID(R.id.progressBarLayout);
+			task.execute();
 		}
 	}
 
@@ -145,34 +152,37 @@ public class Welcome extends ListActivity {
 	private class GetTopMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
 
 
-		private final ProgressDialog dialog = new ProgressDialog(Welcome.this);
+		private int progressID;
 		private boolean hasConnectionError = false;
+		
+		public void setProgressID(int i)
+		{
+			this.progressID = i;
+		}
 
 		// can use UI thread here
 		protected void onPreExecute() {
 			this.hasConnectionError = false;
-			this.dialog.setMessage("Loading. Please wait...");
-			this.dialog.show();
+			
+			Main.this.findViewById(this.progressID).setVisibility(View.VISIBLE);
 		}
 
 		// can use UI thread here
 		protected void onPostExecute(List<Movie> result) {
 			
-			if (this.dialog.isShowing()) {
-				this.dialog.dismiss();
-			}
+			Main.this.findViewById(this.progressID).setVisibility(View.GONE);
 
-			Welcome.this.setListAdapter(new MovieAdapter(Welcome.this,
+			Main.this.setListAdapter(new MovieAdapter(Main.this,
 					R.layout.list_item, result));
 
 			Log.i("INfo: ", String.valueOf(result.size()));
 			
 			if(hasConnectionError)
 			{
-				Welcome.this.SetLastRefresh();
-				Welcome.this.lastRefresh.add(GregorianCalendar.DATE, -1);
+				Main.this.SetLastRefresh();
+				Main.this.lastRefresh.add(GregorianCalendar.DATE, -1);
 				
-				new AlertDialog.Builder( Welcome.this )
+				new AlertDialog.Builder( Main.this )
                 .setTitle( "Internet Connection Required" )
                 .setMessage( "Tomato Ratings requires an internet connection." )
                 .setPositiveButton( "OK", new DialogInterface.OnClickListener() {
@@ -184,11 +194,11 @@ public class Welcome extends ListActivity {
 			}
 			else
 			{
-				ListView lv = Welcome.this.getListView();
+				ListView lv = Main.this.getListView();
 				lv.setTextFilterEnabled(true);
 				lv.getEmptyView().setVisibility(View.VISIBLE);
 				
-				Welcome.this.SetLastRefresh();
+				Main.this.SetLastRefresh();
 			}
 			
 		}
@@ -229,8 +239,7 @@ public class Welcome extends ListActivity {
 			
 			try {
 				// Parse Response into our object
-				MovieSearchResult result = new Gson().fromJson(response,
-						MovieSearchResult.class);
+				MovieSearchResult result = new Gson().fromJson(response, MovieSearchResult.class);
 
 				for (int i = 0; i < result.movies.length; i++) {
 					lstMovies.add(result.movies[i]);

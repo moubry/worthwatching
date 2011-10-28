@@ -11,15 +11,32 @@ public class Movie {
 	public String id;
 	public String title;
 	public String year;
-	public String critics_consensus;
+	private String critics_consensus;
 	public Ratings ratings;
 	public Posters posters;
 	public AlternateIDs alternate_ids;
 	public String runtime;
-	public String synopsis;
+	private String synopsis;
 	public CastMember[] abridged_cast;
 	public String mpaa_rating;
 	public ReleaseDates release_dates;
+	public Links links;
+	
+	public String getCriticsConsensus()
+	{
+		if(this.critics_consensus == null || this.critics_consensus.length() == 0)
+			return "Not available.";
+			
+		return this.critics_consensus; 
+	}
+	
+	public String getSynopsis()
+	{
+		if(this.synopsis == null || this.synopsis.length() == 0)
+			return "Not available.";
+			
+		return this.synopsis; 
+	}
 	
 	public String getFormattedRuntime()
 	{		
