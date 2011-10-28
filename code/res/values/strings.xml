@@ -4,7 +4,7 @@
     <string name="app_name">Worth Watching</string>
     
     <string name="analytics_account">UA-26478615-1</string>
-        <string name="app_store">Android Market</string>
+    <string name="app_store">Android Market</string>
         
     <string name="connection_error">Worth Watching requires an internet connection.</string>
     <string name="unknown_service_error">Unable to reach the Rotten Tomatoes service. Please try again later.</string>

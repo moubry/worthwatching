@@ -15,6 +15,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.provider.SearchRecentSuggestions;
 import android.provider.Settings.Secure;
+import android.util.Log;
 
 public class SettingsActivity extends PreferenceActivity {
 	
@@ -23,13 +24,14 @@ public class SettingsActivity extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {    
 	    super.onCreate(savedInstanceState);       
+
+        addPreferencesFromResource(R.xml.preferences);  
 	    
 	    tracker = GoogleAnalyticsTracker.getInstance();
 	    AnalyticsUtils.StartTrackingSession(getApplicationContext(), tracker);
 
-	    addPreferencesFromResource(R.xml.preferences);  
-	    
 	    this.findPreference(getString(R.string.pref_key_about)).setSummary(getAppNameWithVersion());	    
+
 	    this.findPreference(getString(R.string.pref_key_about)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -42,7 +44,7 @@ public class SettingsActivity extends PreferenceActivity {
 				return false;
 			}
 		});
-
+	    
 	    this.findPreference(getString(R.string.pref_key_feedback)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -70,8 +72,6 @@ public class SettingsActivity extends PreferenceActivity {
 				return false;
 			}
 		});
-	    
-	  
 	    
 	    this.findPreference(getString(R.string.pref_key_clear_search_history)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			@Override
@@ -103,8 +103,6 @@ public class SettingsActivity extends PreferenceActivity {
 				return false;
 			}
 		});
-	    
-    	
 	}
 	
 	@Override
@@ -116,7 +114,6 @@ public class SettingsActivity extends PreferenceActivity {
 	@Override
 	protected void onDestroy(){
 		super.onDestroy();
-		
 		tracker.stopSession();
 	}
 	
@@ -131,5 +128,4 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		return getString(R.string.app_name) + " " + mgr.versionName;
 	}
-
 }
