@@ -1,7 +1,11 @@
 package com.moubry.rottentomatoesapi;
 
-public class Links {
+import java.io.Serializable;
 
+public class Links implements Serializable {
+
+	private static final long serialVersionUID = -7735857806597107698L;
+	
 	// For Movie Object
 	public String self;
 	public String alternate;

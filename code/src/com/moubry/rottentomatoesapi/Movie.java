@@ -1,6 +1,6 @@
 package com.moubry.rottentomatoesapi;
 
-import java.sql.Ref;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -11,8 +11,9 @@ import android.util.Log;
 import com.moubry.tomatoratings.R;
 
 
-public class Movie {
+public class Movie implements Serializable {
 
+	private static final long serialVersionUID = -8266063318647942475L;
 	public String id;
 	private String title;
 	public String year;
@@ -109,7 +110,7 @@ public class Movie {
 		
 		return this.getTitle() + " (" + year + ")";
 	}
-
+	
 	public int getTomatoImageResource() {
 		
 		if(ratings.critics_score == -1)
@@ -179,4 +180,10 @@ public class Movie {
 	     }
 	     return builder.toString();
 	 }
+
+	public String getMPAARatingDescription() {
+		if ((this.mpaa_rating == null) || (this.mpaa_rating.length() == 0))
+			return "No MPAA rating";
+		return "MPAA rated " + this.mpaa_rating;
+	}
 }

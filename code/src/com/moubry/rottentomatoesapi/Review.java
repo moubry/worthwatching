@@ -1,7 +1,11 @@
 package com.moubry.rottentomatoesapi;
 
+import java.io.Serializable;
 
-public class Review {
+
+public class Review implements Serializable {
+
+	private static final long serialVersionUID = -9125525739628024970L;
 	private String critic;
 	private String publication;
 	public String date;

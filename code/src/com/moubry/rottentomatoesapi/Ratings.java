@@ -1,7 +1,12 @@
 package com.moubry.rottentomatoesapi;
 
-public class Ratings {
+import java.io.Serializable;
 
+import com.moubry.tomatoratings.R;
+
+public class Ratings implements Serializable {
+
+	private static final long serialVersionUID = 6787523081534735338L;
 	public int critics_score;
 	public String critics_rating;
 	public int audience_score;
@@ -21,4 +26,15 @@ public class Ratings {
 		  
 		  return this.audience_score + "%";
 		}
+	
+	public String getCriticsScoreDescription() {
+		
+		if(critics_score == -1)
+			return null;
+		
+		if(critics_score >= 60)
+			return "Fresh";
+		
+		return "Rotten";
+	}
 }

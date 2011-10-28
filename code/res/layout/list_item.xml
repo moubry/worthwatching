@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="fill_parent">
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:paddingLeft="@dimen/list_item_padding"
+    android:paddingRight="@dimen/list_item_padding"
+    >
     <LinearLayout
     android:orientation="horizontal"
     android:layout_width="0dip" android:layout_weight="1"
     android:minHeight="40dip"
     android:layout_height="fill_parent">
     <ImageView 
-   android:id="@+id/tomato_image"
-   android:src="@drawable/blank"
-   android:layout_marginLeft="3dip"
-   android:layout_marginRight="2dip"
-   android:layout_width="wrap_content"
-   android:layout_height="fill_parent"
+	   android:id="@+id/tomato_image"
+	   android:src="@drawable/blank"
+	   android:layout_marginLeft="3dip"
+	   android:layout_marginRight="2dip"
+	   android:layout_width="wrap_content"
+	   android:layout_height="fill_parent"
        android:gravity="center_vertical"
-   />
+   		/>
         <TextView
         android:layout_marginRight="10dip"
-        android:layout_width="35dip"
+        android:layout_width="36dip"
         android:layout_height="fill_parent"
-         android:gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="@color/review_text"
         android:id="@+id/txtRating" />
             <ImageView 
-   android:id="@+id/audience_tomato_image"
-   android:src="@drawable/blank"
-   android:layout_marginLeft="2dip"
-   android:layout_marginRight="2dip"
-   android:layout_width="wrap_content"
-   android:layout_height="fill_parent"
-       android:gravity="center_vertical"
-   />
+			   android:id="@+id/audience_tomato_image"
+			   android:src="@drawable/blank"
+			   android:layout_marginLeft="2dip"
+			   android:layout_marginRight="2dip"
+			   android:layout_width="wrap_content"
+			   android:layout_height="fill_parent"
+			   android:gravity="center_vertical"
+			   />
         <TextView
-        android:layout_marginRight="10dip"
-        android:layout_width="35dip"
-        android:layout_height="fill_parent"
-         android:gravity="center_vertical|center_horizontal"
-        android:id="@+id/txtAudienceRating" />
+	        android:layout_marginRight="10dip"
+	        android:layout_width="36dip"
+	        android:layout_height="fill_parent"
+	        android:gravity="center_vertical|center_horizontal"
+        	android:textColor="@color/review_text"
+	        android:id="@+id/txtAudienceRating" />
         <TextView
-        android:layout_marginLeft="3dip"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-         android:gravity="center_vertical"
-        android:id="@+id/txtTitle" />
+	        android:layout_marginLeft="3dip"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:gravity="center_vertical"
+        	android:textColor="@color/review_text"
+	        android:id="@+id/txtTitle" />
     </LinearLayout>
 </LinearLayout>

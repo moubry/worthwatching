@@ -1,5 +1,6 @@
 package com.moubry.rottentomatoesapi;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,8 +8,9 @@ import java.util.Date;
 
 import android.util.Log;
 
-public class ReleaseDates {
+public class ReleaseDates implements Serializable {
 
+	private static final long serialVersionUID = 329551203278076026L;
 	public String theater;
 
 	public String getTheaterReleaseDate() {

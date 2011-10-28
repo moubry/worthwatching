@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<include layout="@layout/actionbar" />
+
+<com.moubry.tomatoratings.ui.widget.DashboardLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+    <Button android:id="@+id/home_btn_in_theaters"
+        style="@style/DashboardButton"
+        android:text="@string/title_in_theaters"
+        android:contentDescription="@string/description_in_theaters"
+        android:drawableTop="@drawable/home_btn_film" />
+	<Button android:id="@+id/home_btn_box_office"
+        style="@style/DashboardButton"
+        android:text="@string/title_box_office"
+        android:contentDescription="@string/description_box_office"
+        android:drawableTop="@drawable/home_btn_trophy" />
+    <Button android:id="@+id/home_btn_opening"
+        style="@style/DashboardButton"
+        android:text="@string/title_opening"
+        android:contentDescription="@string/description_opening"
+        android:drawableTop="@drawable/home_btn_slate" />
+    <Button android:id="@+id/home_btn_dvds"
+        style="@style/DashboardButton"
+        android:text="@string/title_dvd_new_releases"
+        android:contentDescription="@string/description_dvds"
+        android:drawableTop="@drawable/home_btn_dvds" />        
+    <Button android:id="@+id/home_btn_settings"
+        style="@style/DashboardButton"
+        android:text="@string/title_settings"
+        android:contentDescription="@string/description_settings"
+        android:drawableTop="@drawable/home_btn_settings" />        
+    <Button android:id="@+id/home_btn_search"
+        style="@style/DashboardButton"
+        android:text="@string/search"
+        android:contentDescription="@string/description_search"
+        android:drawableTop="@drawable/home_btn_search" />
+        
+	</com.moubry.tomatoratings.ui.widget.DashboardLayout>	
+</LinearLayout>

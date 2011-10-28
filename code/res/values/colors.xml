@@ -1,8 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <color name="black">#000000</color>
   <color name="yellow">#FBEC5D</color>
   <color name="red">#EE2C2C</color>
   <color name="blue">#66CCCC</color>
   <color name="gray">#FF737173</color>
+  <color name="white">#FFFFFF</color>
+  
+  <color name="app_red">#FFF11624</color>
+  <color name="app_light_blue">#FFC6ECFF</color>
+
+
+<color name="rotten_tomatoes_dropshadow">#D87D80</color>
+
+
+<color name="actionbar_text">#ff000000</color>
+
+    <color name="body_text_1">#ffffffff</color>
+    <color name="body_text_2">#99000000</color>
+    <color name="body_text_disabled">#66000000</color>
+
+    <color name="body_text_1_inverse">#ff000000</color>
+    <color name="body_text_2_inverse">#99ffffff</color>
+
+    <color name="accent_1">#ffBDBEBD</color>
+    <color name="hyperlink">#ffff549f</color>
+    <color name="background_1">#ffffffff</color>
+
+    <color name="whats_on_separator">#4d000000</color>
+
+    <color name="all_track_color">#ff222222</color>
+
+    <color name="block_column_1">#ff0fabff</color>
+    <color name="block_column_2">#ffdf1831</color>
+    <color name="block_column_3">#ff009939</color>
 </resources>
