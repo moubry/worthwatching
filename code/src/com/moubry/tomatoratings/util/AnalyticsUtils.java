@@ -27,7 +27,7 @@ public class AnalyticsUtils {
 	
     public static void StartTrackingSession(Context ctx, GoogleAnalyticsTracker tracker)
     {
-	    tracker.startNewSession(ctx.getString(R.string.analytics_account), ctx);
+	    tracker.startNewSession(ctx.getString(R.string.analytics_account), 20, ctx);
 //	    tracker.setDebug(true);
 //	    tracker.setDryRun(true);
 
