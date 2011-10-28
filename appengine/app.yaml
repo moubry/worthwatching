@@ -1,0 +1,14 @@
+application: tomatoratings
+version: 3
+runtime: python
+api_version: 1
+
+handlers:
+- url: /tasks/checkusage
+  script: checkusage.py
+  login: admin
+- url: .*
+  script: main.py
+
+builtins:
+- datastore_admin: on
