@@ -44,13 +44,11 @@ public class WebService{
     //The serviceName should be the name of the Service you are going to be using.
     public WebService(String serviceName){
         HttpParams myParams = new BasicHttpParams();
- 
         HttpConnectionParams.setConnectionTimeout(myParams, 10000);
         HttpConnectionParams.setSoTimeout(myParams, 10000);
         httpClient = new DefaultHttpClient(myParams);
         localContext = new BasicHttpContext();
         webServiceUrl = serviceName;
- 
     }
  
     //Use this method to do a HttpPost\WebInvoke on a Web Service

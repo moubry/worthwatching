@@ -173,7 +173,7 @@ public class Main extends ListActivity {
 			Main.this.findViewById(this.progressID).setVisibility(View.GONE);
 
 			Main.this.setListAdapter(new MovieAdapter(Main.this,
-					R.layout.list_item, result));
+					R.layout.list_item, result, false));
 
 			Log.i("INfo: ", String.valueOf(result.size()));
 			

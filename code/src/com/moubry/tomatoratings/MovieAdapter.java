@@ -20,10 +20,12 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 	int resource;
 	String response;
 	Context context;
+	boolean showYearInTitle;
 
 	// Initialize adapter
-	public MovieAdapter(Context context, int resource, List<Movie> items) {
+	public MovieAdapter(Context context, int resource, List<Movie> items, boolean showYear) {
 		super(context, resource, items);
+		this.showYearInTitle = showYear;
 		this.resource = resource;
 	}
 
@@ -46,16 +48,22 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 		}
 
 		// Get the text boxes from the list_item.xml file
-		ImageView movieTomato = (ImageView) movieView
-				.findViewById(R.id.tomato_image);
-		TextView movieRating = (TextView) movieView
-				.findViewById(R.id.txtRating);
+		ImageView movieTomato = (ImageView) movieView.findViewById(R.id.tomato_image);
+		TextView movieRating = (TextView) movieView.findViewById(R.id.txtRating);
+		ImageView movieAudTomato = (ImageView) movieView.findViewById(R.id.audience_tomato_image);
+		TextView movieAudRating = (TextView) movieView.findViewById(R.id.txtAudienceRating);
 		TextView movieTitle = (TextView) movieView.findViewById(R.id.txtTitle);
 
 		// Assign the appropriate data from our movie object above
 		movieTomato.setImageResource(movie.getTomatoImageResource());
 		movieRating.setText(movie.ratings.getFormattedCriticsScore());
-		movieTitle.setText(movie.getTitleWithYear());
+		movieAudTomato.setImageResource(movie.getAudienceTomatoImageResource());
+		movieAudRating.setText(movie.ratings.getFormattedAudienceScore());
+		
+		if(this.showYearInTitle)
+			movieTitle.setText(movie.getTitleWithYear());
+		else
+			movieTitle.setText(movie.getTitle());
 
 		return movieView;
 	}

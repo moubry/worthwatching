@@ -75,7 +75,7 @@ public class Search extends ListActivity {
 			}
 
 			Search.this.setListAdapter(new MovieAdapter(Search.this,
-					R.layout.list_item, result));
+					R.layout.list_item, result, true));
 
 			if(this.totalResults > 50)
 			{

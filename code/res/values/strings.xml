@@ -10,6 +10,7 @@
     
     <string name="search"></string>
     
+     <string name="cast_label">Cast</string>
       <string name="tops_label">Tops at the Box Office</string>
     
     <string name="search_hint">Search movies</string>
@@ -21,7 +22,7 @@
     <string name="top_critic_reviews">Top Critic Reviews</string>
     
     
-    <string name="release_date_label">US Release Date:</string>
+    <string name="release_date_label">Release:</string>
     <string name="summary_label">Summary</string>  
     <string name="critics_label">Critics</string>
     <string name="audience_label">Audience</string>

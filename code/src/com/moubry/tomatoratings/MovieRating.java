@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import com.google.gson.Gson;
 import com.moubry.rottentomatoesapi.Movie;
 import com.moubry.rottentomatoesapi.MovieSearchResult;
@@ -42,48 +43,95 @@ import android.widget.ImageView;
 public class MovieRating extends Activity {
 
 	private String imdbID;
+	private String rottenTomatoesURL;
 	private String reviewsURL;
 
 	public void loadData() {
 		Bundle recdData = getIntent().getExtras();
-
+		
 		String title = recdData.getString("com.moubry.title");
 		String critic_score = recdData.getString("com.moubry.rating");
-		String audience_score = recdData
-				.getString("com.moubry.audience_rating");
-		String critic_tomato_image = recdData
-				.getString("com.moubry.tomato_image");
-		String audience_tomato_image = recdData
-				.getString("com.moubry.audience_tomato_image");
+		String audience_score = recdData.getString("com.moubry.audience_rating");
+		String critic_tomato_image = recdData.getString("com.moubry.tomato_image");
+		String audience_tomato_image = recdData.getString("com.moubry.audience_tomato_image");
 		String consensus = recdData.getString("com.moubry.consensus");
-
+        String mpaa_rating_image = recdData.getString("com.moubry.mpaa_rating_image");
 		String cast = recdData.getString("com.moubry.cast");
-		String rating_runtime = recdData.getString("com.moubry.rating_runtime");
+		String runtime = recdData.getString("com.moubry.runtime");
 		String release_date = recdData.getString("com.moubry.release_date");
 		String synopsis = recdData.getString("com.moubry.synopsis");
 		this.reviewsURL = recdData.getString("com.moubry.reviews_url");
-
+        this.rottenTomatoesURL = recdData.getString("com.moubry.rotten_tomatoes_url");
 		this.imdbID = recdData.getString("com.moubry.imdb_id");
 
-		((TextView) findViewById(R.id.title)).setText(title);
-		((TextView) findViewById(R.id.android_tomatometer_score))
-				.setText(critic_score);
-		((TextView) findViewById(R.id.android_audience_tomatometer_score))
-				.setText(audience_score);
-		((ImageView) findViewById(R.id.tomato_image)).setImageResource(Integer
-				.parseInt(critic_tomato_image));
-		((ImageView) findViewById(R.id.audience_tomato_image))
-				.setImageResource(Integer.parseInt(audience_tomato_image));
-		((TextView) findViewById(R.id.android_consensus)).setText(consensus);
 
+		((TextView) findViewById(R.id.title)).setText(title);
+		((TextView) findViewById(R.id.android_tomatometer_score)).setText(critic_score);
+		((TextView) findViewById(R.id.android_audience_tomatometer_score)).setText(audience_score);
+		((ImageView) findViewById(R.id.tomato_image)).setImageResource(Integer.parseInt(critic_tomato_image));
+		((ImageView) findViewById(R.id.audience_tomato_image)).setImageResource(Integer.parseInt(audience_tomato_image));
+		((TextView) findViewById(R.id.android_consensus)).setText(consensus);
+		
+		if(mpaa_rating_image == null)
+			findViewById(R.id.mpaa_rating).setVisibility(View.GONE);
+		else
+		{
+			findViewById(R.id.mpaa_rating).setVisibility(View.VISIBLE);
+			((ImageView) findViewById(R.id.mpaa_rating)).setImageResource(Integer.parseInt(mpaa_rating_image));
+		}
+		// org.apache.commons.lang.
 		((TextView) findViewById(R.id.cast)).setText(cast);
-		((TextView) findViewById(R.id.rating_runtime)).setText(rating_runtime);
+		((TextView) findViewById(R.id.runtime)).setText(runtime);
 		((TextView) findViewById(R.id.release_date)).setText(release_date);
 
 		((TextView) findViewById(R.id.synopsis)).setText(synopsis);
 
 		this.posterURL = recdData.getString("com.moubry.poster");
 
+		ImageView imgRT = (ImageView) findViewById(R.id.rottentomatoes);
+
+		if (rottenTomatoesURL != null && rottenTomatoesURL.length() > 0) {
+			imgRT.setVisibility(View.VISIBLE);
+			imgRT.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent();
+					intent.setAction(Intent.ACTION_VIEW);
+					intent.addCategory(Intent.CATEGORY_BROWSABLE);
+					intent.setData(Uri.parse(rottenTomatoesURL));
+					startActivity(intent);
+				}
+			});
+			
+			
+			findViewById(R.id.movie_poster).setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent();
+					intent.setAction(Intent.ACTION_VIEW);
+					intent.addCategory(Intent.CATEGORY_BROWSABLE);
+					intent.setData(Uri.parse(rottenTomatoesURL));
+					startActivity(intent);
+				}
+			});
+			
+			findViewById(R.id.android_scores_container).setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent();
+					intent.setAction(Intent.ACTION_VIEW);
+					intent.addCategory(Intent.CATEGORY_BROWSABLE);
+					intent.setData(Uri.parse(rottenTomatoesURL));
+					startActivity(intent);					
+				}
+			});
+		} else {
+			imgRT.setVisibility(View.INVISIBLE);
+		}
+		
 		ImageView img = (ImageView) findViewById(R.id.imdb);
 
 		if (imdbID != null && imdbID.length() > 0) {
@@ -93,8 +141,7 @@ public class MovieRating extends Activity {
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
 					intent.addCategory(Intent.CATEGORY_BROWSABLE);
-					intent.setData(Uri.parse("http://www.imdb.com/title/tt"
-							+ imdbID));
+					intent.setData(Uri.parse("http://www.imdb.com/title/tt" + imdbID));
 					startActivity(intent);
 				}
 			});
@@ -370,23 +417,23 @@ public class MovieRating extends Activity {
 				String.valueOf(movie.getAudienceTomatoImageResource()));
 		intent.putExtra("com.moubry.imdb_id",
 				movie.alternate_ids == null ? null : movie.alternate_ids.imdb);
+		intent.putExtra("com.moubry.rotten_tomatoes_url", movie.links == null ? null : movie.links.alternate);
 		intent.putExtra("com.moubry.poster", movie.posters == null ? null
 				: movie.posters.detailed);
-		intent.putExtra("com.moubry.title", movie.title);
+		intent.putExtra("com.moubry.title", movie.getTitle());
 		intent.putExtra("com.moubry.reviews_url", movie.links == null ? null
 				: movie.links.reviews);
 
-		StringBuilder sbRatingAndRuntime = new StringBuilder();
-		sbRatingAndRuntime.append(movie.mpaa_rating);
-
-		if (movie.getFormattedRuntime() != null
-				&& movie.getFormattedRuntime().length() > 0) {
-			sbRatingAndRuntime.append(", ");
-			sbRatingAndRuntime.append(movie.getFormattedRuntime());
+		if(movie.mpaa_rating == null || movie.mpaa_rating.length() == 0)
+			intent.putExtra("com.moubry.runtime", movie.getFormattedRuntime());
+		else if(movie.getMPAARatingImageID() == null)
+			intent.putExtra("com.moubry.runtime", movie.mpaa_rating + ", " + movie.getFormattedRuntime());
+		else
+		{
+			intent.putExtra("com.moubry.runtime", movie.getFormattedRuntime());
+			intent.putExtra("com.moubry.mpaa_rating_image", String.valueOf(movie.getMPAARatingImageID()));
 		}
-
-		intent.putExtra("com.moubry.rating_runtime",
-				sbRatingAndRuntime.toString());
+		
 		intent.putExtra("com.moubry.cast", movie.getAbridgedCast());
 		intent.putExtra("com.moubry.synopsis", movie.getSynopsis());
 		intent.putExtra(

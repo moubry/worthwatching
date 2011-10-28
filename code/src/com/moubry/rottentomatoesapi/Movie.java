@@ -1,7 +1,12 @@
 package com.moubry.rottentomatoesapi;
 
+import java.sql.Ref;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import android.util.Log;
 
 import com.moubry.tomatoratings.R;
 
@@ -9,7 +14,7 @@ import com.moubry.tomatoratings.R;
 public class Movie {
 
 	public String id;
-	public String title;
+	private String title;
 	public String year;
 	private String critics_consensus;
 	public Ratings ratings;
@@ -21,6 +26,34 @@ public class Movie {
 	public String mpaa_rating;
 	public ReleaseDates release_dates;
 	public Links links;
+	
+	public String getTitle(){
+		return decodeUnicode(this.title);		
+	}
+	
+	public Integer getMPAARatingImageID()
+	{	
+		Log.i("Jami", "MPAA Rating upper: " + this.mpaa_rating.toUpperCase());
+		
+		if(this.mpaa_rating == null || this.mpaa_rating.length() == 0)
+		  return null;
+		
+		if(this.mpaa_rating.equalsIgnoreCase("NC-17"))
+			return R.drawable.mpaa_nc17;
+		else if(this.mpaa_rating.equalsIgnoreCase("R"))
+			return R.drawable.mpaa_r;
+		else if(this.mpaa_rating.equalsIgnoreCase("PG-13"))
+		{
+			Log.i("Jami", "PG 13 matched");
+			return R.drawable.mpaa_pg13;
+		}
+		else if(this.mpaa_rating.equalsIgnoreCase("PG"))
+			return R.drawable.mpaa_pg;
+		else if(this.mpaa_rating.equalsIgnoreCase("G"))
+			return R.drawable.mpaa_g;
+	
+		return null;
+	}
 	
 	public String getCriticsConsensus()
 	{
@@ -66,15 +99,15 @@ public class Movie {
 		}
 		
 		return sbRating.toString();
-	}
+	 }
 	
 	
 	public String getTitleWithYear()
 	{
 		if (year == null || year.length() == 0)
-			return title;
+			return this.getTitle();
 		
-		return title + " (" + year + ")";
+		return this.getTitle() + " (" + year + ")";
 	}
 
 	public int getTomatoImageResource() {
@@ -83,7 +116,7 @@ public class Movie {
 		return R.drawable.blank;
 		
 		if(ratings.critics_score >= 60)
-			return R.drawable.ripe;
+			return R.drawable.fresh;
 		
 		return R.drawable.rotten;
 	}
@@ -93,9 +126,9 @@ public class Movie {
 			return R.drawable.blank;
 			
 			if(ratings.audience_score >= 60)
-				return R.drawable.ripe;
+				return R.drawable.popcorn;
 			
-			return R.drawable.rotten;
+			return R.drawable.badpopcorn;
 			}
 
 	public String getAbridgedCast() {
@@ -112,9 +145,26 @@ public class Movie {
 			
 			sb.append(c.name);
 		}
-				
+
+		return decodeUnicode(sb.toString());
+	}
+	
+	public String decodeUnicode(String orig)
+	{
+		StringBuffer result = new StringBuffer();
+		Pattern p = Pattern.compile("#(\\d{5})");		
+		Matcher m = p.matcher(orig);
+
+		while (m.find()) {
+			
+			Log.i("Jami", "GROUP 1: " + m.group(1));
+			
+		    m.appendReplacement(result, String.valueOf((char)Integer.parseInt(m.group(1))));
+		}
 		
-		return sb.toString();
+		m.appendTail(result);
+		
+		return result.toString();
 	}
 	
 	static String join(Collection<?> s, String delimiter) {
