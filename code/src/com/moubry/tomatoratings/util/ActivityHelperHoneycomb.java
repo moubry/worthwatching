@@ -55,7 +55,7 @@ public class ActivityHelperHoneycomb extends ActivityHelper {
 //        SearchManager searchManager = (SearchManager) mActivity.getSystemService(Context.SEARCH_SERVICE);
 //        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
 ////        
-////        Log.i("jami", "component name=:" +(searchManager.getSearchableInfo(mActivity.getComponentName()) == null));
+////        Log.d(TAG, "component name=:" +(searchManager.getSearchableInfo(mActivity.getComponentName()) == null));
 ////        
 //        searchView.setSearchableInfo(searchManager.getSearchableInfo(mActivity.getComponentName()));
 //        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default

@@ -28,6 +28,7 @@ import android.view.ViewGroup;
  */
 public class DashboardLayout extends ViewGroup {
 
+	public static final String TAG = "DashboardLayout";
     private static final int UNEVEN_GRID_PENALTY_MULTIPLIER = 10;
 
     private int mMaxChildWidth = 0;
@@ -156,9 +157,9 @@ public class DashboardLayout extends ViewGroup {
             ++cols;
         }
         
-        Log.i("jami", "dashboard rows = " + rows);
-        Log.i("jami", "dashboard cols = " + cols);
-        Log.i("jami", "dashboard count = " + visibleCount);
+        Log.d(TAG, "dashboard rows = " + rows);
+        Log.d(TAG, "dashboard cols = " + cols);
+        Log.d(TAG, "dashboard count = " + visibleCount);
 
         // If we have extra slots available, make sure it's same number on each row/col if possible.
         if(rows * cols > visibleCount + 1)
@@ -187,9 +188,9 @@ public class DashboardLayout extends ViewGroup {
         	}
         }
 
-        Log.i("jami", "new dashboard rows = " + rows);
-        Log.i("jami", "new dashboard cols = " + cols);
-        Log.i("jami", "new dashboard count = " + visibleCount);
+        Log.d(TAG, "new dashboard rows = " + rows);
+        Log.d(TAG, "new dashboard cols = " + cols);
+        Log.d(TAG, "new dashboard count = " + visibleCount);
 
         // Lay out children based on calculated best-fit number of rows and cols.
 

@@ -12,6 +12,8 @@ import com.moubry.tomatoratings.R;
 
 
 public class Movie implements Serializable {
+	
+	public static final String TAG = "Movie";
 
 	private static final long serialVersionUID = -8266063318647942475L;
 	public String id;
@@ -34,7 +36,7 @@ public class Movie implements Serializable {
 	
 	public Integer getMPAARatingImageID()
 	{	
-		Log.i("Jami", "MPAA Rating upper: " + this.mpaa_rating.toUpperCase());
+		Log.d(TAG, "MPAA Rating upper: " + this.mpaa_rating.toUpperCase());
 		
 		if(this.mpaa_rating == null || this.mpaa_rating.length() == 0)
 		  return null;
@@ -45,7 +47,7 @@ public class Movie implements Serializable {
 			return R.drawable.mpaa_r;
 		else if(this.mpaa_rating.equalsIgnoreCase("PG-13"))
 		{
-			Log.i("Jami", "PG 13 matched");
+			Log.d(TAG, "PG 13 matched");
 			return R.drawable.mpaa_pg13;
 		}
 		else if(this.mpaa_rating.equalsIgnoreCase("PG"))
@@ -158,7 +160,7 @@ public class Movie implements Serializable {
 
 		while (m.find()) {
 			
-			Log.i("Jami", "GROUP 1: " + m.group(1));
+			Log.d(TAG, "GROUP 1: " + m.group(1));
 			
 		    m.appendReplacement(result, String.valueOf((char)Integer.parseInt(m.group(1))));
 		}

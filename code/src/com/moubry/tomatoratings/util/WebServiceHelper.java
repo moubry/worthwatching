@@ -14,6 +14,8 @@ import android.util.Log;
 	
 public class WebServiceHelper {
 
+	public static final String TAG = "WebServiceHelper";
+	
 	public String result;
 	public String errorMessage;
 	
@@ -35,12 +37,12 @@ public class WebServiceHelper {
 			
 		String account = Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID);
 		
-		Log.d("Jami", "jaccount before = " + account);
+		Log.d(TAG, "jaccount before = " + account);
 		
 		if(account == null)
 			account = "Unknown: " + android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL + ", " + android.os.Build.VERSION.RELEASE;
 		
-		Log.d("Jami", "jaccount = " + account);
+		Log.d(TAG, "jaccount = " + account);
 		
 		params.put("account", account);
 		
@@ -52,27 +54,41 @@ public class WebServiceHelper {
 		// Initialize error message.
 		this.errorMessage = null;
 		
+		// Call original web service endpoint
 		this.result = new WebService(this.endpoint).webGet("", params);
 		
-		// try the backup url
-		if ((this.result == null) || (this.result.startsWith("<h1>")))
+		if(this.result == null)
 		{
-			Log.d("Jami", "using backup search url");
-			params.put("apikey", this.context.getString(R.string.apikey));
-			this.result = new WebService(this.endpointBackup).webGet("", params);
+			this.errorMessage = this.context.getString(R.string.connection_error);
+			return;
 		}
 		
-
-		Pattern pattern = Pattern.compile("^<h1>Error Message:(.*)</h1>$");
-		Matcher matcher = pattern.matcher(result);
-
-		if(this.result == null)
-			this.errorMessage = this.context.getString(R.string.connection_error);
-		else if (matcher.find() && matcher.groupCount() > 1)
-			this.errorMessage = matcher.group(1).trim();
-		else if (result.startsWith("<h1>"))
-			this.errorMessage = this.context.getString(R.string.unknown_service_error);
+		Pattern patternForErrorMessage = Pattern.compile("<h1>Error Message:(.*)</h1>");
+		Matcher matcherForErrorMessage = patternForErrorMessage.matcher(this.result.trim());
+		boolean hasErrorMatch = matcherForErrorMessage.find();
 		
-		Log.d("Jami", "Jami: " + result);
+		// Try the backup endpoint if the original had an error
+		if (hasErrorMatch)
+		{
+			// Note: If I ever need to cut off access to the rotten tomatoes endpoint, 
+			//       I can just change the api key and update the GAE app.
+			Log.d(TAG, "using backup url");
+			params.put("apikey", this.context.getString(R.string.apikey));
+			String rtResult = new WebService(this.endpointBackup).webGet("", params);
+			
+			Pattern patternForH1 = Pattern.compile("<h1>.*</h1>");
+			Matcher matcherForH1 = patternForH1.matcher(rtResult.trim());
+			
+			if(!matcherForH1.find())
+			{
+				this.result = rtResult;
+				return;
+			}
+		}
+		
+		if (hasErrorMatch && matcherForErrorMessage.groupCount() > 0)
+			this.errorMessage = matcherForErrorMessage.group(1).trim();
+		
+		Log.d(TAG, "Jami: " + result);
 	}
 }

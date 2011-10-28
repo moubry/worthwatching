@@ -10,6 +10,7 @@ import android.util.Log;
 
 public class ReleaseDates implements Serializable {
 
+	public static final String TAG = "ReleaseDates";
 	private static final long serialVersionUID = 329551203278076026L;
 	public String theater;
 
@@ -33,7 +34,7 @@ public class ReleaseDates implements Serializable {
 		  
 		  } catch (ParseException e)
 		  {
-			 Log.e("Exception :", e.getMessage());  
+			 Log.e(TAG, "Exception :" + e.getMessage());  
 		  }  
 		 
 		  

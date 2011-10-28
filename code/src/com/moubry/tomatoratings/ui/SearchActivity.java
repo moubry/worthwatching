@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 public class SearchActivity extends BaseActivity {
 	
+	public static final String TAG = "SearchActivity";
     private String mQuery;
 
     @Override
@@ -48,7 +49,7 @@ public class SearchActivity extends BaseActivity {
 				MovieTitleSuggestionsProvider.AUTHORITY, MovieTitleSuggestionsProvider.MODE);
         suggestions.saveRecentQuery(mQuery, null);
         
-        Log.d("Jami", "mquery = " + mQuery);
+        Log.d(TAG, "mquery = " + mQuery);
         
         final CharSequence title = String.format("%s '%s'", getString(R.string.title_search_query), mQuery);
         getActivityHelper().setActionBarTitle(title);
@@ -127,7 +128,7 @@ public class SearchActivity extends BaseActivity {
                 .setMessage( errorMessage )
                 .setPositiveButton( "OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d("AlertDialog", "Positive");
+                        Log.d(TAG, "AlertDialog = OK");
                     }
                 })
                 .show();
@@ -165,7 +166,7 @@ public class SearchActivity extends BaseActivity {
 					MovieSearchResult result = new Gson().fromJson(h.result, MovieSearchResult.class);
 		
 					this.totalResults = result.total;
-					Log.i("Info ", "Total " + String.valueOf(result.total));
+					Log.d(TAG, "Total " + String.valueOf(result.total));
 		
 					for (int i = 0; i < result.movies.length; i++) {
 						lstMovies.add(result.movies[i]);

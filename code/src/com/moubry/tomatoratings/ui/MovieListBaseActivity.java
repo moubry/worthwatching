@@ -80,7 +80,7 @@ public abstract class MovieListBaseActivity extends BaseActivity {
 		
 		movieListData = new MovieListDataSQLHelper(this);
 		
-		Log.i("Jami","before list");	
+		Log.d(TAG, "before list");	
 	}
 	
 	  @Override
@@ -156,7 +156,7 @@ public abstract class MovieListBaseActivity extends BaseActivity {
 	  
 	  savedInstanceState.putString("result", this.m_cachedResult);
 
-	  Log.i("Jami","Saving my state");
+	  Log.d(TAG,"Saving my state");
 
 	  super.onSaveInstanceState(savedInstanceState);
 	}
@@ -165,7 +165,7 @@ public abstract class MovieListBaseActivity extends BaseActivity {
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 	  super.onRestoreInstanceState(savedInstanceState);
 	  
-	  Log.i("Jami","Restoring my state");
+	  Log.d(TAG, "Restoring my state");
 	  
 	  this.m_cachedResult = savedInstanceState.getString("result");
 	}
@@ -179,7 +179,7 @@ public abstract class MovieListBaseActivity extends BaseActivity {
 	protected void onResume() {
 		super.onResume();
 
-		Log.i("Jami","on resume");
+		Log.d(TAG, "on resume");
 	
 		this.getListView().getEmptyView().setVisibility(View.INVISIBLE);
 		
@@ -218,7 +218,7 @@ public abstract class MovieListBaseActivity extends BaseActivity {
             .setMessage( errorMessage )
             .setPositiveButton( "OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    Log.d("AlertDialog", "Positive");
+                    Log.d(TAG, "Alert Dialog = OK");
                 }
             })
             .show();
@@ -244,7 +244,7 @@ public abstract class MovieListBaseActivity extends BaseActivity {
             .setMessage( getString(R.string.unknown_service_error) )
             .setPositiveButton( "OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    Log.d("AlertDialog", "Positive");
+                    Log.d(TAG, "AlertDialog = OK");
                 }
             })
             .show();		

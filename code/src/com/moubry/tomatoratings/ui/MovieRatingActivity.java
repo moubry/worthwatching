@@ -44,6 +44,8 @@ import android.widget.ImageView;
 
 public class MovieRatingActivity extends BaseActivity {
 
+	public static final String TAG = "MovieRatingActivity";
+	
 	private String imdbID;
 	private String rottenTomatoesURL;
 	private String rottenTomatoesID;
@@ -98,7 +100,7 @@ public class MovieRatingActivity extends BaseActivity {
 		
 		float posterImageWidth = getResources().getDimension(R.dimen.poster_image_width);
 		
-		Log.d("Jami", "jami width2222 = " + posterImageWidth);
+		Log.d(TAG, "width here = " + posterImageWidth);
 		
 	    if(posterImageWidth > 180)
 	    	this.posterURL = recdData.getString("com.moubry.poster_original");
@@ -187,7 +189,6 @@ public class MovieRatingActivity extends BaseActivity {
 		String gae = "http://tomatoratings.moubry.com/movies/" + this.rottenTomatoesID + "/reviews.json";
 		String rt = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + this.rottenTomatoesID + "/reviews.json";
 		
-		
 		GetTopCriticReviewsTask task = new GetTopCriticReviewsTask();
 		task.setLayoutViewID(R.id.layout);
 		task.setProgressID(R.id.progressBarLayout);
@@ -217,28 +218,34 @@ public class MovieRatingActivity extends BaseActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 
-		try {
+		try 
+		{
 			if (current != null && !current.isRecycled())
 				current.recycle();
-		} catch (Exception e) {
-			Log.e("Jami", e.getMessage());
+		} 
+		catch (Exception e) 
+		{
+			Log.e(TAG, "Exception: " + e.getMessage());
 		}
 	}
 
-	private class GetTopCriticReviewsTask extends AsyncTask<String, Void, List<Review>> {
+	private class GetTopCriticReviewsTask extends
+			AsyncTask<String, Void, List<Review>> {
 
 		private String errorMessage;
 
 		private int progressID;
 		private int arrowID;
-        private int noReviewsID;
-        
+		private int noReviewsID;
+
 		// can use UI thread here
 		protected void onPreExecute() {
 			this.errorMessage = null;
 
-			MovieRatingActivity.this.findViewById(this.noReviewsID).setVisibility(View.GONE);
-			MovieRatingActivity.this.findViewById(this.progressID).setVisibility(View.VISIBLE);
+			MovieRatingActivity.this.findViewById(this.noReviewsID)
+					.setVisibility(View.GONE);
+			MovieRatingActivity.this.findViewById(this.progressID)
+					.setVisibility(View.VISIBLE);
 		}
 
 		public void setNoReviewsID(int noReviews) {
@@ -252,21 +259,24 @@ public class MovieRatingActivity extends BaseActivity {
 		// can use UI thread here
 		protected void onPostExecute(List<Review> result) {
 
-			MovieRatingActivity.this.findViewById(this.progressID).setVisibility(View.GONE);
+			MovieRatingActivity.this.findViewById(this.progressID)
+					.setVisibility(View.GONE);
 
 			if (errorMessage != null) {
 				new AlertDialog.Builder(MovieRatingActivity.this)
-						.setTitle("Error")
+						.setTitle("Error Retrieving Critic Reviews")
 						.setMessage(errorMessage)
 						.setPositiveButton("OK",
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int which) {
-										Log.d("AlertDialog", "Positive");
+										Log.d(TAG, "AlertDialog = OK");
 									}
 								}).show();
-			} else {
-
+				
+				MovieRatingActivity.this.findViewById(this.noReviewsID).setVisibility(View.VISIBLE);
+			} 
+			else {
 				if (result.size() > 0) {
 
 					LayoutParams wrap = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -275,72 +285,86 @@ public class MovieRatingActivity extends BaseActivity {
 					LinearLayout reviewContainer = new LinearLayout(MovieRatingActivity.this);
 					reviewContainer.setLayoutParams(fillWidth);
 					reviewContainer.setOrientation(LinearLayout.VERTICAL);
-					((LinearLayout) MovieRatingActivity.this.findViewById(this.layoutViewID)).addView(reviewContainer);
-					
-					LayoutParams l = new LayoutParams(LayoutParams.FILL_PARENT, 1);
-					
-					LinearLayout ruler = new LinearLayout(MovieRatingActivity.this);
+					((LinearLayout) MovieRatingActivity.this
+							.findViewById(this.layoutViewID))
+							.addView(reviewContainer);
+
+					LayoutParams l = new LayoutParams(LayoutParams.FILL_PARENT,
+							1);
+
+					LinearLayout ruler = new LinearLayout(
+							MovieRatingActivity.this);
 					ruler.setLayoutParams(l);
 					ruler.setBackgroundColor(0xFF737173);
 					reviewContainer.addView(ruler);
 
 					for (Review r : result) {
 
-						LinearLayout reviewLayout = new LinearLayout(MovieRatingActivity.this);
+						LinearLayout reviewLayout = new LinearLayout(
+								MovieRatingActivity.this);
 						reviewLayout.setLayoutParams(fillWidth);
-						reviewLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.list_item_pressed));
-					    reviewLayout.setClickable(true);
-					    reviewLayout.setFocusable(true);
+						reviewLayout.setBackgroundDrawable(getResources()
+								.getDrawable(R.drawable.list_item_pressed));
+						reviewLayout.setClickable(true);
+						reviewLayout.setFocusable(true);
 						reviewLayout.setOrientation(LinearLayout.HORIZONTAL);
 						reviewLayout.setPadding(10, 10, 0, 10);
-						
-						if(r.links != null && r.links.review != null && r.links.review.length() > 0)
-						{	
-							reviewLayout.setTag(r.links.review);
-							reviewLayout.setOnClickListener(new View.OnClickListener() {
 
-					          @Override
-					          public void onClick(View v) {
-					        	Intent intent = new Intent();
-								intent.setAction(Intent.ACTION_VIEW);
-								intent.addCategory(Intent.CATEGORY_BROWSABLE);
-								intent.setData(Uri.parse((String)v.getTag()));
-								startActivity(intent);
-					          }
-					      });
+						if (r.links != null && r.links.review != null
+								&& r.links.review.length() > 0) {
+							reviewLayout.setTag(r.links.review);
+							reviewLayout
+									.setOnClickListener(new View.OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+											Intent intent = new Intent();
+											intent.setAction(Intent.ACTION_VIEW);
+											intent.addCategory(Intent.CATEGORY_BROWSABLE);
+											intent.setData(Uri.parse((String) v
+													.getTag()));
+											startActivity(intent);
+										}
+									});
 						}
-						
+
 						reviewContainer.addView(reviewLayout);
-						
-						
-						LinearLayout.LayoutParams l3 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.FILL_PARENT,1);
-						
-						LinearLayout criticContainer = new LinearLayout(MovieRatingActivity.this);
+
+						LinearLayout.LayoutParams l3 = new LinearLayout.LayoutParams(
+								LayoutParams.WRAP_CONTENT,
+								LayoutParams.FILL_PARENT, 1);
+
+						LinearLayout criticContainer = new LinearLayout(
+								MovieRatingActivity.this);
 						criticContainer.setLayoutParams(l3);
 						criticContainer.setOrientation(LinearLayout.VERTICAL);
 						criticContainer.setDuplicateParentStateEnabled(true);
-					    reviewLayout.addView(criticContainer);
-						
-						LinearLayout criticLayout = new LinearLayout(MovieRatingActivity.this);
+						reviewLayout.addView(criticContainer);
+
+						LinearLayout criticLayout = new LinearLayout(
+								MovieRatingActivity.this);
 						criticLayout.setLayoutParams(wrap);
 						criticLayout.setOrientation(LinearLayout.HORIZONTAL);
 						criticLayout.setDuplicateParentStateEnabled(true);
 						criticContainer.addView(criticLayout);
-						
+
 						TextView tv = new TextView(MovieRatingActivity.this);
 						tv.setLayoutParams(wrap);
 						tv.setText(r.getCritic());
-						tv.setTextColor(getResources().getColorStateList(R.color.critic_text));
+						tv.setTextColor(getResources().getColorStateList(
+								R.color.critic_text));
 						tv.setDuplicateParentStateEnabled(true);
 						tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 						criticLayout.addView(tv);
-						
-						if(r.getPublication() != null && r.getPublication().length() > 0)
-						{
-							TextView tv2 = new TextView(MovieRatingActivity.this);
+
+						if (r.getPublication() != null
+								&& r.getPublication().length() > 0) {
+							TextView tv2 = new TextView(
+									MovieRatingActivity.this);
 							tv2.setLayoutParams(wrap);
 							tv2.setText(", " + r.getPublication());
-							tv2.setTextColor(getResources().getColorStateList(R.color.review_text));
+							tv2.setTextColor(getResources().getColorStateList(
+									R.color.review_text));
 							tv2.setDuplicateParentStateEnabled(true);
 							criticLayout.addView(tv2);
 						}
@@ -348,31 +372,36 @@ public class MovieRatingActivity extends BaseActivity {
 						tv = new TextView(MovieRatingActivity.this);
 						tv.setLayoutParams(wrap);
 						tv.setText(r.quote);
-						tv.setTextColor(getResources().getColorStateList(R.color.review_text));
+						tv.setTextColor(getResources().getColorStateList(
+								R.color.review_text));
 						tv.setDuplicateParentStateEnabled(true);
 						criticContainer.addView(tv);
-						
-						
-						LinearLayout.LayoutParams l2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 0);
+
+						LinearLayout.LayoutParams l2 = new LinearLayout.LayoutParams(
+								LayoutParams.WRAP_CONTENT,
+								LayoutParams.FILL_PARENT, 0);
 						l2.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
-						
+
 						ImageView img = new ImageView(MovieRatingActivity.this);
 						img.setLayoutParams(l2);
 						img.setPadding(10, 0, 7, 0);
-						
-						if(r.links != null && r.links.review != null && r.links.review.length() > 0)
+
+						if (r.links != null && r.links.review != null
+								&& r.links.review.length() > 0)
 							img.setImageResource(this.arrowID);
-						
+
 						reviewLayout.addView(img);
-						
-						LinearLayout ruler2 = new LinearLayout(MovieRatingActivity.this);
+
+						LinearLayout ruler2 = new LinearLayout(
+								MovieRatingActivity.this);
 						ruler2.setLayoutParams(l);
 						ruler2.setBackgroundColor(0xFF737173);
 						reviewContainer.addView(ruler2);
 					}
+				} else {
+					MovieRatingActivity.this.findViewById(this.noReviewsID)
+							.setVisibility(View.VISIBLE);
 				}
-				else
-					MovieRatingActivity.this.findViewById(this.noReviewsID).setVisibility(View.VISIBLE);
 			}
 		}
 
@@ -393,21 +422,18 @@ public class MovieRatingActivity extends BaseActivity {
 
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("review_type", "top_critic");
-			
-			WebServiceHelper h = new WebServiceHelper(
-					MovieRatingActivity.this, 
-					url[0], 
-					url.length > 1 ? url[1] : url[0],
-					params);
+
+			WebServiceHelper h = new WebServiceHelper(MovieRatingActivity.this,
+					url[0], url.length > 1 ? url[1] : url[0], params);
 
 			this.errorMessage = h.errorMessage;
-			
-			if(h.errorMessage == null)
-			{
+
+			if (h.errorMessage == null) {
 				try {
 					// Parse Response into our object
-					MovieSearchResult result = new Gson().fromJson(h.result, MovieSearchResult.class);
-		
+					MovieSearchResult result = new Gson().fromJson(h.result,
+							MovieSearchResult.class);
+
 					for (int i = 0; i < result.reviews.length; i++) {
 						lstReviews.add(result.reviews[i]);
 					}
@@ -438,7 +464,7 @@ public class MovieRatingActivity extends BaseActivity {
 
 		float posterImageWidth = context.getResources().getDimension(R.dimen.poster_image_width);
 		
-		Log.d("Jami", "jami width = " + posterImageWidth);
+		Log.d(TAG, "width = " + posterImageWidth);
 	
     	intent.putExtra("com.moubry.poster_original", movie.posters == null ? null : movie.posters.original);
     	intent.putExtra("com.moubry.poster_detailed", movie.posters == null ? null : movie.posters.detailed);
@@ -475,10 +501,10 @@ public class MovieRatingActivity extends BaseActivity {
 		protected Bitmap doInBackground(String... posterURL) {
 			Bitmap bmp = null;
 			try {
-				Log.i("INfo ", "Poster: " + posterURL[0]);
+				Log.d(TAG, "Poster: " + posterURL[0]);
 				bmp = decodeFile(posterURL[0]);
 			} catch (Exception e) {
-				Log.e("Error ", "Exception: " + e.getMessage());
+				Log.e(TAG, "Exception: " + e.getMessage());
 			}
 
 			return bmp;
@@ -529,7 +555,7 @@ public class MovieRatingActivity extends BaseActivity {
 				fis.close();
 				con2.disconnect();
 			} catch (Exception e) {
-				Log.e("Jami", e.getMessage());
+				Log.e(TAG, "Exception: " + e.getMessage());
 			}
 			return b;
 		}
@@ -548,46 +574,38 @@ public class MovieRatingActivity extends BaseActivity {
 		protected void onPostExecute(Bitmap result) {
 			if (result != null)
 				setImage(imageViewID, imageViewPlaceholderID, result);
-			else
-				Log.i("Info ", "Null Bitmap");
 		}
 
 		public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
 
 			int width = bm.getWidth();
-
 			int height = bm.getHeight();
 
 			float scaleWidth = ((float) newWidth) / width;
-
 			float scaleHeight = ((float) newHeight) / height;
 
 			// create a matrix for the manipulation
-
 			Matrix matrix = new Matrix();
 
 			// resize the bit map
-
 			matrix.postScale(scaleWidth, scaleHeight);
 
 			// recreate the new Bitmap
-
 			Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
 					matrix, false);
 
 			return resizedBitmap;
-
 		}
 
 		private void setImage(int imageViewID2, int imageViewPlaceholderID2, Bitmap result) {
 
-			Log.d("Jami", "jami preferred width = " + this.preferredWidth);
+			Log.d(TAG, "preferred width = " + this.preferredWidth);
 			
 			if (result.getWidth() != (int)this.preferredWidth) {
 				float factor = this.preferredWidth / result.getWidth();
 
-				Log.i("Jami", "new height = " + String.valueOf((int) (result.getHeight() * factor)));
-				Log.i("Jami", "factor = " + String.valueOf(factor));
+				Log.d(TAG, "new height = " + String.valueOf((int) (result.getHeight() * factor)));
+				Log.d(TAG, "factor = " + String.valueOf(factor));
 
 				result = this.getResizedBitmap(result, (int) (result.getHeight() * factor), (int)this.preferredWidth);
 			}
@@ -601,7 +619,7 @@ public class MovieRatingActivity extends BaseActivity {
 			img.setVisibility(LinearLayout.VISIBLE);
 			img.setImageBitmap(result);			
 
-			Log.i("Jami", "width = " + String.valueOf(result.getWidth()));
+			Log.d(TAG, "width = " + String.valueOf(result.getWidth()));
 		}
 	}
 }

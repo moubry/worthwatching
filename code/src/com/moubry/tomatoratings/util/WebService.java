@@ -32,6 +32,8 @@ import com.google.gson.Gson;
 
 public class WebService{
  
+	public static final String TAG = "WebService";
+	
     DefaultHttpClient httpClient;
     HttpContext localContext;
     private String ret;
@@ -61,7 +63,7 @@ public class WebService{
                 jsonObject.put(param.getKey(), param.getValue());
             }
             catch (JSONException e) {
-                Log.e("Jami", "JSONException in webInvoke");
+                Log.e(TAG, "JSONException in webInvoke");
             }
         }
         return webInvoke(methodName,  jsonObject.toString(), "application/json");
@@ -90,12 +92,12 @@ public class WebService{
         try {
             tmp = new StringEntity(data,"UTF-8");
         } catch (UnsupportedEncodingException e) {
-            Log.e("Jami", "HttpUtils Unsupported exception");
+            Log.e(TAG, "HttpUtils Unsupported exception");
         }
  
         httpPost.setEntity(tmp);
  
-        Log.d("Jami", webServiceUrl + "?" + data);
+        Log.d(TAG, webServiceUrl + "?" + data);
  
         try {
             response = httpClient.execute(httpPost,localContext);
@@ -104,7 +106,7 @@ public class WebService{
                 ret = EntityUtils.toString(response.getEntity());
             }
         } catch (Exception e) {
-            Log.e("Jami", "HttpUtils exception");
+            Log.e(TAG, "HttpUtils exception");
         }
  
         return ret;
@@ -141,19 +143,22 @@ public class WebService{
         try {
             response = httpClient.execute(httpGet);
         } catch (UnknownHostException e) {
-        	Log.e("Jami", "httpClient.execute(httpGet) UnknownHostException ");
+        	Log.e(TAG, "httpClient.execute(httpGet) UnknownHostException ");
         	return null;
         }
        catch (Exception e)
        {
-    	   Log.e("Jami", "httpClient.execute(httpGet) exception ");
+    	   Log.e(TAG, "httpClient.execute(httpGet) exception ");
        }
+       
+       if (response == null)
+    	   return null;
  
         // we assume that the response body contains the error message
         try {
             ret = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
-        	Log.e("Jami", "response.getEntity() Exception");
+        	Log.e(TAG, "response.getEntity() Exception");
         }
  
         return ret;
@@ -163,7 +168,7 @@ public class WebService{
         try {
             return new JSONObject(new Gson().toJson(o));
         } catch (JSONException e) {
-            Log.e("Jami", "JSON Exception");//e.printStackTrace();
+            Log.e(TAG, "JSON Exception");
         }
         return null;
     }
@@ -177,7 +182,7 @@ public class WebService{
  
         if (!(conn instanceof HttpURLConnection))
         {
-        	Log.e("Jami", "Not an HTTP connection");
+        	Log.e(TAG, "Not an HTTP connection");
             throw new IOException("Not an HTTP connection");
         }
         
@@ -194,7 +199,7 @@ public class WebService{
                 in = httpConn.getInputStream();
             }
         } catch (Exception e) {
-        	Log.e("Jami", "Error Connecting");
+        	Log.e(TAG, "Error Connecting");
             throw new IOException("Error connecting");
         } // end try-catch
  
@@ -208,11 +213,11 @@ public class WebService{
     public void abort() {
         try {
             if (httpClient != null) {
-                Log.e("Jami","aborting");
+                Log.e(TAG,"aborting");
                 httpPost.abort();
             }
         } catch (Exception e) {
-            Log.e("Jami","exception aborting");
+            Log.e(TAG,"exception aborting");
         }
     }
 }
