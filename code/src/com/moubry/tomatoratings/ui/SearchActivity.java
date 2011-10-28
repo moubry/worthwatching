@@ -10,16 +10,12 @@ import com.moubry.rottentomatoesapi.Movie;
 import com.moubry.rottentomatoesapi.MovieSearchResult;
 
 import com.moubry.tomatoratings.R;
-import com.moubry.tomatoratings.R.layout;
 import com.moubry.tomatoratings.CategorizedListItem;
 import com.moubry.tomatoratings.MovieAdapter;
 import com.moubry.tomatoratings.MovieTitleSuggestionsProvider;
-import com.moubry.tomatoratings.util.WebService;
 import com.moubry.tomatoratings.util.WebServiceHelper;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;

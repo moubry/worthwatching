@@ -16,24 +16,18 @@
 
 package com.moubry.tomatoratings.util;
 
-import com.moubry.tomatoratings.R;
-
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SearchView;
 
 /**
  * An extension of {@link ActivityHelper} that provides Android 3.0-specific functionality for
  * Honeycomb tablets. It thus requires API level 11.
  */
 public class ActivityHelperHoneycomb extends ActivityHelper {
-    private Menu mOptionsMenu;
+//    private Menu mOptionsMenu;
 
     protected ActivityHelperHoneycomb(Activity activity) {
         super(activity);
@@ -47,7 +41,7 @@ public class ActivityHelperHoneycomb extends ActivityHelper {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        mOptionsMenu = menu;
+//        mOptionsMenu = menu;
 //        mActivity.getMenuInflater().inflate(R.menu.default_menu_items, menu);
 ////        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
 ////        

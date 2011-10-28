@@ -1,28 +1,18 @@
 package com.moubry.tomatoratings.ui;
 
 import com.moubry.tomatoratings.R;
-import com.moubry.tomatoratings.util.UIUtils;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.Settings.Secure;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
 
 public class HomeActivity extends BaseActivity {
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_home);
 		getActivityHelper().setupActionBar(null);
 		
@@ -82,5 +72,7 @@ public class HomeActivity extends BaseActivity {
             	startActivity(new Intent(view.getContext(), SettingsActivity.class));
             }
         });
+        
+
 	}    	
 }

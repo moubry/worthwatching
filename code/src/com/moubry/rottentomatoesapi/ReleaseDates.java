@@ -13,6 +13,7 @@ public class ReleaseDates implements Serializable {
 	public static final String TAG = "ReleaseDates";
 	private static final long serialVersionUID = 329551203278076026L;
 	public String theater;
+	public String dvd;
 	
 	public String getTheaterReleaseDate() {
 
@@ -26,6 +27,34 @@ public class ReleaseDates implements Serializable {
 		 Date date;
 		  formatter = new SimpleDateFormat("yyyy-MM-dd");
 		  date = (Date)formatter.parse(theater);  
+
+		  
+		  outputFormatter = new SimpleDateFormat("EEE, MMM d, yyyy");
+		  
+		  return outputFormatter.format(date);
+		  
+		  } catch (ParseException e)
+		  {
+			 Log.e(TAG, "Exception :" + e.getMessage());  
+		  }  
+		 
+		  
+		  return null;
+
+	}
+	
+	public String getDvdReleaseDate() {
+
+		if(dvd == null || dvd.length() == 0)
+			return null;
+
+		 DateFormat formatter, outputFormatter; 
+		
+		try {  
+
+		 Date date;
+		  formatter = new SimpleDateFormat("yyyy-MM-dd");
+		  date = (Date)formatter.parse(dvd);  
 
 		  
 		  outputFormatter = new SimpleDateFormat("EEE, MMM d, yyyy");

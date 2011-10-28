@@ -18,15 +18,12 @@ import com.moubry.rottentomatoesapi.Movie;
 import com.moubry.rottentomatoesapi.MovieSearchResult;
 import com.moubry.rottentomatoesapi.Review;
 import com.moubry.tomatoratings.R;
-import com.moubry.tomatoratings.util.UIUtils;
-import com.moubry.tomatoratings.util.WebService;
 import com.moubry.tomatoratings.util.WebServiceHelper;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -37,18 +34,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AbsListView;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.widget.ImageView;
 
@@ -130,8 +118,15 @@ public class MovieRatingActivity extends BaseActivity {
 		}
 		// org.apache.commons.lang.
 		((TextView) findViewById(R.id.cast)).setText(cast);
+		
+		if(runtime != null && runtime.length() > 0)
 		((TextView) findViewById(R.id.runtime)).setText(runtime);
-		((TextView) findViewById(R.id.release_date)).setText(release_date);
+		
+		if(release_date == null || release_date.length() == 0)
+			((TextView) findViewById(R.id.release_date)).setText("unknown");
+		else
+			((TextView) findViewById(R.id.release_date)).setText(release_date);
+		
 
 		((TextView) findViewById(R.id.synopsis)).setText(synopsis);
 		
@@ -157,6 +152,12 @@ public class MovieRatingActivity extends BaseActivity {
 				
 				@Override
 				public void onClick(View v) {
+					
+	        		tracker.trackEvent("ui_interaction", 			// category
+			 						   "click",          			// action
+			 						   "Rotten Tomatoes Button", 	// label
+			 						   0);              			// value
+			        		
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
 					intent.addCategory(Intent.CATEGORY_BROWSABLE);
@@ -170,6 +171,12 @@ public class MovieRatingActivity extends BaseActivity {
 				
 				@Override
 				public void onClick(View v) {
+					
+	        		tracker.trackEvent("ui_interaction", // category
+			 						   "click",          // action
+			 						   "Movie Poster",   // label
+			 						   0);               // value
+					
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
 					intent.addCategory(Intent.CATEGORY_BROWSABLE);
@@ -182,6 +189,12 @@ public class MovieRatingActivity extends BaseActivity {
 				
 				@Override
 				public void onClick(View v) {
+					
+	        		tracker.trackEvent("ui_interaction", 			// category
+			 						   "click",          			// action
+			 						   "Rotten Tomatoes Scores", 	// label
+			 						   0);              			// value
+					
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
 					intent.addCategory(Intent.CATEGORY_BROWSABLE);
@@ -199,6 +212,12 @@ public class MovieRatingActivity extends BaseActivity {
 			txt.setVisibility(View.VISIBLE);
 			txt.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
+					
+	        		tracker.trackEvent("ui_interaction", // category
+			 						   "click",          // action
+			 						   "IMDb Button", 	 // label
+			 						   0);               // value
+	        		
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
 					intent.addCategory(Intent.CATEGORY_BROWSABLE);
@@ -227,6 +246,12 @@ public class MovieRatingActivity extends BaseActivity {
 			txtShowtimes.setVisibility(View.VISIBLE);
 			txtShowtimes.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
+					
+	        		tracker.trackEvent("ui_interaction",   // category
+			 						   "click",            // action
+			 						   "Showtimes Button", // label
+			 						   0);                 // value
+	        		
 					String searchTitle = title.replaceAll("\\(.*\\)", "").replaceAll(" in 4D", "").replaceAll(" in 3D", "");
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
@@ -278,6 +303,12 @@ public class MovieRatingActivity extends BaseActivity {
 		loadData();
 		loadPoster();
 		loadReviews();
+	}
+	
+	@Override
+	protected String getPageNameForTracker()
+	{
+		return "/" + this.getLocalClassName() + "/" + this.rottenTomatoesID + "-" + this.title.replace(' ', '_').replaceAll("\\W", "");
 	}
 
 	@Override
@@ -538,14 +569,21 @@ public class MovieRatingActivity extends BaseActivity {
 	    	
 		intent.putExtra("com.moubry.title", movie.getTitle());
 		intent.putExtra("com.moubry.rotten_tomatoes_id", movie.id);
+		
+		String formattedRuntime = movie.getFormattedRuntime();
 
 		if(movie.mpaa_rating == null || movie.mpaa_rating.length() == 0)
-			intent.putExtra("com.moubry.runtime", movie.getFormattedRuntime());
+			intent.putExtra("com.moubry.runtime", formattedRuntime);
 		else if(movie.getMPAARatingImageID() == null)
-			intent.putExtra("com.moubry.runtime", movie.mpaa_rating + ", " + movie.getFormattedRuntime());
+		{
+			if(formattedRuntime == null || formattedRuntime.length() == 0)
+				intent.putExtra("com.moubry.runtime", movie.mpaa_rating);
+			else
+				intent.putExtra("com.moubry.runtime", movie.mpaa_rating + ", " + formattedRuntime);
+		}
 		else
 		{
-			intent.putExtra("com.moubry.runtime", movie.getFormattedRuntime());
+			intent.putExtra("com.moubry.runtime", formattedRuntime);
 			intent.putExtra("com.moubry.mpaa_rating_description", movie.getMPAARatingDescription());
 			intent.putExtra("com.moubry.mpaa_rating_image", String.valueOf(movie.getMPAARatingImageID()));
 		}
@@ -600,18 +638,23 @@ public class MovieRatingActivity extends BaseActivity {
 				con.disconnect();
 
 				int scale = 1;
-				// if (o.outHeight > IMAGE_MAX_WIDTH || o.outWidth >
-				// IMAGE_MAX_WIDTH) {
-				// scale = (int) Math.pow(2, (int)
-				// Math.round(Math.log(IMAGE_MAX_WIDTH / (double)
-				// Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
-				// }
 
-				// scale = 2;
+				float actualScale = (o.outWidth / this.preferredWidth);
 
+				while(actualScale >= scale )
+				{
+					scale *= 2;
+				}
+
+				scale /=2;
+				
+				if(scale < 1)
+					scale = 1;
+
+				Log.i(TAG, "Scale: " + scale + " Actual: " + actualScale + " Width: " + o.outWidth + " Pref Width:" + this.preferredWidth);
+				
 				// Decode with inSampleSize
 				BitmapFactory.Options o2 = new BitmapFactory.Options();
-
 				o2.inSampleSize = scale;
 				HttpURLConnection con2 = (HttpURLConnection) ulrn.openConnection();
 				con2.connect();
@@ -619,6 +662,8 @@ public class MovieRatingActivity extends BaseActivity {
 				b = BitmapFactory.decodeStream(fis, null, o2);
 				fis.close();
 				con2.disconnect();
+				
+				
 			} catch (Exception e) {
 				Log.e(TAG, "Exception: " + e.getMessage());
 			}
@@ -638,7 +683,10 @@ public class MovieRatingActivity extends BaseActivity {
 
 		protected void onPostExecute(Bitmap result) {
 			if (result != null)
+			{
 				setImage(imageViewID, imageViewPlaceholderID, result);
+				//result.recycle();
+			}
 		}
 
 		public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {

@@ -1,60 +1,37 @@
 package com.moubry.tomatoratings.ui;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.moubry.tomatoratings.CategoryListItem;
 import com.moubry.tomatoratings.MovieListAsyncTask;
 import com.moubry.tomatoratings.MovieListCallback;
 import com.moubry.tomatoratings.R;
-import com.moubry.tomatoratings.R.id;
-import com.moubry.tomatoratings.R.layout;
 import com.moubry.tomatoratings.CategorizedListItem;
 import com.moubry.tomatoratings.MovieAdapter;
 import com.moubry.tomatoratings.MovieListDataSQLHelper;
-import com.moubry.tomatoratings.util.WebService;
-import com.moubry.tomatoratings.util.WebServiceHelper;
 
 import com.google.gson.Gson;
 import com.moubry.rottentomatoesapi.Movie;
 import com.moubry.rottentomatoesapi.MovieSearchResult;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ListActivity;
-import android.app.ProgressDialog;
-import android.app.SearchManager;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public abstract class MovieListBaseActivity extends BaseActivity {
 
@@ -263,8 +240,50 @@ public abstract class MovieListBaseActivity extends BaseActivity {
 	}
 
 	protected void categorizeItemsAndSetList(List<CategorizedListItem> uncategorized) {
-		getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, uncategorized, false));
+		
+		List<CategorizedListItem> categorized = new ArrayList<CategorizedListItem>();
+		
+		Collections.sort(uncategorized, new CategorizedListItemComparableByTheaterRelease());
+		
+		String category = "";
+		String nextCategory;
+		CategorizedListItem item;
+		for (int i = 0; i < uncategorized.size(); i++) {
+			item = uncategorized.get(i);
+			nextCategory = ((Movie) item).release_dates.getTheaterReleaseDate();
+			
+			// Only show ones with valid theater release dates
+			if(nextCategory != null && nextCategory.length() > 0)
+			{
+				if (!category.equals(nextCategory))
+					categorized.add(new CategoryListItem(nextCategory));
+	
+				category = nextCategory;
+	
+				categorized.add(item);
+			}
+		}
+		
+		getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, categorized, false));
 	}
 
 	protected abstract String getListName();
+	
+	public class CategorizedListItemComparableByTheaterRelease implements Comparator<CategorizedListItem>{
+		 
+	    @Override
+	    public int compare(CategorizedListItem o1, CategorizedListItem o2) {
+	    	String s1 = ((Movie) o1).release_dates.theater;
+	    	
+	    	String s2 = ((Movie) o2).release_dates.theater;
+	    	
+	    	if(s1 == null)
+	    		s1 = "";
+	    	
+	    	if(s2 == null)
+	    		s2 = "";
+	    	
+	    	return s1.compareTo(s2);
+	    }
+	}
 }

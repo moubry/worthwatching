@@ -2,8 +2,6 @@ package com.moubry.rottentomatoesapi;
 
 import java.io.Serializable;
 
-import com.moubry.tomatoratings.R;
-
 public class Ratings implements Serializable {
 
 	private static final long serialVersionUID = 6787523081534735338L;

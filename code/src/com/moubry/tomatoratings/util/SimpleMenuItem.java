@@ -18,6 +18,7 @@ package com.moubry.tomatoratings.util;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.view.ActionProvider;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -210,5 +211,47 @@ public class SimpleMenuItem implements MenuItem {
         // Noop
         return this;
     }
+
+	@Override
+	public boolean collapseActionView() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean expandActionView() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ActionProvider getActionProvider() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isActionViewExpanded() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public MenuItem setActionProvider(ActionProvider arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MenuItem setOnActionExpandListener(OnActionExpandListener arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MenuItem setShowAsActionFlags(int arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

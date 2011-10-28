@@ -16,7 +16,9 @@
 
 package com.moubry.tomatoratings.ui;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 import com.moubry.tomatoratings.util.ActivityHelper;
+import com.moubry.tomatoratings.util.AnalyticsUtils;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -32,8 +34,40 @@ import android.view.MenuItem;
  * inherit from {@link BaseSinglePaneActivity} or {@link BaseMultiPaneActivity}.
  */
 public abstract class BaseActivity extends FragmentActivity {
-    final ActivityHelper mActivityHelper = ActivityHelper.createInstance(this);
 
+
+	final ActivityHelper mActivityHelper = ActivityHelper.createInstance(this);
+
+	protected GoogleAnalyticsTracker tracker;
+    
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+	    tracker = GoogleAnalyticsTracker.getInstance();
+	    AnalyticsUtils.StartTrackingSession(getApplicationContext(), tracker);
+	}
+
+	
+	protected String getPageNameForTracker()
+	{
+		return "/" + this.getLocalClassName();
+	}
+	
+	@Override
+	protected void onResume() {
+	 super.onResume();
+	 tracker.trackPageView(getPageNameForTracker()); 
+	}
+	
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
+		
+		tracker.stopSession();
+	}
+    
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

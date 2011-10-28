@@ -1,7 +1,9 @@
 package com.moubry.tomatoratings.ui;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 import com.moubry.tomatoratings.R;
 import com.moubry.tomatoratings.MovieTitleSuggestionsProvider;
+import com.moubry.tomatoratings.util.AnalyticsUtils;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,10 +17,17 @@ import android.provider.SearchRecentSuggestions;
 import android.provider.Settings.Secure;
 
 public class SettingsActivity extends PreferenceActivity {
+	
+	private GoogleAnalyticsTracker tracker;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {    
 	    super.onCreate(savedInstanceState);       
-	    addPreferencesFromResource(R.xml.preferences);   
+	    
+	    tracker = GoogleAnalyticsTracker.getInstance();
+	    AnalyticsUtils.StartTrackingSession(getApplicationContext(), tracker);
+
+	    addPreferencesFromResource(R.xml.preferences);  
 	    
 	    this.findPreference(getString(R.string.pref_key_about)).setSummary(getAppNameWithVersion());	    
 	    this.findPreference(getString(R.string.pref_key_about)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -77,6 +86,11 @@ public class SettingsActivity extends PreferenceActivity {
 			        	   SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SettingsActivity.this,
 			        			   MovieTitleSuggestionsProvider.AUTHORITY, MovieTitleSuggestionsProvider.MODE);
 			        		suggestions.clearHistory();
+			        		
+			        		tracker.trackEvent("ui_interaction", // category
+			        						   "clear",          // action
+			        						   "Search History", // label
+			        						   0);               // value
 			           }
 	      	      })
 				  .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -91,6 +105,19 @@ public class SettingsActivity extends PreferenceActivity {
 		});
 	    
     	
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		tracker.trackPageView("/" + this.getLocalClassName()); 
+	}
+	
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
+		
+		tracker.stopSession();
 	}
 	
 	public String getAppNameWithVersion()

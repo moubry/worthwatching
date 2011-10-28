@@ -1,10 +1,9 @@
 package com.moubry.tomatoratings.ui;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -14,8 +13,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
+import com.moubry.rottentomatoesapi.Movie;
 import com.moubry.rottentomatoesapi.MovieSearchResult;
 import com.moubry.tomatoratings.CategorizedListItem;
+import com.moubry.tomatoratings.CategoryListItem;
 import com.moubry.tomatoratings.MovieAdapter;
 import com.moubry.tomatoratings.MovieListAsyncTask;
 import com.moubry.tomatoratings.MovieListCallback;
@@ -35,7 +36,9 @@ public class MovieListInTheatersActivity extends MovieListBaseActivity {
 
 	public void addOpeningDataToList(String jsonResult, boolean isNew, String errorMessage) {
 		boolean isValid = true;
+		List<CategorizedListItem> lstOpeningMovies = new ArrayList<CategorizedListItem>();
 		List<CategorizedListItem> lstMovies = new ArrayList<CategorizedListItem>();
+
 
 		this.findViewById(R.id.progressBarLayout).setVisibility(View.GONE);
 
@@ -56,7 +59,7 @@ public class MovieListInTheatersActivity extends MovieListBaseActivity {
 
 			return;
 		}
-
+		
 		try {
 			// Parse Response into our object
 			MovieSearchResult movieSearch = new Gson().fromJson(jsonResult, MovieSearchResult.class);
@@ -66,7 +69,7 @@ public class MovieListInTheatersActivity extends MovieListBaseActivity {
 			
 			for (int i = 0; i < Math.min(movieSearch.movies.length, 3); i++) {
 				if(movieSearch.movies[i].release_dates.theater.compareTo(sdf.format(greg.getTime())) <= 0)
-					lstMovies.add(movieSearch.movies[i]);
+					lstOpeningMovies.add(movieSearch.movies[i]);
 			}
 		} catch (Exception e) {
 
@@ -88,9 +91,19 @@ public class MovieListInTheatersActivity extends MovieListBaseActivity {
 				addMovieListToDb(this.getOpeningListName(), jsonResult);
 		}
 		
+		if(lstOpeningMovies.size() > 0)
+		{
+			lstMovies.add(new CategoryListItem("Released This Week"));
+			lstMovies.addAll(lstOpeningMovies);
+
+			if(this.m_inTheaters.size() > 0)
+				lstMovies.add(new CategoryListItem("Also Playing"));
+		}
+		
+		Collections.sort(this.m_inTheaters, new CategorizedListItemComparableByTheaterReleaseDesc());
 		lstMovies.addAll(this.m_inTheaters);
 		
-		super.categorizeItemsAndSetList(lstMovies);
+		getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, lstMovies, false));
 	}
 
 	private String m_cachedOpeningResult;
@@ -118,4 +131,23 @@ public class MovieListInTheatersActivity extends MovieListBaseActivity {
 			task.execute();
 		}
 	}
+	
+	public class CategorizedListItemComparableByTheaterReleaseDesc implements Comparator<CategorizedListItem>{
+		 
+	    @Override
+	    public int compare(CategorizedListItem o1, CategorizedListItem o2) {
+	    	String s1 = ((Movie) o1).release_dates.theater;
+	    	
+	    	String s2 = ((Movie) o2).release_dates.theater;
+	    	
+	    	if(s1 == null)
+	    		s1 = "";
+	    	
+	    	if(s2 == null)
+	    		s2 = "";
+	    	
+	    	return s2.compareTo(s1);
+	    }
+	}
+
 }
