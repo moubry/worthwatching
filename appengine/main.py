@@ -69,8 +69,12 @@ class APIHandler(webapp.RequestHandler):
 			# self.response.out.write(template.render(path, template_values))
 			# return
 		
-		#remove the parameters that rotten tomatoes doesn't need
-		rt_query_string = removeParameter(removeParameter(self.request.query_string, 'app_version'), 'app_store')
+		if app_version == '':
+			# old
+			rt_query_string = removeParameter(self.request.query_string, 'account')
+		else:
+			# remove the parameters that rotten tomatoes doesn't need
+			rt_query_string = removeParameter(removeParameter(self.request.query_string, 'app_version'), 'app_store')
 
 		if rt_query_string == '':
 			endpoint = rottenTomatoesAPI + self.request.path
@@ -112,7 +116,7 @@ class MainHandler(webapp.RequestHandler):
 		self.response.out.write(template.render(path, None))
 		
 def main():
-    application = webapp.WSGIApplication([('/lists/dvds/.*', APIHandler),('/lists/movies/.*', APIHandler),('/movies.json', APIHandler),('/movies/.*', APIHandler),('/.*', MainHandler)], debug=True)
+    application = webapp.WSGIApplication([('/lists/dvds/.*', APIHandler),('/lists/movies/.*', APIHandler),('/movies.json', APIHandler),('/movies/.*', APIHandler),('/.*', MainHandler)], debug=False)
     util.run_wsgi_app(application)
 
 if __name__ == '__main__':

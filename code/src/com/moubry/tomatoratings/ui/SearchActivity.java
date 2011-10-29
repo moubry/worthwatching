@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 import com.google.gson.Gson;
 import com.moubry.rottentomatoesapi.Movie;
 import com.moubry.rottentomatoesapi.MovieSearchResult;
@@ -66,7 +68,7 @@ public class SearchActivity extends BaseActivity {
 			}
 		});	
 		
-		getListView().getEmptyView().setVisibility(View.INVISIBLE);
+		getListView().getEmptyView().setVisibility(View.GONE);
 
 		SearchMoviesTask task = new SearchMoviesTask();
 		task.setProgressID(R.id.progressBarLayout);
@@ -77,9 +79,11 @@ public class SearchActivity extends BaseActivity {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_movie_list);
         getActivityHelper().setupActionBar(null);
         handleIntent(getIntent());
+        
+        showAdsIfEnabled();
 	}
 	
 	public ListView getListView()

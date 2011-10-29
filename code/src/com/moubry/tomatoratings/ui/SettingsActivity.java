@@ -61,8 +61,6 @@ public class SettingsActivity extends PreferenceActivity {
 				body.append(android.os.Build.MODEL + ", ");
 				body.append(android.os.Build.VERSION.RELEASE);
 
-				body.append("\nUID: " + Secure.getString(getContentResolver(), Secure.ANDROID_ID));
-
 				  Intent i = new Intent(Intent.ACTION_SEND);
 				    i.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{ getString(R.string.support_email_address) });
 				    i.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " Feedback");

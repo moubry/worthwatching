@@ -303,6 +303,8 @@ public class MovieRatingActivity extends BaseActivity {
 		loadData();
 		loadPoster();
 		loadReviews();
+		
+		showAdsIfEnabled();
 	}
 	
 	@Override

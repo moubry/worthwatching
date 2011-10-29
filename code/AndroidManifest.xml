@@ -54,8 +54,9 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_settings" android:name=".ui.SettingsActivity">
-        </activity>        
+        <activity android:label="@string/title_settings" android:name=".ui.SettingsActivity"></activity>    
+		<activity android:name="com.google.ads.AdActivity"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>   
 		<provider android:name=".MovieTitleSuggestionsProvider"
               	  android:authorities="com.moubry.tomatoratings.MovieTitleSuggestionsProvider" />
         <meta-data android:name="android.app.default_searchable" android:value=".ui.SearchActivity" />

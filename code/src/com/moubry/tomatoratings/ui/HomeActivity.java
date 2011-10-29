@@ -73,10 +73,6 @@ public class HomeActivity extends BaseActivity {
             }
         });
         
-
-        if (getIntent().getExtras().getBoolean("com.moubry.show_whats_new"))
-        {
-            BaseActivity.createWhatsNewAlert(this).show();
-        }
+        showWhatsNewIfEnabled();
 	}    	
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="connection_error"> requires an internet connection.</string>
+    <string name="connection_error">\nrequires an internet connection.</string>
     <string name="unknown_service_error">Unable to reach the Rotten Tomatoes service. Please try again later.</string>
     
     <string name="pref_key_about">about</string>

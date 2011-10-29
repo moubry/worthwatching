@@ -65,10 +65,8 @@ public abstract class MovieListBaseActivity extends BaseActivity {
 
 		Log.d(TAG, "before list");
 		
-        if (getIntent().getExtras().getBoolean("com.moubry.show_whats_new"))
-        {
-            BaseActivity.createWhatsNewAlert(this).show();
-        }
+        showWhatsNewIfEnabled();
+        showAdsIfEnabled();
 	}
 
 	@Override

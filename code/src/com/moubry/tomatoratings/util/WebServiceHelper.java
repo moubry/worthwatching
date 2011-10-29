@@ -31,17 +31,9 @@ public class WebServiceHelper {
 		
 //		if (this.params == null)
 //			this.params = new HashMap<String, String>();
-			
-		String account = Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID);
 		
-		Log.d(TAG, "jaccount before = " + account);
-		
-		if(account == null)
-			account = "Unknown: " + android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL + ", " + android.os.Build.VERSION.RELEASE;
-		
-		Log.d(TAG, "jaccount = " + account);
-		
-		params.put("account", account);
+		params.put("app_version", AnalyticsUtils.getAppNameWithVersion(ctx));
+		params.put("app_store", ctx.getString(R.string.app_store));
 		
 		CallWebService();
 	}

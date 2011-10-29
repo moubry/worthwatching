@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+	xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
 
 	<include layout="@layout/actionbar" />
-	
-	<ScrollView android:scrollbars="vertical"  android:fillViewport="true" 
-		android:padding="5dip"
+
+	<ScrollView android:scrollbars="vertical"
+		android:fillViewport="true" android:layout_weight="1" android:padding="5dip"
 		android:layout_width="fill_parent" android:layout_height="wrap_content">
-		<LinearLayout android:id="@+id/layout"  android:orientation="vertical"
-			android:layout_width="fill_parent" android:layout_height="fill_parent">
-	
+		<LinearLayout android:id="@+id/layout"
+			android:orientation="vertical" android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+
 			<LinearLayout android:orientation="horizontal"
 				android:layout_width="fill_parent" android:layout_height="wrap_content"
 				android:layout_marginTop="1dip">
-	
+
 				<LinearLayout android:orientation="vertical"
 					android:layout_weight="1" android:layout_height="wrap_content"
 					android:layout_width="fill_parent">
-	
-					<LinearLayout android:id="@+id/android:scores_container" android:orientation="horizontal"
-						android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+					<LinearLayout android:id="@+id/android:scores_container"
+						android:orientation="horizontal" android:layout_width="fill_parent"
+						android:layout_height="wrap_content">
 						<ImageView android:id="@+id/tomato_image" android:src="@drawable/blank"
 							android:layout_marginLeft="1dip" android:layout_marginRight="3dip"
-							android:layout_width="wrap_content"
-							android:layout_height="fill_parent"
-							android:gravity="center_vertical" />	
-	
+							android:layout_width="wrap_content" android:layout_height="fill_parent"
+							android:gravity="center_vertical" />
+
 						<TextView android:id="@+id/android:tomatometer_score"
 							android:layout_width="35dip" android:layout_height="fill_parent"
 							android:gravity="center_vertical|left" />
-	
+
 						<TextView android:layout_width="wrap_content"
 							android:layout_marginLeft="5dip" android:layout_height="fill_parent"
 							android:text="@string/critics_label" android:gravity="center_vertical" />
-	
+
 					</LinearLayout>
 					<LinearLayout android:orientation="horizontal"
 						android:layout_width="fill_parent" android:layout_height="wrap_content">
@@ -41,152 +44,145 @@
 							android:src="@drawable/blank" android:layout_marginRight="3dip"
 							android:layout_marginLeft="1dip" android:layout_width="wrap_content"
 							android:layout_height="fill_parent" android:gravity="center_vertical" />
-	
+
 						<TextView android:id="@+id/android:audience_tomatometer_score"
 							android:layout_width="35dip" android:layout_height="fill_parent"
 							android:gravity="center_vertical|left" />
-	
+
 						<TextView android:layout_width="wrap_content"
 							android:layout_marginLeft="5dip" android:layout_height="fill_parent"
 							android:text="@string/audience_label" android:gravity="center_vertical" />
-	
+
 					</LinearLayout>
-	
+
 					<TextView android:layout_width="fill_parent"
 						android:layout_marginTop="10dip" android:layout_height="wrap_content"
 						android:textStyle="bold" android:text="@string/critics_consensus" />
 					<TextView android:id="@+id/android:consensus"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
 						android:layout_marginBottom="20dip" />
-	
-	
-	            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
-	            	<ImageView android:id="@+id/mpaa_rating" android:layout_width="wrap_content" android:layout_height="fill_parent"
-						android:src="@drawable/mpaa_pg"  android:layout_marginRight="10dip" android:visibility="gone"/>           
-	            	<TextView android:id="@+id/runtime"
-						android:layout_width="fill_parent" android:layout_height="fill_parent" />
+
+
+					<LinearLayout android:orientation="horizontal"
+						android:layout_width="fill_parent" android:layout_height="wrap_content">
+						<ImageView android:id="@+id/mpaa_rating"
+							android:layout_width="wrap_content" android:layout_height="fill_parent"
+							android:src="@drawable/mpaa_pg" android:layout_marginRight="10dip"
+							android:visibility="gone" />
+						<TextView android:id="@+id/runtime" android:layout_width="fill_parent"
+							android:layout_height="fill_parent" />
+					</LinearLayout>
+
+
+
+					<LinearLayout android:orientation="horizontal"
+						android:layout_height="wrap_content" android:layout_width="wrap_content"
+						android:layout_marginBottom="10dip">
+
+
+						<TextView android:id="@+id/release_date_label"
+							android:text="@string/release_date_label" android:layout_width="fill_parent"
+							android:layout_height="wrap_content" android:layout_marginRight="10dip" />
+						<TextView android:id="@+id/release_date"
+							android:layout_width="fill_parent" android:layout_height="wrap_content" />
+					</LinearLayout>
+
 				</LinearLayout>
-				
-	
-	
-				<LinearLayout android:orientation="horizontal"
-				 android:layout_height="wrap_content" android:layout_width="wrap_content"
-				 android:layout_marginBottom="10dip">
-	
-	
-					<TextView android:id="@+id/release_date_label"
-						android:text="@string/release_date_label" android:layout_width="fill_parent"
-						android:layout_height="wrap_content" android:layout_marginRight="10dip" />
-					<TextView android:id="@+id/release_date"
-						android:layout_width="fill_parent" android:layout_height="wrap_content" />
-				</LinearLayout>
-	
-				</LinearLayout>
-	
-	
-				<LinearLayout android:orientation="vertical" 
+
+
+				<LinearLayout android:orientation="vertical"
 					android:layout_weight="0" android:layout_gravity="right"
 					android:layout_marginLeft="5dip" android:layout_width="wrap_content"
 					android:layout_height="wrap_content">
-	
-					<View android:id="@+id/movie_poster_placeholder" android:background="@drawable/loading"
-						  android:layout_width="@dimen/imdb_image_width" android:layout_height="@dimen/poster_image_height"
-						  android:layout_gravity="top|right" />
-	
-					<ImageView android:id="@+id/movie_poster" android:visibility="gone"
-							   android:layout_width="wrap_content" android:layout_height="wrap_content"
-							   android:layout_gravity="top|right" android:paddingRight="1px" />
-	
-					<TextView android:id="@+id/showtimes"
-					    android:clickable="true"
-					    android:focusable="true"
-						android:layout_width="@dimen/imdb_image_width" android:layout_height="wrap_content"
-						android:contentDescription="@string/description_showtimes_link"
+
+					<View android:id="@+id/movie_poster_placeholder"
+						android:background="@drawable/loading" android:layout_width="@dimen/imdb_image_width"
+						android:layout_height="@dimen/poster_image_height"
+						android:layout_gravity="top|right" />
+
+					<ImageView android:id="@+id/movie_poster"
+						android:visibility="gone" android:layout_width="wrap_content"
+						android:layout_height="wrap_content" android:layout_gravity="top|right"
+						android:paddingRight="1px" />
+
+					<TextView android:id="@+id/showtimes" android:clickable="true"
+						android:focusable="true" android:layout_width="@dimen/imdb_image_width"
+						android:layout_height="wrap_content" android:contentDescription="@string/description_showtimes_link"
 						android:background="@drawable/link_btn_rottentomatoes"
-						android:text="Showtimes"
-						android:textColor="@color/black"
-						android:textSize="@dimen/imdb_text_size"
-						android:shadowColor="#fff"
-						android:shadowDx="0"
-						android:shadowDy="1"
-						android:shadowRadius="0.00001"
-						android:textStyle="bold"	
-						android:singleLine="true"
-						android:ellipsize="end"					
-						android:layout_gravity="top|right"	 
-       				    android:gravity="center_horizontal|center_vertical"	 />	      	
+						android:text="Showtimes" android:textColor="@color/black"
+						android:textSize="@dimen/imdb_text_size" android:shadowColor="#fff"
+						android:shadowDx="0" android:shadowDy="1" android:shadowRadius="0.00001"
+						android:textStyle="bold" android:singleLine="true"
+						android:ellipsize="end" android:layout_gravity="top|right"
+						android:gravity="center_horizontal|center_vertical" />
 					<TextView android:id="@+id/rottentomatoes"
-					    android:clickable="true"
-					    android:focusable="true"
-						android:layout_width="@dimen/imdb_image_width" android:layout_height="wrap_content"
-						android:contentDescription="@string/description_rottentomatoes_link"
+						android:clickable="true" android:focusable="true"
+						android:layout_width="@dimen/imdb_image_width"
+						android:layout_height="wrap_content" android:contentDescription="@string/description_rottentomatoes_link"
 						android:background="@drawable/link_btn_rottentomatoes"
-						android:text="Rotten Tomatoes"
-						android:textColor="@color/black"
-						android:textSize="@dimen/imdb_text_size"
-						android:shadowColor="#fff"
-						android:shadowDx="0"
-						android:shadowDy="1"
-						android:shadowRadius="0.00001"
-						android:textStyle="bold"	
-						android:singleLine="true"
-						android:ellipsize="end"					
-						android:layout_gravity="top|right"	 
-       				    android:gravity="center_horizontal|center_vertical"	 />						 
-					<TextView android:id="@+id/imdb"
-						android:clickable="true"
-					    android:focusable="true"
-						android:layout_width="@dimen/imdb_image_width" android:layout_height="wrap_content"
-						android:contentDescription="@string/description_imdb_link"
+						android:text="Rotten Tomatoes" android:textColor="@color/black"
+						android:textSize="@dimen/imdb_text_size" android:shadowColor="#fff"
+						android:shadowDx="0" android:shadowDy="1" android:shadowRadius="0.00001"
+						android:textStyle="bold" android:singleLine="true"
+						android:ellipsize="end" android:layout_gravity="top|right"
+						android:gravity="center_horizontal|center_vertical" />
+					<TextView android:id="@+id/imdb" android:clickable="true"
+						android:focusable="true" android:layout_width="@dimen/imdb_image_width"
+						android:layout_height="wrap_content" android:contentDescription="@string/description_imdb_link"
 						android:background="@drawable/link_btn_rottentomatoes"
-						android:text="IMDb"
-						android:textColor="@color/black"
-						android:textSize="@dimen/imdb_text_size"
-						android:shadowColor="#fff"
-						android:shadowDx="0"
-						android:shadowDy="1"
-						android:shadowRadius="0.00001"
-						android:textStyle="bold"
-						android:singleLine="true"
-						android:ellipsize="end"
-						android:layout_gravity="top|right"	
-       				    android:gravity="center_horizontal|center_vertical"	 />
-						 
+						android:text="IMDb" android:textColor="@color/black"
+						android:textSize="@dimen/imdb_text_size" android:shadowColor="#fff"
+						android:shadowDx="0" android:shadowDy="1" android:shadowRadius="0.00001"
+						android:textStyle="bold" android:singleLine="true"
+						android:ellipsize="end" android:layout_gravity="top|right"
+						android:gravity="center_horizontal|center_vertical" />
+
 				</LinearLayout>
 			</LinearLayout>
-	
-		<TextView android:id="@+id/cast_label" android:textStyle="bold"
-					android:text="@string/cast_label"
-					android:layout_width="fill_parent" android:layout_height="wrap_content" />
-		<TextView android:id="@+id/cast" android:layout_width="fill_parent"
-					android:layout_height="wrap_content" />
-	
-	
-	
-			<TextView android:id="@+id/synopsis_label" android:textStyle="bold"
-				android:text="@string/synopsis_label" android:layout_marginTop="15dip"
-				android:layout_width="fill_parent" android:layout_height="wrap_content" />
-	
+
+			<TextView android:id="@+id/cast_label" android:textStyle="bold"
+				android:text="@string/cast_label" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+			<TextView android:id="@+id/cast" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+
+
+			<TextView android:id="@+id/synopsis_label"
+				android:textStyle="bold" android:text="@string/synopsis_label"
+				android:layout_marginTop="15dip" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
 			<TextView android:id="@+id/synopsis" android:layout_width="fill_parent"
 				android:layout_height="wrap_content" />
-			
-				
-				
-			<TextView android:id="@+id/top_critic_reviews_label" android:textStyle="bold"
-			    android:layout_marginBottom="5dip"
+
+
+
+			<TextView android:id="@+id/top_critic_reviews_label"
+				android:textStyle="bold" android:layout_marginBottom="5dip"
 				android:text="@string/top_critic_reviews" android:layout_marginTop="15dip"
 				android:layout_width="fill_parent" android:layout_height="wrap_content" />
-	<TextView android:id="@+id/no_reviews" android:layout_marginTop="-5dip" android:visibility="gone"
-			android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/not_available" />
-	 	
-		<LinearLayout android:id="@+id/progressBarLayout" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
-		<ProgressBar android:id="@+id/top_critic_reviews_progress"
-		android:layout_height="wrap_content" android:layout_width="wrap_content"/>
-		<TextView android:id="@+id/loading_label" android:paddingLeft="15dip" android:layout_gravity="center_vertical"
-			android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/loading_reviews" />
-	
-	    </LinearLayout>		
-			
+			<TextView android:id="@+id/no_reviews"
+				android:layout_marginTop="-5dip" android:visibility="gone"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:text="@string/not_available" />
+
+			<LinearLayout android:id="@+id/progressBarLayout"
+				android:orientation="horizontal" android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+				<ProgressBar android:id="@+id/top_critic_reviews_progress"
+					android:layout_height="wrap_content" android:layout_width="wrap_content" />
+				<TextView android:id="@+id/loading_label"
+					android:paddingLeft="15dip" android:layout_gravity="center_vertical"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:text="@string/loading_reviews" />
+
+			</LinearLayout>
+
 		</LinearLayout>
 	</ScrollView>
+
+	<com.google.ads.AdView android:id="@+id/adView"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_weight="0" ads:adUnitId="@string/ad_mob_id" ads:adSize="BANNER"/>
 </LinearLayout>

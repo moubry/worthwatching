@@ -8,12 +8,12 @@ class MovieQueryCache(db.Model):
   date = db.DateTimeProperty(auto_now_add=True)
  
 global_stat = stats.GlobalStat.all().get()
-mysubject = '%.2f of 0.50 GB - Tomato Ratings App Engine Stats'  % (global_stat.bytes/1073741824.0)
+mysubject = '%.2f of 0.50 GB - Worth Watching App Engine Stats'  % (global_stat.bytes/1073741824.0)
 q = db.GqlQuery("SELECT __key__ FROM MovieQueryCache")
 mybody =  'Total num stored: %.2f' % q.count()
 #print 'Total entities stored: %f' % global_stat.count
 
-mail.send_mail(sender="Tomato Ratings App Engine <jami@moubry.com>",
+mail.send_mail(sender="Worth Watching App Engine <jami@moubry.com>",
               to="Jami Moubry <jami@moubry.com>",
               subject=mysubject,
               body=mybody)
