@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Worth Watching</string>
+    <string name="debug_mode">true</string>
+    <string name="app_store">Test</string>
+    <string name="app_version">3.0</string>
+    <string name="whats_new_message">Worth Watching is now ad-supported. \n\nBut don\'t worry. You can purchase the ad-free version from the Android Market: http://market.android.com/details?id=com.moubry.worthwatching</string>
+    <string name="analytics_account">UA-26478615-1</string>
+    <string name="app_engine_url">http://10.0.2.2:8081</string>
+    <string name="support_email_address">android@moubry.com</string>
+    <string name="flixster_notice">The Fresh Tomato, Rotten Splat, and Popcorn Logos are trademarks or registered trademarks of Flixster, Inc. in the United States and other countries.\n\nContact android@moubry.com for feedback and support.</string>
+   <string name="title_terms_of_service"><b>Worth Watching\nTerms of Service</b></string>
+    <string name="terms_of_service">       
+        <b>Privacy Policy</b>\n\n
+    </string>
+</resources>

@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.moubry.tomatoratings.R;
 
 /**
  * An extension of {@link ActivityHelper} that provides Android 3.0-specific functionality for

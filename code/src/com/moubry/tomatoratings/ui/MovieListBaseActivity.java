@@ -64,6 +64,11 @@ public abstract class MovieListBaseActivity extends BaseActivity {
 		movieListData = new MovieListDataSQLHelper(this);
 
 		Log.d(TAG, "before list");
+		
+        if (getIntent().getExtras().getBoolean("com.moubry.show_whats_new"))
+        {
+            BaseActivity.createWhatsNewAlert(this).show();
+        }
 	}
 
 	@Override

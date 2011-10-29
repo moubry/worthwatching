@@ -278,7 +278,7 @@ public class MovieRatingActivity extends BaseActivity {
 
 	private void loadReviews() {
 
-		String gae = "http://tomatoratings.moubry.com/movies/" + this.rottenTomatoesID + "/reviews.json";
+		String gae = getString(R.string.app_engine_url) + "/movies/" + this.rottenTomatoesID + "/reviews.json";
 		
 		GetTopCriticReviewsTask task = new GetTopCriticReviewsTask();
 		task.setLayoutViewID(R.id.layout);

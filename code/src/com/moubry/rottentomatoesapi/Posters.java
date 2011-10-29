@@ -1,5 +1,6 @@
 package com.moubry.rottentomatoesapi;
 
+import com.moubry.tomatoratings.R;
 import java.io.Serializable;
 
 public class Posters implements Serializable {

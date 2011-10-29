@@ -17,16 +17,24 @@
 package com.moubry.tomatoratings.ui;
 
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+import com.moubry.tomatoratings.R;
 import com.moubry.tomatoratings.util.ActivityHelper;
 import com.moubry.tomatoratings.util.AnalyticsUtils;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 /**
  * A base activity that defers common functionality across app activities to an
@@ -36,6 +44,24 @@ import android.view.MenuItem;
 public abstract class BaseActivity extends FragmentActivity {
 
 
+    public static AlertDialog createWhatsNewAlert(Context context) {
+        final TextView message = new TextView(context);
+        final SpannableString s = new SpannableString(context.getText(R.string.whats_new_message));
+        Linkify.addLinks(s, Linkify.WEB_URLS);
+        message.setPadding(10, 10, 10, 10);
+        message.setText(s);
+        message.setLinkTextColor(context.getResources().getColor(R.color.blue));
+        message.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+        message.setMovementMethod(LinkMovementMethod.getInstance());
+
+        return new AlertDialog.Builder(context)
+         .setTitle(R.string.title_whats_new)
+         .setCancelable(true)
+         .setPositiveButton("OK", null)
+         .setView(message)
+         .create();
+       }
+    
 	final ActivityHelper mActivityHelper = ActivityHelper.createInstance(this);
 
 	protected GoogleAnalyticsTracker tracker;

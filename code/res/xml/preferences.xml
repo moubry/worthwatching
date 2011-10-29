@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-  <PreferenceCategory android:key="settings" android:title="@string/title_settings" >
- 	<ListPreference
-           android:title="@string/title_start_screen"
-           android:summary="@string/description_start_screen"
-           android:key="@string/pref_key_start_screen"
-           android:defaultValue="0"
-           android:entries="@array/activities"
-           android:entryValues="@array/activities_values" />                             
-  	<Preference android:key="@string/pref_key_clear_search_history" android:title="@string/title_clear_search_history" />
- </PreferenceCategory>
- <PreferenceCategory android:key="@string/pref_key_support" android:title="@string/title_support" > 	
-  	<Preference android:key="@string/pref_key_about" android:title="@string/about" android:summary="@string/app_name" />
-  	<Preference android:key="@string/pref_key_feedback" android:title="@string/title_feedback" android:summary="@string/description_feedback" />
-  </PreferenceCategory>
+	<PreferenceCategory android:key="settings"
+		android:title="@string/title_settings">
+		<ListPreference android:title="@string/title_start_screen"
+			android:summary="@string/description_start_screen" android:key="@string/pref_key_start_screen"
+			android:defaultValue="0" android:entries="@array/activities"
+			android:entryValues="@array/activities_values" />
+		<Preference android:key="@string/pref_key_clear_search_history"
+			android:title="@string/title_clear_search_history" />
+	</PreferenceCategory>
+	<PreferenceCategory android:key="@string/pref_key_support"
+		android:title="@string/title_support">
+		<Preference android:key="@string/pref_key_about"
+			android:title="@string/about" android:summary="@string/app_name" />
+		<Preference android:key="@string/pref_key_feedback"
+			android:title="@string/title_feedback" android:summary="@string/description_feedback" />
+	</PreferenceCategory>
 </PreferenceScreen>

@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import android.util.Log;
  
 import com.google.gson.Gson;
+import com.moubry.tomatoratings.R;
 
 public class WebService{
  

@@ -35,6 +35,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
 import android.widget.TextView;
+import com.moubry.tomatoratings.R;
 
 import java.util.Formatter;
 import java.util.List;

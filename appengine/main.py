@@ -26,23 +26,6 @@ class MovieQueryCache(db.Model):
   endpoint = db.StringProperty(multiline=False)
   json = db.TextProperty()
   date = db.DateTimeProperty(auto_now_add=True)
-
-class MovieQueryStat(db.Model):
-  account = db.StringProperty(required=True, multiline=False)
-  endpoint = db.StringProperty(required=True, multiline=False)
-  count = db.IntegerProperty(required=True)
-
-def txnUpdateMovieQueryStat(account, endpoint):
-	stat = db.GqlQuery( "SELECT * FROM MovieQueryStat " +
-						"WHERE account = :1 AND endpoint = :2",
-						account, endpoint).get()
-	
-	if stat is None:
-		stat = MovieQueryStat(account = account, endpoint = endpoint, count = 1)
-	else:
-		stat.count += 1
-	
-	stat.put()
 	
 def txnUpdateMovieQueryCache(endpoint, json):
 	q = db.GqlQuery("SELECT * FROM MovieQueryCache " +
@@ -70,27 +53,31 @@ class APIHandler(webapp.RequestHandler):
 		rottenTomatoesAPI = 'http://api.rottentomatoes.com/api/public/v1.0'		
 		apikey = 'cfuvchhe98amz6vd9qc2s8m7'
 
-		"""Check for account."""
-		account = self.request.get("account").strip()
+		#Check for app version and app store
+		app_version = self.request.get("app_version").strip()
+		app_store = self.request.get("app_store").strip()
 			
-		if account == '':
-			path = os.path.join(os.path.dirname(__file__), 'error.xml')
-			template_values = {'error' : 'Error Message: No account provided.'}
-			self.response.out.write(template.render(path, template_values))
-			return
+		# if app_version == '':
+			# path = os.path.join(os.path.dirname(__file__), 'error.xml')
+			# template_values = {'error' : 'Error Message: No app version provided.'}
+			# self.response.out.write(template.render(path, template_values))
+			# return
+			
+		# if app_store == '':
+			# path = os.path.join(os.path.dirname(__file__), 'error.xml')
+			# template_values = {'error' : 'Error Message: No app store provided.'}
+			# self.response.out.write(template.render(path, template_values))
+			# return
 		
-		orig_query_string = removeParameter(self.request.query_string, 'account')
+		#remove the parameters that rotten tomatoes doesn't need
+		rt_query_string = removeParameter(removeParameter(self.request.query_string, 'app_version'), 'app_store')
 
-		if orig_query_string == '':
+		if rt_query_string == '':
 			endpoint = rottenTomatoesAPI + self.request.path
 			endpointWithApiKey = rottenTomatoesAPI + self.request.path + '?apikey=' + apikey
 		else:
-			endpoint = rottenTomatoesAPI + self.request.path + '?' + orig_query_string
-			endpointWithApiKey = rottenTomatoesAPI + self.request.path + '?apikey=' + apikey + '&' + orig_query_string
-		
-		
-		#store stat in db
-		txnUpdateMovieQueryStat(account, endpoint)
+			endpoint = rottenTomatoesAPI + self.request.path + '?' + rt_query_string
+			endpointWithApiKey = rottenTomatoesAPI + self.request.path + '?apikey=' + apikey + '&' + rt_query_string
 		
 		#get query from cache
 		cachedEntity = db.GqlQuery( "SELECT * FROM MovieQueryCache " +
@@ -125,7 +112,7 @@ class MainHandler(webapp.RequestHandler):
 		self.response.out.write(template.render(path, None))
 		
 def main():
-    application = webapp.WSGIApplication([('/lists/dvds/.*', APIHandler),('/lists/movies/.*', APIHandler),('/movies.json', APIHandler),('/movies/.*', APIHandler),('/.*', MainHandler)], debug=False)
+    application = webapp.WSGIApplication([('/lists/dvds/.*', APIHandler),('/lists/movies/.*', APIHandler),('/movies.json', APIHandler),('/movies/.*', APIHandler),('/.*', MainHandler)], debug=True)
     util.run_wsgi_app(application)
 
 if __name__ == '__main__':

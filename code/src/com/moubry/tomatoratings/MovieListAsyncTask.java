@@ -26,7 +26,7 @@ public class MovieListAsyncTask extends AsyncTask<Void, Void, String> {
 	protected String doInBackground(Void... unused) {
 	
 		WebServiceHelper h = new WebServiceHelper(context,
-				"http://worthwatching.moubry.com/lists" + this.listName + ".json",
+				this.context.getString(R.string.app_engine_url) + "/lists" + this.listName + ".json",
 				new HashMap<String, String>());
 
 		errorMessage = h.errorMessage;

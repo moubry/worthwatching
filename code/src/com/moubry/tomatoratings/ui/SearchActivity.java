@@ -150,7 +150,7 @@ public class SearchActivity extends BaseActivity {
 
 			WebServiceHelper h = new WebServiceHelper(
 					SearchActivity.this, 
-					"http://tomatoratings.moubry.com/movies.json",
+					getString(R.string.app_engine_url)+ "/movies.json",
 					params);
 			
 			this.errorMessage = h.errorMessage;

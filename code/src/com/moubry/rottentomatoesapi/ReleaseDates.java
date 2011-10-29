@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.util.Log;
+import com.moubry.tomatoratings.R;
 
 public class ReleaseDates implements Serializable {
 

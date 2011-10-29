@@ -28,10 +28,10 @@ public class AnalyticsUtils {
     public static void StartTrackingSession(Context ctx, GoogleAnalyticsTracker tracker)
     {
 	    tracker.startNewSession(ctx.getString(R.string.analytics_account), 20, ctx);
-//	    tracker.setDebug(true);
-//	    tracker.setDryRun(true);
-
-	    tracker.setCustomVar(APP_VERSION_SLOT, APP_VERSION_LABEL, getAppVersion(ctx), 2);
+		tracker.setDebug(Boolean.parseBoolean(ctx.getString(R.string.debug_mode)));
+		tracker.setDryRun(Boolean.parseBoolean(ctx.getString(R.string.debug_mode)));
+	    
+	    tracker.setCustomVar(APP_VERSION_SLOT, APP_VERSION_LABEL, getAppNameWithVersion(ctx), 2);
 		tracker.setCustomVar(ANDROID_VERSION_SLOT, ANDROID_VERSION_LABEL, android.os.Build.VERSION.RELEASE, 2);
 		tracker.setCustomVar(DEVICE_SLOT, DEVICE_LABEL, android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL, 1);
 		tracker.setCustomVar(SCREEN_ORIENTATION_SLOT, SCREEN_ORIENTATION_LABEL, getOrientation(ctx), 2);
@@ -54,15 +54,15 @@ public class AnalyticsUtils {
 	    return orientation;
 	}
 	
-	private static String getAppVersion(Context ctx)
-	{
-		PackageInfo mgr;
-		try {
-			mgr = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
-		} catch (NameNotFoundException e) {
-			return "unknown";
-		}
-		
-		return mgr.versionName;
-	}
+    public static String getAppNameWithVersion(Context ctx)
+    {
+        PackageInfo mgr;
+        try {
+            mgr = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
+        } catch (NameNotFoundException e) {
+            return ctx.getString(R.string.app_name);
+        }
+        
+        return ctx.getString(R.string.app_name) + " " + mgr.versionName;
+    }
 }

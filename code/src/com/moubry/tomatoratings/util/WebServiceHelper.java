@@ -56,7 +56,7 @@ public class WebServiceHelper {
 		
 		if(this.result == null)
 		{
-			this.errorMessage = this.context.getString(R.string.connection_error);
+			this.errorMessage = this.context.getString(R.string.app_name) + this.context.getString(R.string.connection_error);
 			return;
 		}
 		

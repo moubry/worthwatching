@@ -21,6 +21,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import com.moubry.tomatoratings.R;
 
 /**
  * Custom layout that arranges children in a grid-like manner, optimizing for even horizontal and

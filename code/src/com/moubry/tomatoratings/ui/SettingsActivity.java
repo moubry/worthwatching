@@ -6,6 +6,7 @@ import com.moubry.tomatoratings.MovieTitleSuggestionsProvider;
 import com.moubry.tomatoratings.util.AnalyticsUtils;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -30,14 +31,14 @@ public class SettingsActivity extends PreferenceActivity {
 	    tracker = GoogleAnalyticsTracker.getInstance();
 	    AnalyticsUtils.StartTrackingSession(getApplicationContext(), tracker);
 
-	    this.findPreference(getString(R.string.pref_key_about)).setSummary(getAppNameWithVersion());	    
+	    this.findPreference(getString(R.string.pref_key_about)).setSummary(AnalyticsUtils.getAppNameWithVersion(getApplicationContext()));	    
 
 	    this.findPreference(getString(R.string.pref_key_about)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 
 				new AlertDialog.Builder( SettingsActivity.this )
-	      	      .setTitle(getAppNameWithVersion())
+	      	      .setTitle(AnalyticsUtils.getAppNameWithVersion(getApplicationContext()))
 	      	      .setMessage( getString(R.string.flixster_notice) )
 	      	      .show();
 				
@@ -53,7 +54,7 @@ public class SettingsActivity extends PreferenceActivity {
 				body.append("\n\n----------------");
 				
 				body.append("\nVersion: ");
-				body.append(getAppNameWithVersion());
+				body.append(AnalyticsUtils.getAppNameWithVersion(getApplicationContext()));
 				
 				body.append("\nDevice: ");
 				body.append(android.os.Build.MANUFACTURER + " ");
@@ -115,17 +116,5 @@ public class SettingsActivity extends PreferenceActivity {
 	protected void onDestroy(){
 		super.onDestroy();
 		tracker.stopSession();
-	}
-	
-	public String getAppNameWithVersion()
-	{
-		PackageInfo mgr;
-		try {
-			mgr = getPackageManager().getPackageInfo(getPackageName(), 0);
-		} catch (NameNotFoundException e) {
-			return getString(R.string.app_name);
-		}
-		
-		return getString(R.string.app_name) + " " + mgr.versionName;
 	}
 }
