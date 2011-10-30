@@ -32,6 +32,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -87,15 +88,22 @@ public abstract class BaseActivity extends FragmentActivity
 
     protected void showAdsIfEnabled()
     {
-        if (Boolean.parseBoolean(getString(R.string.show_ads)))
+        try
         {
-            // Look up the AdView as a resource and load a request.
-            AdView adView = (AdView) this.findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest();
-            
-            adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-            
-            adView.loadAd(adRequest);
+            if (Boolean.parseBoolean(getString(R.string.show_ads)))
+            {
+                // Look up the AdView as a resource and load a request.
+                AdView adView = (AdView) this.findViewById(R.id.adView);
+                AdRequest adRequest = new AdRequest();
+                
+                adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+                
+                adView.loadAd(adRequest);
+            }
+        }
+        catch(Exception ex)
+        {
+            Log.e("BaseActivity", "ad exception. " + ex.getMessage());
         }
     }
 

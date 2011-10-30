@@ -1,14 +1,19 @@
 package com.moubry.tomatoratings.ui;
 
 import com.moubry.tomatoratings.R;
-import com.moubry.tomatoratings.R.string;
+import com.moubry.tomatoratings.util.LicenseCheckActivity;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.Window;
+import android.widget.Toast;
 
 public class MainActivity extends BaseActivity
 {
@@ -17,8 +22,10 @@ public class MainActivity extends BaseActivity
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-
+        super.onCreate(savedInstanceState);    
+        
+        
+        
         String acceptedVersion = PreferenceManager.getDefaultSharedPreferences(this).getString(
                 getString(R.string.pref_key_accepted_terms_for_version), "");
         
@@ -79,4 +86,5 @@ public class MainActivity extends BaseActivity
         
         startNextActivity(true);
     }
+
 }

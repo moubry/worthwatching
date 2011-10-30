@@ -5,12 +5,13 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical">
         <TextView
-        android:paddingLeft="5dip"
+        android:paddingLeft="5dp"
         android:layout_width="fill_parent"
-        android:layout_height="20dip"
+        android:layout_height="20dp"
         android:gravity="center_vertical"
         android:background="@color/blue"
         android:textColor="@color/white"
+		android:textSize="14dp"
         android:id="@+id/list_item_section_text" />
 
 </LinearLayout>

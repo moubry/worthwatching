@@ -16,11 +16,11 @@
 
 <resources>
     <!-- Start with the Holographic theme -->
-    <style name="Theme.TomatoRatings" parent="android:style/Theme.Holo">
+    <style name="Theme.WorthWatching" parent="android:style/Theme.Holo">
         <item name="android:actionBarStyle">@style/ActionBar</item>
     </style>
 
-    <style name="Theme.TomatoRatings.Home" parent="style/Theme.TomatoRatings">
+    <style name="Theme.WorthWatching.Home" parent="style/Theme.WorthWatching">
         <item name="android:actionBarStyle">@style/ActionBar</item>
     </style>
 

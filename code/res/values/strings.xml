@@ -3,6 +3,13 @@
     <string name="connection_error">\nrequires an internet connection.</string>
     <string name="unknown_service_error">Unable to reach the Rotten Tomatoes service. Please try again later.</string>
     
+ 
+	<!-- Unlicensed dialog messages -->
+	<string name="unlicensed_dialog_title">Application not licensed</string>
+	<string name="unlicensed_dialog_body">This application is not licensed. Please purchase it from the Android Market.</string>
+	<string name="buy_button">Purchase</string>
+	<string name="quit_button">Cancel</string>
+    
     <string name="pref_key_about">about</string>
     <string name="pref_key_feedback">feedback</string>
     <string name="pref_key_start_screen">start_screen</string>
@@ -65,6 +72,10 @@
     <string name="description_imdb_link">Go to the IMDB web page </string>
     <string name="description_feedback">Send feedback to the development team.</string>
     <string name="description_decline_terms">Cancel and leave the app.</string>
-    <string name="description_agree_to_terms">Agree to the app\'s terms of service.</string>
+    <string name="description_agree_to_terms">Agree to the app\'s end user license.</string>
+
+    <!-- Used to determine if license check needed. -->
+    <!--                          DO NOT CHANGE!    -->
+    <string name="android_market">Android Market</string>
 
 </resources>

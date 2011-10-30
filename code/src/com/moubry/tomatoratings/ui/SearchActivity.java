@@ -15,6 +15,7 @@ import com.moubry.tomatoratings.R;
 import com.moubry.tomatoratings.CategorizedListItem;
 import com.moubry.tomatoratings.MovieAdapter;
 import com.moubry.tomatoratings.MovieTitleSuggestionsProvider;
+import com.moubry.tomatoratings.util.LicenseCheckActivity;
 import com.moubry.tomatoratings.util.WebServiceHelper;
 
 import android.app.AlertDialog;
@@ -26,11 +27,12 @@ import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends LicenseCheckActivity {
 	
 	public static final String TAG = "SearchActivity";
     private String mQuery;
@@ -79,11 +81,13 @@ public class SearchActivity extends BaseActivity {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_movie_list);
         getActivityHelper().setupActionBar(null);
         handleIntent(getIntent());
         
         showAdsIfEnabled();
+        checkLicense();
 	}
 	
 	public ListView getListView()

@@ -13,6 +13,7 @@ import com.moubry.tomatoratings.R;
 import com.moubry.tomatoratings.CategorizedListItem;
 import com.moubry.tomatoratings.MovieAdapter;
 import com.moubry.tomatoratings.MovieListDataSQLHelper;
+import com.moubry.tomatoratings.util.LicenseCheckActivity;
 
 import com.google.gson.Gson;
 import com.moubry.rottentomatoesapi.Movie;
@@ -33,7 +34,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-public abstract class MovieListBaseActivity extends BaseActivity {
+public abstract class MovieListBaseActivity extends LicenseCheckActivity {
 
 	public static final String TAG = "MovieListBaseActivity";
 
@@ -67,6 +68,7 @@ public abstract class MovieListBaseActivity extends BaseActivity {
 		
         showWhatsNewIfEnabled();
         showAdsIfEnabled();
+        checkLicense();
 	}
 
 	@Override
