@@ -6,11 +6,11 @@
     
     <!-- Must be exactly "Android Market" when store is Android Market for licensing to work (see android_market string). -->
     <!-- ***When value == "Android Market" and show_ads == false, add the licensing permission in the manifest. -->
-    <string name="app_store">Amazon Appstore</string>
+    <string name="app_store">Android Market</string>
 
     <!-- ***Don't forget to change the app_version_code in the manifest. -->
     <string name="app_version">2.3</string>
-    <string name="whats_new_message">Worth Watching Lite is now ad-supported. \n\nBut don\'t worry. You can purchase the ad-free version from the Amazon Appstore: http://www.amazon.com/gp/mas/dl/android?p=com.moubry.worthwatching</string>
+    <string name="whats_new_message">Worth Watching Lite is now ad-supported. \n\nBut don\'t worry. You can purchase the ad-free version from the Android Market: https://market.android.com/details?id=com.moubry.worthwatching</string>
     
     <string name="analytics_account">UA-26478615-1</string>
     <string name="ad_mob_id">a14eab9562000fb</string>

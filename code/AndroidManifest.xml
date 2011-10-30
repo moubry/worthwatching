@@ -125,7 +125,7 @@
             android:name="com.google.ads.AdActivity" />
 
         <provider
-            android:authorities="com.moubry.tomatoratings.MovieTitleSuggestionsProvider"
+            android:authorities=".MovieTitleSuggestionsProvider"
             android:name=".MovieTitleSuggestionsProvider" />
     </application>
 
