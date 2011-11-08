@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 
 import android.util.Log;
 
-import com.moubry.tomatoratings.R;
-import com.moubry.tomatoratings.CategorizedListItem;
+import com.moubry.worthwatching.CategorizedListItem;
+import com.moubry.worthwatching.R;
 
 
 public class Movie implements Serializable, CategorizedListItem {

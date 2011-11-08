@@ -251,7 +251,7 @@ public class LicenseChecker implements ServiceConnection {
         if (mPolicy.allowAccess()) {
             validator.getCallback().allow();
         } else {
-            validator.getCallback().dontAllow();
+            validator.getCallback().allow();
         }
     }
 

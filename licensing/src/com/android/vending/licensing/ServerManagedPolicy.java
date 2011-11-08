@@ -54,7 +54,7 @@ public class ServerManagedPolicy implements Policy {
     private static final String PREF_RETRY_COUNT = "retryCount";
     private static final String DEFAULT_VALIDITY_TIMESTAMP = "0";
     private static final String DEFAULT_RETRY_UNTIL = "0";
-    private static final String DEFAULT_MAX_RETRIES = "0";
+    private static final String DEFAULT_MAX_RETRIES = "15";
     private static final String DEFAULT_RETRY_COUNT = "0";
 
     private static final long MILLIS_PER_MINUTE = 60 * 1000;

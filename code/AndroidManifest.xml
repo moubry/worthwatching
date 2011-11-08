@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="auto"
-    package="com.moubry.tomatoratings"
-    android:versionCode="11"
+    package="com.moubry.worthwatching"
+    android:versionCode="12"
     android:versionName="@string/app_version" >
 
     <uses-sdk
@@ -11,7 +11,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- <uses-permission android:name="com.android.vending.CHECK_LICENSE" /> --> 
+    <!--<uses-permission android:name="com.android.vending.CHECK_LICENSE" />--> 
 
     <supports-screens
         android:anyDensity="true"
@@ -28,7 +28,7 @@
         android:theme="@style/Theme.WorthWatching" >
         <activity
             android:label="@string/app_name"
-            android:name=".ui.MainActivity" >
+            android:name="com.moubry.worthwatching.ui.MainActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,19 +37,19 @@
         <activity
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name"
-            android:name=".ui.HomeActivity" >
+            android:name="com.moubry.worthwatching.ui.HomeActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".ui.SearchActivity" />
+                android:value="com.moubry.worthwatching.ui.SearchActivity" />
         </activity>
         <activity
             android:label="@string/search"
             android:launchMode="singleTop"
-            android:name=".ui.SearchActivity" >
+            android:name="com.moubry.worthwatching.ui.SearchActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -60,73 +60,73 @@
         </activity>
         <activity
             android:label="@string/title_box_office"
-            android:name=".ui.MovieListBoxOfficeActivity" >
+            android:name="com.moubry.worthwatching.ui.MovieListBoxOfficeActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".ui.SearchActivity" />
+                android:value="com.moubry.worthwatching.ui.SearchActivity" />
         </activity>
         <activity
             android:label="@string/title_in_theaters"
-            android:name=".ui.MovieListInTheatersActivity" >
+            android:name="com.moubry.worthwatching.ui.MovieListInTheatersActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".ui.SearchActivity" />
+                android:value="com.moubry.worthwatching.ui.SearchActivity" />
         </activity>
         <activity
             android:label="@string/title_opening"
-            android:name=".ui.MovieListUpcomingActivity" >
+            android:name="com.moubry.worthwatching.ui.MovieListUpcomingActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".ui.SearchActivity" />
+                android:value="com.moubry.worthwatching.ui.SearchActivity" />
         </activity>
         <activity
             android:label="@string/title_dvd_new_releases"
-            android:name=".ui.MovieListDVDReleasesActivity" >
+            android:name="com.moubry.worthwatching.ui.MovieListDVDReleasesActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".ui.SearchActivity" />
+                android:value="com.moubry.worthwatching.ui.SearchActivity" />
         </activity>
         <activity
             android:label="@string/app_name"
-            android:name=".ui.MovieRatingActivity" >
+            android:name="com.moubry.worthwatching.ui.MovieRatingActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".ui.SearchActivity" />
+                android:value="com.moubry.worthwatching.ui.SearchActivity" />
         </activity>
         <activity
             android:label="@string/title_settings"
-            android:name=".ui.SettingsActivity" >
+            android:name="com.moubry.worthwatching.ui.SettingsActivity" >
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".ui.SearchActivity" />
+                android:value="com.moubry.worthwatching.ui.SearchActivity" />
         </activity>
         <activity
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:name="com.google.ads.AdActivity" />
 
         <provider
-            android:authorities=".MovieTitleSuggestionsProvider"
-            android:name=".MovieTitleSuggestionsProvider" />
+            android:authorities="com.moubry.worthwatching.WWMovieTitleSuggestionsProvider"
+            android:name="com.moubry.worthwatching.WWMovieTitleSuggestionsProvider" />
     </application>
 
 </manifest>

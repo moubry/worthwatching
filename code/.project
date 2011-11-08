@@ -3,6 +3,7 @@
 	<name>WorthWatching</name>
 	<comment></comment>
 	<projects>
+		<project>Licensing</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Worth Watching Lite</string>
-    <string name="show_ads">true</string>
-    <string name="debug_mode">true</string> <!-- Determines whether to dispatch analytics. -->
+    <string name="app_name">Worth Watching</string>
+    <string name="show_ads">false</string>
+    <string name="debug_mode">false</string> <!-- Determines whether to dispatch analytics. -->
     
     <!-- Must be exactly "Android Market" when store is Android Market for licensing to work (see android_market string). -->
     <!-- ***When value == "Android Market" and show_ads == false, add the licensing permission in the manifest. -->
-    <string name="app_store">Test</string>
+    <string name="app_store">Amazon Appstore</string>
 
     <!-- ***Don't forget to change the app_version_code in the manifest. -->
     <string name="app_version">2.3</string>
-    <string name="whats_new_message">Worth Watching Lite is now ad-supported. \n\nBut don\'t worry. You can purchase the ad-free version from the Amazon Appstore: http://www.amazon.com/gp/mas/dl/android?p=com.moubry.worthwatching</string>
+    <string name="whats_new_message"></string>
     
     <string name="analytics_account">UA-26478615-1</string>
     <string name="ad_mob_id">a14eab9562000fb</string>
     <string name="app_engine_url">http://worthwatching.moubry.com</string>
     <string name="support_email_address">android@moubry.com</string>
     <string name="flixster_notice">The Fresh Tomato, Rotten Splat, and Popcorn Logos are trademarks or registered trademarks of Flixster, Inc. in the United States and other countries.\n\nContact android@moubry.com for feedback and support.</string>
-    <string name="title_terms_of_service"><b>Worth Watching Lite\nEnd User License Agreement</b></string>
+    <string name="title_terms_of_service"><b>Worth Watching\nEnd User License Agreement</b></string>
     <string name="terms_of_service">By downloading any application published by Moubry Mobile, Inc. (here after referred to as “The Company”), installing or using this application or any portion thereof (“Application”), you agree to the following terms and conditions (the “Terms and Conditions”).
 
 \n\n<b>1. Use of Application</b>\n

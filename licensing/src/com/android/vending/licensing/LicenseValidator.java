@@ -221,6 +221,6 @@ class LicenseValidator {
     }
 
     private void handleInvalidResponse() {
-        mCallback.dontAllow();
+        mCallback.allow();
     }
 }
