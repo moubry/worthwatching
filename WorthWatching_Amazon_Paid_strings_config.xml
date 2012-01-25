@@ -9,7 +9,7 @@
     <string name="app_store">Amazon Appstore</string>
 
     <!-- ***Don't forget to change the app_version_code in the manifest. -->
-    <string name="app_version">2.3</string>
+    <string name="app_version">2.3.1</string>
     <string name="whats_new_message"></string>
     
     <string name="analytics_account">UA-26478615-1</string>

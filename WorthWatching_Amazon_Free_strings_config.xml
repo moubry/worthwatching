@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Worth Watching Lite</string>
     <string name="show_ads">true</string>
@@ -9,7 +9,7 @@
     <string name="app_store">Amazon Appstore</string>
 
     <!-- ***Don't forget to change the app_version_code in the manifest. -->
-    <string name="app_version">2.3</string>
+    <string name="app_version">2.3.1</string>
     <string name="whats_new_message">Worth Watching Lite is now ad-supported. \n\nBut don\'t worry. You can purchase the ad-free version from the Amazon Appstore: http://www.amazon.com/gp/mas/dl/android?p=com.moubry.worthwatching</string>
     
     <string name="analytics_account">UA-26478615-1</string>

@@ -1,4 +1,0 @@
-cron:
-- description: daily usage check
-  url: /tasks/checkusage
-  schedule: every 12 hours

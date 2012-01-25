@@ -1,10 +1,8 @@
 package com.moubry.worthwatching.ui;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -64,12 +62,8 @@ public class MovieListInTheatersActivity extends MovieListBaseActivity {
 			// Parse Response into our object
 			MovieSearchResult movieSearch = new Gson().fromJson(jsonResult, MovieSearchResult.class);
 
-			GregorianCalendar greg = new GregorianCalendar();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			
 			for (int i = 0; i < Math.min(movieSearch.movies.length, 3); i++) {
-				if(movieSearch.movies[i].release_dates.theater.compareTo(sdf.format(greg.getTime())) <= 0)
-					lstOpeningMovies.add(movieSearch.movies[i]);
+				lstOpeningMovies.add(movieSearch.movies[i]);
 			}
 		} catch (Exception e) {
 
