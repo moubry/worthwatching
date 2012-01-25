@@ -47,7 +47,8 @@ public class SearchActivity extends LicenseCheckActivity {
 		mQuery = intent.getStringExtra(SearchManager.QUERY);
     	
 		SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-				WWMovieTitleSuggestionsProvider.AUTHORITY, WWMovieTitleSuggestionsProvider.MODE);
+				WWMovieTitleSuggestionsProvider.GetAuthority(Boolean.parseBoolean(getString(R.string.show_ads))),
+				WWMovieTitleSuggestionsProvider.MODE);
         suggestions.saveRecentQuery(mQuery, null);
         
         Log.d(TAG, "mquery = " + mQuery);

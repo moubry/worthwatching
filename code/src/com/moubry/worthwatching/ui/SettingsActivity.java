@@ -83,7 +83,8 @@ public class SettingsActivity extends PreferenceActivity {
 	      	      .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SettingsActivity.this,
-			        			   WWMovieTitleSuggestionsProvider.AUTHORITY, WWMovieTitleSuggestionsProvider.MODE);
+			                       WWMovieTitleSuggestionsProvider.GetAuthority(Boolean.parseBoolean(getString(R.string.show_ads))),
+			                       WWMovieTitleSuggestionsProvider.MODE);
 			        		suggestions.clearHistory();
 			        		
 			        		tracker.trackEvent("ui_interaction", // category

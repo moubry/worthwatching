@@ -6,7 +6,7 @@
     
     <!-- Must be exactly "Android Market" when store is Android Market for licensing to work (see android_market string). -->
     <!-- ***When value == "Android Market" and show_ads == false, add the licensing permission in the manifest. -->
-    <string name="app_store">Android Market</string>
+    <string name="app_store">Amazon Appstore</string>
 
     <!-- ***Don't forget to change the app_version_code in the manifest. -->
     <string name="app_version">2.3.1</string>

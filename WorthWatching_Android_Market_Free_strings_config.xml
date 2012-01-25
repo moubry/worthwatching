@@ -10,7 +10,7 @@
 
     <!-- ***Don't forget to change the app_version_code in the manifest. -->
     <string name="app_version">2.3.1</string>
-    <string name="whats_new_message">Worth Watching Lite is now ad-supported. \n\nBut don\'t worry. You can purchase the ad-free version from the Android Market: https://market.android.com/details?id=com.moubry.worthwatching</string>
+    <string name="whats_new_message">Worth Watching Lite is ad-supported. \n\nBut don\'t worry. You can purchase the ad-free version from the Android Market: https://market.android.com/details?id=com.moubry.worthwatching</string>
     
     <string name="analytics_account">UA-26478615-1</string>
     <string name="ad_mob_id">a14eab9562000fb</string>

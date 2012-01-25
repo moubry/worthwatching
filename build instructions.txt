@@ -1,2 +1,63 @@
-MovieListInTheatersActivity
+COMMIT
+BUILD
+TEST all apks
+  - Search History
+  - Verify version number in settings
+  - Verify app title (Lite/ no Lite)
+  - Verify ads/no ads
+COMMIT free .apks
+TAG version
+  git tag -a v1.4 -m 'version 1.4'
+  git push --tags
+UNDO changes
+  git checkout -- .
 
+
+
+COMMIT
+  1) Verify the app_version number has been incremented in string configs for each version
+  2) Verify that manifest android:versionCode has been incremented in AndroidManifest.xml
+  3) Verify that current res\values\strings_config.xml file contains Amazon Paid version of strings
+  3) go to C:\Users\Jami\Dropbox\workspace\WorthWatching in GitBash
+  4) git status (git add/rm)
+  5) git commit -m "message here"
+  6) git push -u origin master
+
+BUILD
+
+res\values\strings_config.xml
+  1) Copy the version's string configs into this file
+  2) Verify the app_version number has been incremented
+  3) Save the file
+
+AndroidManifest.xml
+  4) Verify that manifest android:versionCode has been incremented
+  5) Change manifest package from "com.moubry.worthwatching" to "com.moubry.tomatoratings"
+  6) Comment out CHECK_LICENSE permission unless this is the Paid Market version
+  7) Change the provider at the bottom from
+        <provider
+            android:authorities="com.moubry.worthwatching.WWMovieTitleSuggestionsProvider"
+            android:name="com.moubry.worthwatching.WWMovieTitleSuggestionsProvider" />
+       to
+        <provider
+            android:authorities="com.moubry.tomatoratings.MovieTitleSuggestionsProvider"
+            android:name="com.moubry.tomatoratings.MovieTitleSuggestionsProvider" />
+  8) Save the file
+
+res\xml\searchable.xml
+  9) Change
+	android:searchSuggestAuthority="com.moubry.worthwatching.WWMovieTitleSuggestionsProvider"
+                  to 
+	android:searchSuggestAuthority="com.moubry.tomatoratings.MovieTitleSuggestionsProvider"
+  10) Save the file
+
+*.java
+  11) Find and Replace in Files *.java
+           Find: import com.moubry.worthwatching.R;
+           Replace With: import com.moubry.tomatoratings.R;
+
+12) Project > Clean...
+13) Right-click project and select Android Tools > Export Signed Application Package...
+       Project: WorthWatching
+       Existing keystore: C:\Users\Jami\Dropbox\workspace\keystore\private (pw: p2b2s)
+       Existing key alias: Moubry
