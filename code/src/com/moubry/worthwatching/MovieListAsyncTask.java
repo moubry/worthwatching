@@ -3,19 +3,20 @@ package com.moubry.worthwatching;
 import java.util.HashMap;
 import com.moubry.worthwatching.R;
 import com.moubry.worthwatching.util.WebServiceHelper;
+import com.moubry.worthwatching.util.WebServiceRestHelper;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
 public class MovieListAsyncTask extends AsyncTask<Void, Void, String> {
-	private String listName;
+	private int listID;
 	private Context context;
 	private String errorMessage;
 	public MovieListCallback callback;
 	
-	public MovieListAsyncTask(Context context, String listName, MovieListCallback callback)
+	public MovieListAsyncTask(Context context, int listID, MovieListCallback callback)
 	{
-		this.listName = listName;
+		this.listID = listID;
 		this.context = context;
 		this.callback = callback;	
 	}
@@ -27,8 +28,8 @@ public class MovieListAsyncTask extends AsyncTask<Void, Void, String> {
 	@Override
 	protected String doInBackground(Void... unused) {
 	
-		WebServiceHelper h = new WebServiceHelper(context,
-				this.context.getString(R.string.app_engine_url) + "/lists" + this.listName + ".json",
+		WebServiceRestHelper h = new WebServiceRestHelper(context,
+				this.context.getString(R.string.api) + "/lists/list/" + this.listID + "/movies",
 				new HashMap<String, String>());
 
 		errorMessage = h.errorMessage;

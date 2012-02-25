@@ -8,13 +8,14 @@ import java.util.Map;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.gson.Gson;
-import com.moubry.rottentomatoesapi.Movie;
-import com.moubry.rottentomatoesapi.MovieSearchResult;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
 import com.moubry.worthwatching.CategorizedListItem;
 import com.moubry.worthwatching.MovieAdapter;
 import com.moubry.worthwatching.WWMovieTitleSuggestionsProvider;
 import com.moubry.worthwatching.R;
+import com.moubry.worthwatching.api.Movie;
 import com.moubry.worthwatching.util.LicenseCheckActivity;
 import com.moubry.worthwatching.util.WebServiceHelper;
 
@@ -54,7 +55,7 @@ public class SearchActivity extends LicenseCheckActivity {
         Log.d(TAG, "mquery = " + mQuery);
         
         final CharSequence title = String.format("%s '%s'", getString(R.string.title_search_query), mQuery);
-        getActivityHelper().setActionBarTitle(title);
+//        getActivityHelper().setActionBarTitle(title);
         setTitle(title);
 		
 		getListView().setEmptyView(this.findViewById(R.id.empty));
@@ -84,7 +85,7 @@ public class SearchActivity extends LicenseCheckActivity {
 		super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_movie_list);
-        getActivityHelper().setupActionBar(null);
+//        getActivityHelper().setupActionBar(null);
         handleIntent(getIntent());
         
         showAdsIfEnabled();
@@ -96,11 +97,10 @@ public class SearchActivity extends LicenseCheckActivity {
 		return (ListView)this.findViewById(R.id.list);
 	}
 
-	private class SearchMoviesTask extends AsyncTask<String, Void, List<CategorizedListItem>> {
+	private class SearchMoviesTask extends AsyncTask<String, Void, List<com.moubry.worthwatching.api.Movie>> {
 
 		private int progressID;
 		private String errorMessage;
-		private int totalResults = -1;
 		
 		public void setProgressID(int i)
 		{
@@ -109,22 +109,21 @@ public class SearchActivity extends LicenseCheckActivity {
 		
 		// can use UI thread here
 		protected void onPreExecute() {
-			this.totalResults = -1;
 			this.errorMessage = null;
 			SearchActivity.this.findViewById(this.progressID).setVisibility(View.VISIBLE);
 		}
 
 		// can use UI thread here
-		protected void onPostExecute(final List<CategorizedListItem> result) {
+		protected void onPostExecute(final List<com.moubry.worthwatching.api.Movie> result) {
 			
 			SearchActivity.this.findViewById(this.progressID).setVisibility(View.GONE);
 
 			SearchActivity.this.getListView().setAdapter(new MovieAdapter(SearchActivity.this,
 					R.layout.list_item, result, true));
 
-			if(this.totalResults > 50)
+			if(result.size() == 50)
 			{
-				Toast.makeText(getApplicationContext(), String.format("Only 50 of the %d results are shown.", this.totalResults), Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "Only 50 of the results are shown.", Toast.LENGTH_LONG).show();
 			}
 			
 			if(errorMessage != null)
@@ -144,22 +143,22 @@ public class SearchActivity extends LicenseCheckActivity {
 
 			ListView lv = SearchActivity.this.getListView();
 			lv.setTextFilterEnabled(true);
-			lv.getEmptyView().setVisibility(View.VISIBLE);
+			lv.getEmptyView().setVisibility(View.GONE);
 			}
 		}
 
 		@Override
-		protected List<CategorizedListItem> doInBackground(String... query) {
+		protected List<com.moubry.worthwatching.api.Movie> doInBackground(String... query) {
 			
-			List<CategorizedListItem> lstMovies = new ArrayList<CategorizedListItem>();
+			List<com.moubry.worthwatching.api.Movie> lstMovies = new ArrayList<com.moubry.worthwatching.api.Movie>();
 			
 			Map<String, String> params = new HashMap<String, String>();
-			params.put("q", query[0]);
-			params.put("page_limit", "50");
+			params.put("query", query[0]);
+			params.put("count", "50");
 
 			WebServiceHelper h = new WebServiceHelper(
 					SearchActivity.this, 
-					getString(R.string.app_engine_url)+ "/movies.json",
+					SearchActivity.this.getString(R.string.api) + "/movies/search",
 					params);
 			
 			this.errorMessage = h.errorMessage;
@@ -167,15 +166,13 @@ public class SearchActivity extends LicenseCheckActivity {
 			if(h.errorMessage == null)
 			{
 				try {
-					// Parse Response into our object
-					MovieSearchResult result = new Gson().fromJson(h.result, MovieSearchResult.class);
-		
-					this.totalResults = result.total;
-					Log.d(TAG, "Total " + String.valueOf(result.total));
-		
-					for (int i = 0; i < result.movies.length; i++) {
-						lstMovies.add(result.movies[i]);
-					}
+				    // Parse Response into our object
+		            JsonParser parser = new JsonParser();
+		            JsonArray array = parser.parse(h.result).getAsJsonArray();
+		            
+		            for (int i = 0; i < array.size(); i++) {
+		                lstMovies.add(new Gson().fromJson(array.get(i), com.moubry.worthwatching.api.Movie.class));
+		            }
 				} catch (Exception e) {
 					errorMessage = getString(R.string.unknown_service_error);
 				}

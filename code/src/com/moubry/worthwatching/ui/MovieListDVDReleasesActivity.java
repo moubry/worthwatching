@@ -45,7 +45,7 @@ public class MovieListDVDReleasesActivity extends MovieListBaseActivity {
 			}
 		}		
 
-		getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, categorized, false));
+		//getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, categorized, false));
 	}
 	
 	public class CategorizedListItemComparableByDvdRelease implements Comparator<CategorizedListItem>{

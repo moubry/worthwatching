@@ -20,7 +20,7 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 import com.moubry.worthwatching.R;
-import com.moubry.worthwatching.util.ActivityHelper;
+import com.moubry.worthwatching.util.ActionBarActivity;
 import com.moubry.worthwatching.util.AnalyticsUtils;
 
 import android.app.AlertDialog;
@@ -36,8 +36,11 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A base activity that defers common functionality across app activities to an
@@ -45,8 +48,30 @@ import android.widget.TextView;
  * activities should inherit from {@link BaseSinglePaneActivity} or
  * {@link BaseMultiPaneActivity}.
  */
-public abstract class BaseActivity extends FragmentActivity
+public abstract class BaseActivity extends ActionBarActivity
 {
+    private boolean mAlternateTitle = false;
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        
+        tracker = GoogleAnalyticsTracker.getInstance();
+        AnalyticsUtils.StartTrackingSession(getApplicationContext(), tracker);
+
+        findViewById(R.id.toggle_title).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mAlternateTitle) {
+                    setTitle(R.string.app_name);
+                } else {
+                    setTitle(R.string.alternate_title);
+                }
+                mAlternateTitle = !mAlternateTitle;
+            }
+        });
+        
+    }
 
     public static AlertDialog createWhatsNewAlert(Context context)
     {
@@ -63,19 +88,10 @@ public abstract class BaseActivity extends FragmentActivity
                 .setCancelable(true).setPositiveButton("OK", null).setView(message).create();
     }
 
-    final ActivityHelper             mActivityHelper = ActivityHelper.createInstance(this);
+  //  final ActivityHelper             mActivityHelper = ActivityHelper.createInstance(this);
 
     protected GoogleAnalyticsTracker tracker;
 
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-        tracker = GoogleAnalyticsTracker.getInstance();
-        AnalyticsUtils.StartTrackingSession(getApplicationContext(), tracker);
-    }
 
     protected void showWhatsNewIfEnabled()
     {
@@ -127,98 +143,130 @@ public abstract class BaseActivity extends FragmentActivity
         tracker.stopSession();
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState)
-    {
-        super.onPostCreate(savedInstanceState);
-        mActivityHelper.onPostCreate(savedInstanceState);
-    }
+//    @Override
+//    protected void onPostCreate(Bundle savedInstanceState)
+//    {
+//        super.onPostCreate(savedInstanceState);
+//        mActivityHelper.onPostCreate(savedInstanceState);
+//    }
+
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event)
+//    {
+//        return mActivityHelper.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
+//    }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        return mActivityHelper.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main, menu);
+
+        // Calling super after populating the menu is necessary here to ensure that the
+        // action bar helpers have a chance to handle this event.
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        return mActivityHelper.onCreateOptionsMenu(menu) || super.onCreateOptionsMenu(menu);
-    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Toast.makeText(this, "Tapped home", Toast.LENGTH_SHORT).show();
+                break;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        return mActivityHelper.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-    }
+            case R.id.menu_refresh:
+                Toast.makeText(this, "Fake refreshing...", Toast.LENGTH_SHORT).show();
+                getActionBarHelper().setRefreshActionItemState(true);
+                getWindow().getDecorView().postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                getActionBarHelper().setRefreshActionItemState(false);
+                            }
+                        }, 1000);
+                break;
 
-    /**
-     * Returns the {@link ActivityHelper} object associated with this activity.
-     */
-    protected ActivityHelper getActivityHelper()
-    {
-        return mActivityHelper;
-    }
-
-    /**
-     * Takes a given intent and either starts a new activity to handle it (the
-     * default behavior), or creates/updates a fragment (in the case of a
-     * multi-pane activity) that can handle the intent.
-     * 
-     * Must be called from the main (UI) thread.
-     */
-    public void openActivityOrFragment(Intent intent)
-    {
-        // Default implementation simply calls startActivity
-        startActivity(intent);
-    }
-
-    /**
-     * Converts an intent into a {@link Bundle} suitable for use as fragment
-     * arguments.
-     */
-    public static Bundle intentToFragmentArguments(Intent intent)
-    {
-        Bundle arguments = new Bundle();
-        if (intent == null)
-        {
-            return arguments;
+            case R.id.menu_search:
+                startSearch(null, false, Bundle.EMPTY, false);
+                break;
+                
+            case R.id.menu_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+                
+            case R.id.menu_home:
+                startActivity(new Intent(this, HomeActivity.class));
+                break;                
         }
-
-        final Uri data = intent.getData();
-        if (data != null)
-        {
-            arguments.putParcelable("_uri", data);
-        }
-
-        final Bundle extras = intent.getExtras();
-        if (extras != null)
-        {
-            arguments.putAll(intent.getExtras());
-        }
-
-        return arguments;
+        return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Converts a fragment arguments bundle into an intent.
-     */
-    public static Intent fragmentArgumentsToIntent(Bundle arguments)
-    {
-        Intent intent = new Intent();
-        if (arguments == null)
-        {
-            return intent;
-        }
+//    /**
+//     * Returns the {@link ActivityHelper} object associated with this activity.
+//     */
+//    protected ActivityHelper getActivityHelper()
+//    {
+//        return mActivityHelper;
+//    }
 
-        final Uri data = arguments.getParcelable("_uri");
-        if (data != null)
-        {
-            intent.setData(data);
-        }
+//    /**
+//     * Takes a given intent and either starts a new activity to handle it (the
+//     * default behavior), or creates/updates a fragment (in the case of a
+//     * multi-pane activity) that can handle the intent.
+//     * 
+//     * Must be called from the main (UI) thread.
+//     */
+//    public void openActivityOrFragment(Intent intent)
+//    {
+//        // Default implementation simply calls startActivity
+//        startActivity(intent);
+//    }
 
-        intent.putExtras(arguments);
-        intent.removeExtra("_uri");
-        return intent;
-    }
+//    /**
+//     * Converts an intent into a {@link Bundle} suitable for use as fragment
+//     * arguments.
+//     */
+//    public static Bundle intentToFragmentArguments(Intent intent)
+//    {
+//        Bundle arguments = new Bundle();
+//        if (intent == null)
+//        {
+//            return arguments;
+//        }
+//
+//        final Uri data = intent.getData();
+//        if (data != null)
+//        {
+//            arguments.putParcelable("_uri", data);
+//        }
+//
+//        final Bundle extras = intent.getExtras();
+//        if (extras != null)
+//        {
+//            arguments.putAll(intent.getExtras());
+//        }
+//
+//        return arguments;
+//    }
+//
+//    /**
+//     * Converts a fragment arguments bundle into an intent.
+//     */
+//    public static Intent fragmentArgumentsToIntent(Bundle arguments)
+//    {
+//        Intent intent = new Intent();
+//        if (arguments == null)
+//        {
+//            return intent;
+//        }
+//
+//        final Uri data = arguments.getParcelable("_uri");
+//        if (data != null)
+//        {
+//            intent.setData(data);
+//        }
+//
+//        intent.putExtras(arguments);
+//        intent.removeExtra("_uri");
+//        return intent;
+//    }
 }

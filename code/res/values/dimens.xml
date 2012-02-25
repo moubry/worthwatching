@@ -17,6 +17,11 @@
   -->
 <resources>
 
+    <dimen name="actionbar_compat_height">48dp</dimen>
+    <dimen name="actionbar_compat_button_width">48dp</dimen>
+    <dimen name="actionbar_compat_button_home_width">56dp</dimen>
+    
+    
     <!-- UI elements -->
     <dimen name="poster_image_width">180px</dimen>
     <dimen name="poster_image_height">267px</dimen>

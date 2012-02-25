@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.moubry.worthwatching.R;
 
-import com.moubry.rottentomatoesapi.Movie;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MovieAdapter extends ArrayAdapter<CategorizedListItem> {
+public class MovieAdapter extends ArrayAdapter<com.moubry.worthwatching.api.Movie> {
 
 	private boolean showYearInTitle;
 	private LayoutInflater vi;
 
 	// Initialize adapter
-	public MovieAdapter(Context context, int resource, List<CategorizedListItem> items, boolean showYear) {
+	public MovieAdapter(Context context, int resource, List<com.moubry.worthwatching.api.Movie> items, boolean showYear) {
 		super(context, 0, items);
 		this.showYearInTitle = showYear;
 		vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -31,25 +29,24 @@ public class MovieAdapter extends ArrayAdapter<CategorizedListItem> {
 		View v = convertView;
 		
 		// Get the current movie object
-		final CategorizedListItem item = getItem(position);
+		final com.moubry.worthwatching.api.Movie movie = getItem(position);
 		
-		if(item != null)
+		if(movie != null)
 		{
-			if(item.isSection()){
-				
-				CategoryListItem si = (CategoryListItem)item;
-				v = vi.inflate(R.layout.list_item_category, null);
-
-				v.setOnClickListener(null);
-				v.setOnLongClickListener(null);
-				v.setLongClickable(false);
-				
-				final TextView sectionView = (TextView) v.findViewById(R.id.list_item_section_text);
-				sectionView.setText(si.getTitle());
-			}
-			else
-			{
-				Movie movie = (Movie)item;
+//			if(item.isSection()){
+//				
+//				CategoryListItem si = (CategoryListItem)item;
+//				v = vi.inflate(R.layout.list_item_category, null);
+//
+//				v.setOnClickListener(null);
+//				v.setOnLongClickListener(null);
+//				v.setLongClickable(false);
+//				
+//				final TextView sectionView = (TextView) v.findViewById(R.id.list_item_section_text);
+//				sectionView.setText(si.getTitle());
+//			}
+//			else
+//			{
 				v = vi.inflate(R.layout.list_item, null);
 		
 				// Get the text boxes from the list_item.xml file
@@ -61,15 +58,15 @@ public class MovieAdapter extends ArrayAdapter<CategorizedListItem> {
 		
 				// Assign the appropriate data from our movie object above
 				movieTomato.setImageResource(movie.getTomatoImageResource());
-				movieRating.setText(movie.ratings.getFormattedCriticsScore());
+				movieRating.setText(movie.getFormattedCriticsScore());
 				movieAudTomato.setImageResource(movie.getAudienceTomatoImageResource());
-				movieAudRating.setText(movie.ratings.getFormattedAudienceScore());
+				movieAudRating.setText(movie.getFormattedAudienceScore());
 				
-				if(this.showYearInTitle)
-					movieTitle.setText(movie.getTitleWithYear());
-				else
-					movieTitle.setText(movie.getTitle());
-			}
+//				if(this.showYearInTitle)
+					movieTitle.setText(movie.TitleWithYear);
+//				else
+//					movieTitle.setText(movie.getTitle());
+//			}
 		}
 			
 		return v;

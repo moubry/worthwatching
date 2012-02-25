@@ -17,6 +17,6 @@ public class MovieListBoxOfficeActivity extends MovieListBaseActivity {
 	@Override
 	protected void categorizeItemsAndSetList(List<CategorizedListItem> uncategorized) {
 	
-		getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, uncategorized, false));
+		//getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, uncategorized, false));
 	}
 }

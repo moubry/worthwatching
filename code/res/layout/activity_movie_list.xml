@@ -3,7 +3,6 @@
 	xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<include layout="@layout/actionbar" />
 
 	<LinearLayout android:id="@+id/progressBarLayout"
 		android:orientation="horizontal" android:layout_width="fill_parent"
@@ -13,8 +12,9 @@
 			android:layout_gravity="center_vertical" />
 	</LinearLayout>
 
+	    <!-- android:listSelector="@drawable/list_item_pressed" -->
 	<ListView android:id="@+id/list" android:layout_height="fill_parent"
-		android:layout_weight="1" android:listSelector="@drawable/list_item_pressed"
+		android:layout_weight="1" 
 		android:layout_width="fill_parent" />
 	<TextView android:id="@+id/empty" android:layout_width="wrap_content"
 		android:layout_weight="1"  

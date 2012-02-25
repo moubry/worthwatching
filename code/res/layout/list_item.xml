@@ -6,8 +6,8 @@
     >
     <LinearLayout
     android:orientation="horizontal"
-    android:layout_width="0dp" android:layout_weight="1"
-    android:minHeight="40dp"
+    android:layout_width="fill_parent"
+    android:minHeight="48dp"
     android:layout_height="fill_parent">
     <ImageView 
 	   android:id="@+id/tomato_image"

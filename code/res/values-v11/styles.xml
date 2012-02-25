@@ -16,7 +16,7 @@
 
 <resources>
     <!-- Start with the Holographic theme -->
-    <style name="Theme.WorthWatching" parent="android:style/Theme.Holo">
+  <!--   <style name="Theme.WorthWatching" parent="android:style/Theme.Holo">
         <item name="android:actionBarStyle">@style/ActionBar</item>
     </style>
 
@@ -32,5 +32,21 @@
     <style name="ActionBarText" parent="android:style/TextAppearance.Large">
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
+    </style> -->
+    
+    <style name="Theme.WorthWatching" parent="android:style/Theme.Holo">
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
     </style>
+
+    <style name="ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#eee</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitle</item>
+        <item name="android:icon">@drawable/actionbar_compat_logo</item>
+    </style>
+
+    <style name="ActionBarTitle">
+        <item name="android:textColor">@color/actionbar_title_color</item>
+    </style>
+    
 </resources>

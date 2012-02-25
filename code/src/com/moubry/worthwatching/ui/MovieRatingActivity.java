@@ -14,10 +14,11 @@ import java.util.Map;
 
 
 import com.google.gson.Gson;
-import com.moubry.rottentomatoesapi.Movie;
-import com.moubry.rottentomatoesapi.MovieSearchResult;
-import com.moubry.rottentomatoesapi.Review;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.moubry.worthwatching.R;
+import com.moubry.worthwatching.api.Movie;
+import com.moubry.worthwatching.api.Review;
 import com.moubry.worthwatching.util.WebServiceHelper;
 
 import android.app.AlertDialog;
@@ -44,26 +45,29 @@ public class MovieRatingActivity extends BaseActivity {
 
 	public static final String TAG = "MovieRatingActivity";
 	
+	private int movieID;
 	private String imdbID;
 	private String rottenTomatoesURL;
 	private String rottenTomatoesID;
 	private String title;
-
 	
-	private static Date getTheaterReleaseDateFromFormatted(String formattedDate) {
+	private static String getFormattedReleaseDate(String rawDate) {
 
-		if(formattedDate == null || formattedDate.length() == 0)
-			return null;
+		if(rawDate == null || rawDate.length() == 0)
+			return "unknown";
 
-		 DateFormat formatter; 
+		 DateFormat formatter, formatter2; 
 		
 		try {  
 
 		 Date date;
-		  formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
-		  date = (Date)formatter.parse(formattedDate);  
+		  formatter = new SimpleDateFormat("MM/dd/yyyy");
+		  date = (Date)formatter.parse(rawDate);  
 
-		  return date;
+		  
+		  formatter2 = new SimpleDateFormat("EEE, MMM d, yyyy");
+		  
+		 return formatter2.format(date);
 		  
 		  } catch (ParseException e)
 		  {
@@ -71,7 +75,7 @@ public class MovieRatingActivity extends BaseActivity {
 		  }  
 		 
 		  
-		  return null;
+		  return "unknown";
 
 	}
 	
@@ -94,6 +98,8 @@ public class MovieRatingActivity extends BaseActivity {
 		this.rottenTomatoesID = recdData.getString("com.moubry.rotten_tomatoes_id");
         this.rottenTomatoesURL = recdData.getString("com.moubry.rotten_tomatoes_url");
 		this.imdbID = recdData.getString("com.moubry.imdb_id");
+		this.movieID = recdData.getInt("com.moubry.movie_id");
+		final String showtimes_url = recdData.getString("com.moubry.showtimes_url");
 
 		((TextView) findViewById(R.id.android_tomatometer_score)).setText(critic_score);
 		((TextView) findViewById(R.id.android_audience_tomatometer_score)).setText(audience_score);
@@ -122,10 +128,10 @@ public class MovieRatingActivity extends BaseActivity {
 		if(runtime != null && runtime.length() > 0)
 		((TextView) findViewById(R.id.runtime)).setText(runtime);
 		
-		if(release_date == null || release_date.length() == 0)
-			((TextView) findViewById(R.id.release_date)).setText("unknown");
-		else
-			((TextView) findViewById(R.id.release_date)).setText(release_date);
+		
+		String formattedDate = getFormattedReleaseDate(release_date);
+		
+			((TextView) findViewById(R.id.release_date)).setText(formattedDate);
 		
 
 		((TextView) findViewById(R.id.synopsis)).setText(synopsis);
@@ -231,17 +237,7 @@ public class MovieRatingActivity extends BaseActivity {
 		
 		TextView txtShowtimes = (TextView) findViewById(R.id.showtimes);
 
-		
-		
-		Date release = getTheaterReleaseDateFromFormatted(release_date);
-
-		long diffInDays = 1000;
-		
-		if(release != null)
-		 diffInDays = (new Date().getTime() - release.getTime()) / 1000 / 60 / 60 / 24;
-
-		
-		if (release != null && diffInDays >= -7 && diffInDays <= 45) {
+		if (showtimes_url != null && showtimes_url.length() > 0) {
 			
 			txtShowtimes.setVisibility(View.VISIBLE);
 			txtShowtimes.setOnClickListener(new View.OnClickListener() {
@@ -251,12 +247,11 @@ public class MovieRatingActivity extends BaseActivity {
 			 						   "click",            // action
 			 						   "Showtimes Button", // label
 			 						   0);                 // value
-	        		
-					String searchTitle = title.replaceAll("\\(.*\\)", "").replaceAll(" in 4D", "").replaceAll(" in 3D", "");
-					Intent intent = new Intent();
+	        	
+	        		Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
 					intent.addCategory(Intent.CATEGORY_BROWSABLE);
-					intent.setData(Uri.parse("http://www.google.com/m/movies?q=" + searchTitle));
+					intent.setData(Uri.parse(showtimes_url.replace("?q", "?dq")));
 					startActivity(intent);
 				}
 			});
@@ -278,7 +273,7 @@ public class MovieRatingActivity extends BaseActivity {
 
 	private void loadReviews() {
 
-		String gae = getString(R.string.app_engine_url) + "/movies/" + this.rottenTomatoesID + "/reviews.json";
+		String gae = getString(R.string.api) + "/movies/movie/" + this.movieID + "/reviews/top_critic";
 		
 		GetTopCriticReviewsTask task = new GetTopCriticReviewsTask();
 		task.setLayoutViewID(R.id.layout);
@@ -297,7 +292,7 @@ public class MovieRatingActivity extends BaseActivity {
 		Bundle recdData = getIntent().getExtras();
 		String title = recdData.getString("com.moubry.title");
 
-        getActivityHelper().setupActionBar(title);
+//        getActivityHelper().setupActionBar(title);
         setTitle(title);
 
 		loadData();
@@ -409,12 +404,9 @@ public class MovieRatingActivity extends BaseActivity {
 						reviewLayout.setOrientation(LinearLayout.HORIZONTAL);
 						reviewLayout.setPadding(10, 10, 0, 10);
 
-						if (r.links != null && r.links.review != null
-								&& r.links.review.length() > 0) {
-							reviewLayout.setTag(r.links.review);
-							reviewLayout
-									.setOnClickListener(new View.OnClickListener() {
-
+						if (r.ReviewURL != null && r.ReviewURL.length() > 0) {
+							reviewLayout.setTag(r.ReviewURL);
+							reviewLayout.setOnClickListener(new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
 											Intent intent = new Intent();
@@ -447,21 +439,31 @@ public class MovieRatingActivity extends BaseActivity {
 						criticLayout.setDuplicateParentStateEnabled(true);
 						criticContainer.addView(criticLayout);
 
+						ImageView iv = new ImageView(MovieRatingActivity.this);
+						iv.setLayoutParams(wrap);
+						
+						if(r.Freshness.equalsIgnoreCase("fresh"))
+						    iv.setImageResource(R.drawable.fresh);
+						else
+						    iv.setImageResource(R.drawable.rotten);
+						
+						iv.setPadding(0, 0, 10, 0);
+						criticLayout.addView(iv);
+						
 						TextView tv = new TextView(MovieRatingActivity.this);
 						tv.setLayoutParams(wrap);
-						tv.setText(r.getCritic());
+						tv.setText(r.Critic);
 						tv.setTextColor(getResources().getColorStateList(
 								R.color.critic_text));
 						tv.setDuplicateParentStateEnabled(true);
 						tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 						criticLayout.addView(tv);
 
-						if (r.getPublication() != null
-								&& r.getPublication().length() > 0) {
+						if (r.Publication != null && r.Publication.length() > 0) {
 							TextView tv2 = new TextView(
 									MovieRatingActivity.this);
 							tv2.setLayoutParams(wrap);
-							tv2.setText(", " + r.getPublication());
+							tv2.setText(", " + r.Publication);
 							tv2.setTextColor(getResources().getColorStateList(
 									R.color.review_text));
 							tv2.setDuplicateParentStateEnabled(true);
@@ -470,7 +472,7 @@ public class MovieRatingActivity extends BaseActivity {
 
 						tv = new TextView(MovieRatingActivity.this);
 						tv.setLayoutParams(wrap);
-						tv.setText(r.quote);
+						tv.setText(r.Quote);
 						tv.setTextColor(getResources().getColorStateList(
 								R.color.review_text));
 						tv.setDuplicateParentStateEnabled(true);
@@ -485,8 +487,7 @@ public class MovieRatingActivity extends BaseActivity {
 						img.setLayoutParams(l2);
 						img.setPadding(10, 0, 7, 0);
 
-						if (r.links != null && r.links.review != null
-								&& r.links.review.length() > 0)
+						if (r.ReviewURL != null && r.ReviewURL.length() > 0)
 							img.setImageResource(this.arrowID);
 
 						reviewLayout.addView(img);
@@ -528,14 +529,14 @@ public class MovieRatingActivity extends BaseActivity {
 
 			if (h.errorMessage == null) {
 				try {
-					// Parse Response into our object
-					MovieSearchResult result = new Gson().fromJson(h.result,
-							MovieSearchResult.class);
-
-					for (int i = 0; i < result.reviews.length; i++) {
-						lstReviews.add(result.reviews[i]);
-					}
-				} catch (Exception e) {
+				 // Parse Response into our object
+                    JsonParser parser = new JsonParser();
+                    JsonArray array = parser.parse(h.result).getAsJsonArray();
+                    
+                    for (int i = 0; i < array.size(); i++) {
+                        lstReviews.add(new Gson().fromJson(array.get(i), com.moubry.worthwatching.api.Review.class));
+                    }
+			    } catch (Exception e) {
 					this.errorMessage = getString(R.string.unknown_service_error);
 				}
 			}
@@ -545,43 +546,48 @@ public class MovieRatingActivity extends BaseActivity {
 	}
 
 	public static void AddMovieDataToIntent(Context context, Intent intent, Movie movie) {
+	    
+	    intent.putExtra("com.moubry.movie_id", movie.MovieID);
+
+        intent.putExtra("com.moubry.showtimes_url", movie.GoogleShowtimesURL);
+	    
 		intent.putExtra("com.moubry.rating",
-				movie.ratings.getFormattedCriticsScore());
+				movie.getFormattedCriticsScore());
 		intent.putExtra("com.moubry.critics_score_description",
-				movie.ratings.getCriticsScoreDescription());
+				movie.getCriticsScoreDescription());
 		intent.putExtra("com.moubry.audience_rating",
-				movie.ratings.getFormattedAudienceScore());
-		intent.putExtra("com.moubry.consensus", movie.getCriticsConsensus());
+				movie.getFormattedAudienceScore());
+		intent.putExtra("com.moubry.consensus", movie.CriticsConsensus);
 		intent.putExtra("com.moubry.tomato_image",
 				String.valueOf(movie.getTomatoImageResource()));
 		intent.putExtra("com.moubry.audience_tomato_image",
 				String.valueOf(movie.getAudienceTomatoImageResource()));
 		intent.putExtra("com.moubry.imdb_id",
-				movie.alternate_ids == null ? null : movie.alternate_ids.imdb);
-		intent.putExtra("com.moubry.rotten_tomatoes_url", movie.links == null ? null : movie.links.alternate);
+				movie.IMDBID == null ? null : movie.IMDBID);
+		intent.putExtra("com.moubry.rotten_tomatoes_url", movie.RottenTomatoesURL);
 
 		float posterImageWidth = context.getResources().getDimension(R.dimen.poster_image_width);
 		
 		Log.d(TAG, "width = " + posterImageWidth);
 	
-    	intent.putExtra("com.moubry.poster_original", movie.posters == null ? null : movie.posters.original);
-    	intent.putExtra("com.moubry.poster_detailed", movie.posters == null ? null : movie.posters.detailed);
-    	intent.putExtra("com.moubry.poster_profile", movie.posters == null ? null : movie.posters.profile);
-    	intent.putExtra("com.moubry.poster_thumbnail", movie.posters == null ? null : movie.posters.thumbnail);
+    	intent.putExtra("com.moubry.poster_original", movie.PosterURL);
+    	intent.putExtra("com.moubry.poster_detailed", movie.PosterDetailedURL);
+    	intent.putExtra("com.moubry.poster_profile", movie.PosterProfileURL);
+    	intent.putExtra("com.moubry.poster_thumbnail", movie.PosterThumbnailURL);
 	    	
-		intent.putExtra("com.moubry.title", movie.getTitle());
-		intent.putExtra("com.moubry.rotten_tomatoes_id", movie.id);
+		intent.putExtra("com.moubry.title", movie.Title);
+		intent.putExtra("com.moubry.rotten_tomatoes_id", movie.RottenTomatoesID);
 		
-		String formattedRuntime = movie.getFormattedRuntime();
+		String formattedRuntime = movie.FormattedRuntime;
 
-		if(movie.mpaa_rating == null || movie.mpaa_rating.length() == 0)
+		if(movie.MPAARating == null || movie.MPAARating.length() == 0)
 			intent.putExtra("com.moubry.runtime", formattedRuntime);
 		else if(movie.getMPAARatingImageID() == null)
 		{
 			if(formattedRuntime == null || formattedRuntime.length() == 0)
-				intent.putExtra("com.moubry.runtime", movie.mpaa_rating);
+				intent.putExtra("com.moubry.runtime", movie.MPAARating);
 			else
-				intent.putExtra("com.moubry.runtime", movie.mpaa_rating + ", " + formattedRuntime);
+				intent.putExtra("com.moubry.runtime", movie.MPAARating + ", " + formattedRuntime);
 		}
 		else
 		{
@@ -590,12 +596,9 @@ public class MovieRatingActivity extends BaseActivity {
 			intent.putExtra("com.moubry.mpaa_rating_image", String.valueOf(movie.getMPAARatingImageID()));
 		}
 		
-		intent.putExtra("com.moubry.cast", movie.getAbridgedCast());
-		intent.putExtra("com.moubry.synopsis", movie.getSynopsis());
-		intent.putExtra(
-				"com.moubry.release_date",
-				movie.release_dates == null ? null : movie.release_dates
-						.getTheaterReleaseDate());
+		intent.putExtra("com.moubry.cast", movie.AbridgedCast);
+		intent.putExtra("com.moubry.synopsis", movie.Synopsis);
+		intent.putExtra("com.moubry.release_date", movie.TheaterReleaseDate);
 	}
 
 	private static Bitmap current;

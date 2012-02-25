@@ -14,7 +14,7 @@
     
     <string name="analytics_account">UA-26478615-1</string>
     <string name="ad_mob_id">a14eab9562000fb</string>
-    <string name="app_engine_url">http://worthwatching.moubry.com</string>
+    <string name="api">http://wwhost.cloudapp.net/api/v1</string>
     <string name="support_email_address">android@moubry.com</string>
     <string name="flixster_notice">The Fresh Tomato, Rotten Splat, and Popcorn Logos are trademarks or registered trademarks of Flixster, Inc. in the United States and other countries.\n\nContact android@moubry.com for feedback and support.</string>
     <string name="title_terms_of_service"><b>Worth Watching\nEnd User License Agreement</b></string>

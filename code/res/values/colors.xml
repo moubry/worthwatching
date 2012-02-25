@@ -10,9 +10,9 @@
   <color name="app_red">#FFF11624</color>
   <color name="actionbar_bg">#FFE7E7E7</color>
 
-
 <color name="rotten_tomatoes_dropshadow">#D87D80</color>
 
+<color name="actionbar_title_color">#ff000000</color>
 
 <color name="actionbar_text">#ff000000</color>
 

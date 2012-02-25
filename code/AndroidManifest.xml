@@ -45,7 +45,7 @@
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value="com.moubry.worthwatching.ui.SearchActivity" />
-        </activity>
+        </activity>      
         <activity
             android:label="@string/search"
             android:launchMode="singleTop"
@@ -58,6 +58,17 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity
+            android:label="@string/title_box_office"
+            android:name="com.moubry.worthwatching.ui.MovieListActivity" >
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="com.moubry.worthwatching.ui.SearchActivity" />
+        </activity>        
         <activity
             android:label="@string/title_box_office"
             android:name="com.moubry.worthwatching.ui.MovieListBoxOfficeActivity" >

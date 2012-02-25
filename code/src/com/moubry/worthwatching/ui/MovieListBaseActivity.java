@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.moubry.rottentomatoesapi.MovieSearchResult;
 import com.moubry.worthwatching.CategorizedListItem;
 import com.moubry.worthwatching.CategoryListItem;
 import com.moubry.worthwatching.MovieAdapter;
@@ -13,11 +14,10 @@ import com.moubry.worthwatching.MovieListAsyncTask;
 import com.moubry.worthwatching.MovieListCallback;
 import com.moubry.worthwatching.MovieListDataSQLHelper;
 import com.moubry.worthwatching.R;
+import com.moubry.worthwatching.api.Movie;
 import com.moubry.worthwatching.util.LicenseCheckActivity;
 
 import com.google.gson.Gson;
-import com.moubry.rottentomatoesapi.Movie;
-import com.moubry.rottentomatoesapi.MovieSearchResult;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -47,7 +47,7 @@ public abstract class MovieListBaseActivity extends LicenseCheckActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_movie_list);
 
-		getActivityHelper().setupActionBar(getTitle());
+//		getActivityHelper().setupActionBar(getTitle());
 
 		getListView().setEmptyView(this.findViewById(R.id.empty));
 		getListView().setOnItemClickListener(new ListView.OnItemClickListener() {
@@ -175,15 +175,15 @@ public abstract class MovieListBaseActivity extends LicenseCheckActivity {
 		if ((this.m_cachedResult = this.getMovieListFromCache(this.m_cachedResult, this.getListName())) != null) {
 			bindDataToList(m_cachedResult, false, null);
 		} else {
-			MovieListAsyncTask task = new MovieListAsyncTask(this, this.getListName(), new MovieListCallback() {
-				
-				@Override
-				public void HandleJsonResult(String json, String errorMessage) {
-					MovieListBaseActivity.this.bindDataToList(json, true, errorMessage);
-				}
-			});
-
-			task.execute();
+//			MovieListAsyncTask task = new MovieListAsyncTask(this, this.getListName(), new MovieListCallback() {
+//				
+//				@Override
+//				public void HandleJsonResult(String json, String errorMessage) {
+//					MovieListBaseActivity.this.bindDataToList(json, true, errorMessage);
+//				}
+//			});
+//
+//			task.execute();
 		}
 	}
 
@@ -206,7 +206,7 @@ public abstract class MovieListBaseActivity extends LicenseCheckActivity {
 						}
 					}).show();
 
-			getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, lstMovies, false));
+			//getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, lstMovies, false));
 
 			return;
 		}
@@ -247,49 +247,49 @@ public abstract class MovieListBaseActivity extends LicenseCheckActivity {
 
 	protected void categorizeItemsAndSetList(List<CategorizedListItem> uncategorized) {
 		
-		List<CategorizedListItem> categorized = new ArrayList<CategorizedListItem>();
-		
-		Collections.sort(uncategorized, new CategorizedListItemComparableByTheaterRelease());
-		
-		String category = "";
-		String nextCategory;
-		CategorizedListItem item;
-		for (int i = 0; i < uncategorized.size(); i++) {
-			item = uncategorized.get(i);
-			nextCategory = ((Movie) item).release_dates.getTheaterReleaseDate();
-			
-			// Only show ones with valid theater release dates
-			if(nextCategory != null && nextCategory.length() > 0)
-			{
-				if (!category.equals(nextCategory))
-					categorized.add(new CategoryListItem(nextCategory));
-	
-				category = nextCategory;
-	
-				categorized.add(item);
-			}
-		}
-		
-		getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, categorized, false));
+//		List<CategorizedListItem> categorized = new ArrayList<CategorizedListItem>();
+//		
+//	//	Collections.sort(uncategorized, new CategorizedListItemComparableByTheaterRelease());
+//		
+//		String category = "";
+//		String nextCategory;
+//		CategorizedListItem item;
+//		for (int i = 0; i < uncategorized.size(); i++) {
+//			item = uncategorized.get(i);
+//			nextCategory = ((Movie) item).TheaterReleaseDate;
+//			
+//			// Only show ones with valid theater release dates
+//			if(nextCategory != null && nextCategory.length() > 0)
+//			{
+//				if (!category.equals(nextCategory))
+//					categorized.add(new CategoryListItem(nextCategory));
+//	
+//				category = nextCategory;
+//	
+//				categorized.add(item);
+//			}
+//		}
+//		
+//		//getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, categorized, false));
 	}
 
 	protected abstract String getListName();
 	
-	public class CategorizedListItemComparableByTheaterRelease implements Comparator<CategorizedListItem>{
-		 
-	    @Override
-	    public int compare(CategorizedListItem o1, CategorizedListItem o2) {
-	    	String s1 = ((Movie) o1).release_dates.theater;
-	    	
-	    	String s2 = ((Movie) o2).release_dates.theater;
-	    	
-	    	if(s1 == null)
-	    		s1 = "";
-	    	
-	    	if(s2 == null)
-	    		s2 = "";
-	    	
-	    	return s1.compareTo(s2);
-	    }
-	}
+//	public class CategorizedListItemComparableByTheaterRelease implements Comparator<CategorizedListItem>{
+//		 
+//	    @Override
+//	    public int compare(CategorizedListItem o1, CategorizedListItem o2) {
+//	    	String s1 = ((Movie) o1).release_dates.theater;
+//	    	
+//	    	String s2 = ((Movie) o2).release_dates.theater;
+//	    	
+//	    	if(s1 == null)
+//	    		s1 = "";
+//	    	
+//	    	if(s2 == null)
+//	    		s2 = "";
+//	    	
+//	    	return s1.compareTo(s2);
+//	    }
+//	}
 }

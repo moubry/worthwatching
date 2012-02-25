@@ -11,8 +11,7 @@ public class Ratings implements Serializable {
 	public int audience_score;
 	public String audience_rating;
 	
-	public String getFormattedCriticsScore()
-	{
+	public String getFormattedCriticsScore() {
 	  if(this.critics_score == -1)
 		  return "---";
 	  
@@ -24,7 +23,7 @@ public class Ratings implements Serializable {
 			  return "---";
 		  
 		  return this.audience_score + "%";
-		}
+	}
 	
 	public String getCriticsScoreDescription() {
 		

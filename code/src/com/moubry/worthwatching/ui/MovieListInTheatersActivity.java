@@ -53,7 +53,7 @@ public class MovieListInTheatersActivity extends MovieListBaseActivity {
 						}
 					}).show();
 
-			getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, lstMovies, false));
+	//		getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, lstMovies, false));
 
 			return;
 		}
@@ -97,7 +97,7 @@ public class MovieListInTheatersActivity extends MovieListBaseActivity {
 		Collections.sort(this.m_inTheaters, new CategorizedListItemComparableByTheaterReleaseDesc());
 		lstMovies.addAll(this.m_inTheaters);
 		
-		getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, lstMovies, false));
+		//getListView().setAdapter(new MovieAdapter(this, R.layout.list_item, lstMovies, false));
 	}
 
 	private String m_cachedOpeningResult;
@@ -113,16 +113,16 @@ public class MovieListInTheatersActivity extends MovieListBaseActivity {
 		if ((this.m_cachedOpeningResult = this.getMovieListFromCache(this.m_cachedOpeningResult, this.getOpeningListName())) != null) {
 			addOpeningDataToList(m_cachedOpeningResult, false, null);
 		} else {
-			MovieListAsyncTask task = new MovieListAsyncTask(this, this.getOpeningListName(),
-					new MovieListCallback() {
-
-						@Override
-						public void HandleJsonResult(String json, String errorMessage) {
-							MovieListInTheatersActivity.this.addOpeningDataToList(json, true, errorMessage);
-						}
-					});
-
-			task.execute();
+//			MovieListAsyncTask task = new MovieListAsyncTask(this, this.getOpeningListName(),
+//					new MovieListCallback() {
+//
+//						@Override
+//						public void HandleJsonResult(String json, String errorMessage) {
+//							MovieListInTheatersActivity.this.addOpeningDataToList(json, true, errorMessage);
+//						}
+//					});
+//
+//			task.execute();
 		}
 	}
 	
